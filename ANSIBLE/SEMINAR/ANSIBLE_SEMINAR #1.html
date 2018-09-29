@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ANSIBLE_SEMINAR #1</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="toc_0">ANSIBLE SEMINAR #1</h1>
+
+<h2 id="toc_1"></h2>
+
+<ol>
+<li>ANSIBLE INTRODUCE<br></li>
+<li>ANSIBLE Special Feature </li>
+<li>How to Install? 
+
+<ul>
+<li>Mac OSX</li>
+<li>Debian / Ubuntu </li>
+<li>Free BSD</li>
+<li>yum</li>
+</ul></li>
+<li>Getting Started </li>
+</ol>
+
+<hr>
+
+<p><img src="http://theeye.pe.kr/wp-content/uploads/2016/02/ansible_logo-1.png" alt="Alt text"></p>
+
+<blockquote>
+<h3 id="toc_2">본 세미나는 Ansible 공식 홈페이지와 국내 문서를 바탕으로 제작되었습니다 <br></h3>
+
+<p>이번 시간에는 Ansible의 소개 / 특징 / 설치법에 관한 정보가 포함되어 있습니다. <br> 
+실 사용법과 서버 관리에 대한 부분은 다음 시간에 이어서 설명하도록 하겠습니다. </p>
+</blockquote>
+
+<hr>
+
+<h2 id="toc_3">1. ANSIBLE INTRODUCE</h2>
+
+<h3 id="toc_4">1) Asible이란?</h3>
+
+<div><pre><code class="language-none">* 시스템 환경 설정 및 애플리케이션 배포 자동화 플랫폼 
+* 에이전트가 없는 구조, 에이전트 관리에 신경을 쓰지 않아도 됨. 
+* SSH를 통해서 통신함.
+* Provision &amp; configuration management tool
+    * Provision : 시스템 구성을 위한 일련의 활동을 말함
+* Python Github project 중 상위 랭킹 (6위)
+* 오픈 소스 버전 (GPL)
+* Enterprise 버전이 존재하며 ansible 오픈 소스에 UI 와 일부 utility 추가한 상용 버전</code></pre></div>
+
+<h3 id="toc_5">2) Ansible을 선택 하는 이유</h3>
+
+<div><pre><code class="language-none">* SSH 통신을 사용하기 때문에 빠른 provision 이 가능합니다. 
+* 추후 상용 환경에서 사용할 때 agent 기반이면 방화벽 이슈, agent 데몬 관리라는 불편한 점이 존재합니다
+
+  - agent 방식의 장점도 물론 존재합니다. 확장성, 대규모 provision을 할 경우 매우 효과적입니다. 
+   대신 서버와 통신하는 부분이 고도화되기 때문에 빠르고 간단한 provision을 할 수 없습니다.
+
+* 자동 배포 환경이 쉽습니다.
+* 개발 가능성이 높은 오픈소스 입니다.
+* 멱등성을 제공합니다.</code></pre></div>
+
+<h4 id="toc_6"><em>멱등성이란 ?</em></h4>
+
+<blockquote>
+<p>연산을 여러 번 적용하더라도 결과가 달라지지 않는 성질을 멱등성 이라고 합니다.</p>
+</blockquote>
+
+<h4 id="toc_7">Ansible에서 멱등성이란?</h4>
+
+<blockquote>
+<p>여러 번 ansible 툴을 사용하더라도 동일한 결과값을 나올 수 있도록 제공되는 형태여야 합니다.
+매번 다른 결과가 나오거나 에러가 나온다면 비 멱등성하다고 할수 있습니다.<br>
+Ansible 툴의 거의 대부분의 모듈은 멱등성을 제공합니다. 또한 멱등성을 제공하기 위해서 조건절을 제공하고 있습니다.<br>
+예를 들면, 처음 ansible 스크립트를 실행후 다시 실행을 하면 상황에 따라서는 파일이 append가 될 수 있습니다.
+<br>그러나 멱등성의 원칙은 언제나 실행은 해도 결과가 동일하게 나옵니다. 또한 파일/디렉터리를 생성 또는 삭제하는 ‘create’ , ‘remove:’<br>
+같은 ansible 모듈을 실행 할 때 ‘when;’ 조건절을 이용할수 있습니다. 대부분의 ansible 모듈이 멱등성을 보장한다는 의미는 상태를 파악할 수 있다는 의미를 가지게 됩니다.</p>
+</blockquote>
+
+<hr>
+
+<h2 id="toc_8">2. ANSIBLE Special Feature</h2>
+
+<ul>
+<li>Ansible의 환경설정, 배포를 가능케 하는 언어입니다. </li>
+<li>리모트 서버에 접속해서 무언가를 시행시키는 정책을 기술합니다.</li>
+<li>Yaml 문법으로 기술되어 있으며, 고급 단계에서는 로드밸런서를 모니터링 하는 복잡한 환경에서 사용할 수 있도록 합니다.</li>
+<li><p>playbook은 하나 또는 하나 이상의 &#39;play&#39;를 두게 됩니다. </p>
+
+<ul>
+<li>Play의 목적은 여러 호스트들에게 잘 정의된 &#39;role&#39;과 &#39;task&#39;를 매핑하는 역할을 합니다. </li>
+<li>Task는 ansible 모듈의 호출을 의미합니다. </li>
+<li>Role을 좀 더 편하게 관리하기 위해서 미리 정의된 yaml파일을 include하는 것이 가능합니다. </li>
+</ul></li>
+<li><p>host inventory파일에 정의한 서버 그룹별로 각각 나누어 provision 할 수 있도록 할 수 있습니다. </p></li>
+<li><p>서버당 디렉토리를 나눠서 각각의 설정 정보가 정의된 파일을 읽어 설치하게 됩니다.  </p></li>
+</ul>
+
+<p><img src="http://liwonace.co.kr/wp-content/uploads/2016/06/ansibleimg.jpg" alt="Alt text"></p>
+
+<h4 id="toc_9"><em>Inventory</em></h4>
+
+<blockquote>
+<p>리모트 서버에 대한 meta 데이터를 기술하는 파일입니다. Ansible에서는 inventory 파일에는 yaml을 적용하지 않았습니다. 기본 파일은 /etc/ansible/hosts를 읽게 하거나,따로 inventory 파일을 만들고 옵션을 주어 동작하게 할수 있습니다. <br>
+만약 고정 ip를 가지고 있고 gosts 파일 안에 들어가 있지 않는 서버가 있다면 설정 파일을 만들수 있고 테스트 환경을 만들때 유용합니다.</p>
+</blockquote>
+
+<h2 id="toc_10">3. How to install?</h2>
+
+<h4 id="toc_11">- MAC</h4>
+
+<div><pre><code class="language-none">$ brew search ansible 
+$ brew install ansible </code></pre></div>
+
+<hr>
+
+<h4 id="toc_12">- Debian / Ubuntu</h4>
+
+<div><pre><code class="language-none">$ deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+$ sudo apt-get update 
+$ sudo apt-get isntall ansible </code></pre></div>
+
+<h2 id="toc_13"></h2>
+
+<div><pre><code class="language-none">$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible</code></pre></div>
+
+<hr>
+
+<h4 id="toc_14">- Free BSD</h4>
+
+<div><pre><code class="language-none">$ sudo pkg install ansible
+or 
+$ sudo make -C /usr/ports/sysutils/ansible install
+</code></pre></div>
+
+<h2 id="toc_15"></h2>
+
+<h4 id="toc_16">- Yum</h4>
+
+<div><pre><code class="language-none"># install the epel-release RPM if needed on CentOS, RHEL, or Scientific Linux
+$ sudo yum install ansible
+
+$ git clone git://github.com/ansible/ansible.git --recursive
+$ cd ./ansible
+$ make rpm
+$ sudo rpm -Uvh ./rpm-build/ansible-*.noarch.rpm</code></pre></div>
+
+<h2 id="toc_17">4. Getting Start</h2>
+
+<ul>
+<li>ansible 버전을 다음과 같이 확인합니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ansible --version
+
+ansible 2.1.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = Default w/o overrides</code></pre></div>
+
+<ul>
+<li>호스트와의 연결을 확인하기 위해서 ping 명령어를 입력합니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ansible all -m ping </code></pre></div>
+
+<ul>
+<li>당연히 호스트에 대한 정보를 입력하지 않았기 때문에 확인할 수 없다는 명령어가 나오게 됩니다. </li>
+<li>localhost에서는 연결이 되는지 확인해 보겠습니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ansible localhost -m ping 
+
+localhost | SUCCESS =&gt; {
+    &quot;changed&quot;: false,
+    &quot;ping&quot;: &quot;pong&quot;
+}
+
+$ ansible localhost -a &quot;/bin/echo hello&quot;
+
+localhost | SUCCESS | rc=0 &gt;&gt;
+hello</code></pre></div>
+
+<h3 id="toc_18">관리 대상 목록 (Inventory)</h3>
+
+<blockquote>
+<p>Ansible 에서는 관리 대상 목록을 Inventory 라고 합니다. 이 대상 목록은 디폴트로 /etc/ansible/hosts에 정의되어 있습니다. <br> 하지만 -i <path> 옵션을 이용하여 명령행에서 지정할 수도 있습니다. 이것은 고정된 것 뿐만 아니라 동적 관리 대상 목록 (Dynamic Inventory)을 이용할 수 있습니다.</p>
+</blockquote>
+
+<ul>
+<li>hosts파일의 일반적인 경로는 다음과 같습니다.
+
+<ul>
+<li>Ubuntu -&gt;  /etc/ansible/hosts </li>
+<li>MacOS X -&gt; /usr/local/etc/ansible</li>
+</ul></li>
+<li>hosts파일이 없으면 생성합니다. </li>
+<li>hosts파일의 구성은 다음과 같습니다. </li>
+</ul>
+
+<div><pre><code class="language-none">mail.example.com
+
+[webservers] // 그룹을 의미합니다. 
+foo.example.com
+badwolf.example.com:5309 // 만약 SSH 포트가 디폴트가 아닐경우 다음과 같이 포트를 지정합니다. 
+
+[dbservers]
+one.example.com
+two.example.com
+three.example.com</code></pre></div>
+
+<div><pre><code class="language-none">더 자세한 내용은 URL : https://mcchae.gitbooks.io/ansible_ko/content/ansible_c18c_ac1c.html</code></pre></div>
+
+<h3 id="toc_19">SSH접속 설정하기</h3>
+
+<ul>
+<li>ansible은 SSH기반으로 동작하기 때문에 사전 연결설정은 필수입니다.<br></li>
+<li>테스트 서버와 통신을 위하여 hosts파일을 다음과 같이 수정합니다. </li>
+</ul>
+
+<div><pre><code class="language-none">[ubuntu] 
+203.230.100.61:22001 ansible_user=wisoft </code></pre></div>
+
+<div><pre><code class="language-none">ansible all -m ping 
+203.230.100.61 | UNREACHABLE! =&gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh: Permission denied (publickey,password).\r\n&quot;,
+    &quot;unreachable&quot;: true
+}</code></pre></div>
+
+<ul>
+<li>위와 같은 오류메시지가 나온다면 SSH설정이 되어 있지 않아, 정상적으로 서버에 접속하지 못하는 상황이 발생합니다. </li>
+<li>이를 해결하기 위해서 잠시 SSH통신 방식에 대해 살펴보도록 하겠습니다. </li>
+</ul>
+
+<h4 id="toc_20">SSH KEY란?</h4>
+
+<p>서버에 접속할 때 비밀번호 대신 key를 제출하는 방식입니다. <br><br>
+SSH KEY는 언제 사용하는가? <br>
+    * 비밀번호 보다 높은 수준의 보안을 필요로 할때 <br>
+    * 로그인 없이 자동으로 서버에 접속 할 때 </p>
+
+<h4 id="toc_21">SSH KEY가 동작하는 방식</h4>
+
+<p><img src="https://s3.ap-northeast-2.amazonaws.com/opentutorials-user-file/module/432/1213.gif" alt="Alt text"></p>
+
+<blockquote>
+<p>SSH Key는 공개키(public key)와 비공개 키(private key)로 이루어지는데 이 두개의 관계를 이해하는 것이 SSH Key를 이해하는데 핵심이다. 키를 생성하면 공개키와 비공개키가 만들어진다. 이 중에 비공개키는 로컬 머신에 위치해야 하고, 공개키는 리모트 머신에 위치해야 한다. <br>(로컬 머신은 SSH Client, 원격 머신은 SSH Server가 설치된 컴퓨터를 의미한다.)</p>
+
+<h4 id="toc_22">SSH 접속을 시도하면 SSH Client가 로컬 머신의 비공개키와 원격 머신의 비공개키를 비교해서 둘이 일치하는지를 확인한다. <br></h4>
+
+<p>출처 : 생활코딩</p>
+</blockquote>
+
+<h4 id="toc_23">SSH KEY 설정 방법</h4>
+
+<h4 id="toc_24">- Client</h4>
+
+<ul>
+<li>SSH KEY가 설정되어 있지 않다는 것을 가정하고 진행하도록 하겠습니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ssh-keygen -t rsa 
+$ Generating public/private rsa key pair.
+$ Enter file in which to save the key (/home/axl/.ssh/id_rsa): 
+$ Enter passphrase (empty for no passphrase): &lt;Type the passphrase&gt;
+$ Enter same passphrase again: &lt;Type the passphrase&gt;
+Your identification has been saved in /home/axl/.ssh/id_rsa.
+Your public key has been saved in /home/axl/.ssh/id_rsa.pub.
+The key fingerprint is:
+0b:fa:3c:b8:73:71:bf:58:57:eb:2a:2b:8c:2f:4e:37 
+
+$ ls -al ~/.ssh/
+total 24
+drwx------   5 seongwonlee  staff   170  4 26 01:35 .
+drwxr-xr-x+ 30 seongwonlee  staff  1020  4 26 02:06 ..
+-rw-------   1 seongwonlee  staff  1675  4 26 01:33 id_rsa       // 개인키
+-rw-r--r--   1 seongwonlee  staff   422  4 26 01:33 id_rsa.pub   // 공유키 
+-rw-r--r--   1 seongwonlee  staff   706  4 26 02:36 known_hosts  // 현재까지 연결된 hosts 키 
+
+$ scp ~/.ssh/id_rsa.pub USER_ID@SERVER_IP:id_rsa.pub
+//$ scp -P PORT_NUMBER  ~/.ssh/id_rsa.pub USER_ID@SERVER_IP:id_rsa.pub
+</code></pre></div>
+
+<h4 id="toc_25">- Server</h4>
+
+<ul>
+<li>ansible을 통해서 관리하고자 하는 서버에 접속하여 다음과 같이 설정합니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ls -l | grep id_rsa_pub
+-rw-r--r-- 1 wisoft wisoft  422  4월 26 01:35 id_rsa.pub
+$ cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys &#39;&gt;&gt;&#39; 표사는 목적지 파일에 덮어쓰기를 말합니다.
+</code></pre></div>
+
+<h4 id="toc_26">SSH를 통해 접속하기</h4>
+
+<ul>
+<li>클라이언트에서 다음과 같이 SSH에 접속합니다. </li>
+</ul>
+
+<div><pre><code class="language-none">$ ssh USER_ID@SERVER_IP
+
+Welcome to Ubuntu 17.04 (GNU/Linux 4.10.0-19-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Ubuntu 12.04 LTS end-of-life is April 25, 2017 -- Upgrade your Precise systems!
+ $ sudo do-release-upgrade -m server
+
+0 packages can be updated.
+0 updates are security updates.
+
+*** System restart required ***
+Last login: Tue Apr 25 01:33:32 2017 from 192.168.0.28</code></pre></div>
+
+<ul>
+<li>위와 같이 비밀번호 입력없이 접속에 성공한다면 모든 설정이 완료됩니다. </li>
+</ul>
+
+<h4 id="toc_27">SSH 접속시 오류가 발생한다면?</h4>
+
+<div><pre><code class="language-none">$ ssh -v USER_ID@SERVER_IP</code></pre></div>
+
+<ul>
+<li>-vv, -vvv옵션을 사용하면, 더 자세한 내용을 확인할 수 있습니다. </li>
+</ul>
+
+<h3 id="toc_28">ansible 접속하기</h3>
+
+<ul>
+<li>위에 모든 설정을 완료했다면 ansible을 활용해 보도록 하겠습니다.</li>
+</ul>
+
+<div><pre><code class="language-none">$ ansible ubuntu -m ping
+
+192.168.0.28 | SUCCESS =&gt; {
+    &quot;changed&quot;: false,
+    &quot;ping&quot;: &quot;pong&quot;
+}
+
+$ ansible ubuntu -a &quot;/bin/echo hello&quot;
+
+192.168.0.28 | SUCCESS | rc=0 &gt;&gt;
+hello
+
+$ ansible ubuntu -s -a &quot;apt install nmap -y&quot; --ask-become-pass
+
+192.168.0.28 | SUCCESS | rc=0 &gt;&gt;
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  linux-headers-4.8.0-22 linux-headers-4.8.0-22-generic
+  linux-image-4.8.0-22-generic linux-image-extra-4.8.0-22-generic
+Use &#39;sudo apt autoremove&#39; to remove them.
+The following NEW packages will be installed:
+  nmap
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 4,708 kB of archives.
+After this operation, 21.7 MB of additional disk space will be used.
+Get:1 http://kr.archive.ubuntu.com/ubuntu yakkety/main amd64 nmap amd64 7.12-1 [4,708 kB]
+Fetched 4,708 kB in 1s (4,405 kB/s)
+Selecting previously unselected package nmap.
+(Reading database ... 241901 files and directories currently installed.)
+Preparing to unpack .../archives/nmap_7.12-1_amd64.deb ...
+Unpacking nmap (7.12-1) ...
+Setting up nmap (7.12-1) ...
+Processing triggers for man-db (2.7.5-1) ...
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+$ ansible ubuntu -s -a &quot;nmap localhost&quot; --ask-become-pass
+
+192.168.0.28 | SUCCESS | rc=0 &gt;&gt;
+
+Starting Nmap 7.12 ( https://nmap.org ) at 2017-04-26 03:47 KST
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.0000020s latency).
+Not shown: 998 closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+631/tcp open  ipp
+
+Nmap done: 1 IP address (1 host up) scanned in 1.62 seconds
+</code></pre></div>
+
+
+
+
+</body>
+
+</html>
