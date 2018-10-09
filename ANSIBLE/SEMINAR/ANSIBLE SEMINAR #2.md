@@ -1,39 +1,9 @@
 #ANSIBLE SEMINAR #2 
---
-![Alt text](https://cdn.deliciousbrains.com/content/uploads/2016/05/09135848/db-nginxseriesanisibleplaybook-1440x699.jpg)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#![Alt text](https://cdn.deliciousbrains.com/content/uploads/2016/05/09135848/db-nginxseriesanisibleplaybook-1440x699.jpg)
 
 * 지난시간 ANSIBLE 소개와 특징, 설치에 대해 설명했습니다. 
 * 이번시간에는 실제 사용을 통해서 관리하는 방법을 익히도록 하겠습니다. 
-
--- 
 
 #### 1. Mission #1 다음의 표를 참고하여 hosts 파일에 그룹명 seminar로 등록합니다. 
 
@@ -42,7 +12,7 @@
 		Ansible #1 | 203.230.100.59 | 22002 | wisoft | wisoft123
 		Ansible #2 | 203.230.100.59 | 22003 | wisoft | wisoft123 
 		Ansible #3 | 203.230.100.59 | 22004 | wisoft | wisoft123
-	
+
 #### 2. Mission #2 Ansible 명령을 활용하여 seminar 그룹에 ping을 확인합니다. 
 
 #### 3. Mission #3 Ansible을 활용하여 'df -h'를 실행해 봅니다. 
@@ -117,7 +87,7 @@ ansible beta -i hosts -m command -a '/sbin/reboot' (따로 만든 hosts파일 �
 	#apply utf8 
 	default-character-set = utf8
 	{% endif %}
-	
+
 ### Playbook 
 > * playbookd은 ansible의 환경설정, 배포를 가능하게 함 
 > * yaml 문법을 채용하여 정책을 기술 
@@ -133,15 +103,15 @@ host - 적용할 호스트의 이름 또는 그룹명 (필수)
 	hosts: grupname1, grupname2 
 	hosts: groupname1, hostname2
 	hosts: naver.com 
-	
+
 sudo - 디폴트는 false 
 
 	sudo = true 
- 
+
 user - 디폴트는 root 
 
 	user: username 
-	
+
 ### vars 	
 	group_name: wisoft
 	web: 
@@ -151,36 +121,36 @@ user - 디폴트는 root
 	config_path: /apache/$config 
 
 tasks에서 사용 
-	
+​	
 	${group_name}
 	${web.play), ${web.tomcat)
 	${config}
 	${config_path}
-	
+
 more with var 
-	
+​	
 	is_ubuntu: '${ansible_distribution}' == 'ubuntu' 
 	is_debian: '${ansible_distribution}' == 'debian' 
-	
+
 vars file - 변수 파일 지정 
-	
+​	
 	vars_files: 
 		- /vars/vars_file.yml 
 		- /vars/$hostname.yml 
- 
+
 ### Task 
 > * ansible module을 호출하는 단위 (필수) 
 
 task 종류 - 간단 task : name / action 
-	
+​	
 	- name : check server's aliveness (주석과 같이 사용할 수 있음) 
 	  action : ping 
-	  
+
 task 종류 - Ansible 모듈 이용 task 사용가능
 
 	- copy: src=/src/myfiles/foo.conf dest=/etc/foo.conf owner=foo group=foo mdoe="u=rw, g=r, o=r"
 	< name없이 리모트 서버로 설정 가능 >
-	
+
 more witf task
 
 * include - 변수 값을 지정해서 include yaml 파일로 넘길 수 있습니다. 
@@ -193,12 +163,12 @@ more witf task
 		  with_items: 
 	  		- ntp 
 		  when: ansible_distribution == 'Ubuntu' 
-	 
+	
 		 - yum: name=$item state==lates 
-	 		with_items: 
+			 		with_items: 
 	 		- ntp
-	 		when: ansible_distribution == 'CentOS'
-	 
+		 		when: ansible_distribution == 'CentOS'
+	
 event 발생 (task -> handler)
 
 * task 
@@ -206,15 +176,15 @@ event 발생 (task -> handler)
 		- name: Hello PHP script
 			template: src=index.php.j2 dest=/var/www/
 		index.php node=06664
-			notify: Restart Apache 
-			
-			
+		​	notify: Restart Apache 
+		​	
+	
 * handler 
 
 		handler: 
-		- name : Request Apache 
-			service: name=apache2 state=restarted 
-		
+	​	- name : Request Apache 
+	​		service: name=apache2 state=restarted 
+	​	
 < 어떤 파일이 수정이 될 경우 자동으로 재시작 될 수 있도록 작성 할 수 있음 > 
 
 ### role 
@@ -232,13 +202,14 @@ event 발생 (task -> handler)
 > ansible 명령어 
 
 		ansible-playbook playbook.yml --connection=local 
-		
+
 > yaml 파일 
 
 	-hosts: 127.0.0.1
 		connection: local 
-		
-		
+
+
+​		
 --
 # ANSIBLE PLAYBOOK 
 * 이제 Ansible을 활용하여 원격 서버에 프로그램을 설치해보도록 하겠습니다. 
@@ -264,7 +235,7 @@ ok: [203.230.100.59]
 PLAY RECAP *******************************************************************************************
 203.230.100.59             : ok=1    changed=0    unreachable=0    failed=0
 ~~~
- 
+
 
 #### 2. apt를 활용하여 프로그램 설치 배포 
 
@@ -299,3 +270,4 @@ ok: [203.230.100.59] => (item=[u'nmap'])
 
 PLAY RECAP ******************************************************************************************
 203.230.100.59             : ok=2    changed=0    unreachable=0    failed=0
+~~~
