@@ -29,6 +29,7 @@
   * OpenStack  
   * Docker 
   * LXD / LXC 
+  * VDI
 * Linux 
   * Ubuntu 
 
