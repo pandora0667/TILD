@@ -14,7 +14,7 @@
   * 관리자는 몇 대 ~ 몇 십대 정도를 관리하는 정도로 장애가 발생하면 장애를 조치하는 등의 단순하고 반복적인 역할을 담당해야 했습니다. 
   * 각 서버별로 정해진 시스템 구성에 따라 운영되기 때문에 실제 설치한 서버의 시스템 자원을 효과적으로 사용할 수 없었으며, 이러한 고민은 2007년 경제 위기와 함께 기업들은 최적화라는 명분아래 비용절감을 IT전략의 우선순위로 두고 서버 가상화 기술을 염두하기 시작했습니다. 
   * 이렇게 발전하기 시작한 가상화(Virtualization)은 현재에 가장 기본적이며 필수적인 기술로 인식되어 사용되고 있으며, 현재는 가상화(Virtualization)을 사용하지 않은 곳을 찾기 힘들 정도 입니다. 
-  * 또한 가상화(Virtualization)을 넘어서 퍼블릭 클라우드, 프라이빗 클라우드를 넘어 하이브리드 클라우드까지 도입진행이 이루어지고 있는 환경경에서 더이상 인프라 관리자가 Bash or Power Shell을 통해 관리하는 것이 힘들어지게 되었습니다. 
+  * 또한 가상화(Virtualization)을 기반에 퍼블릭 클라우드, 프라이빗 클라우드를 넘어 하이브리드 클라우드까지 도입진행이 이루어지고 있는 환경에서 더이상 인프라 관리자가 Bash or Power Shell을 통해 관리하는 것이 힘들어지게 되었습니다. 
 
   ![](https://www.contegix.com/wp-content/uploads/2017/06/devops-process.png)
 
@@ -35,7 +35,7 @@
 ### History of Ansible
 
 * Ansible은 SF 소설에서 등장하는 공간적 거리에 관계없이 동시에 통신이 가능하도록 하는 기구, 즉 초광속 통신 장치가 본래의 의미입니다. 
-* provisioning server application의 Cbbler의 저자이자 리눅스 컴퓨터 시스템의 우너격 관리를 위한 오픈소스 소프트웨어 Func(Fedora Unified Network Controller) 프레임워크을 제작한 Michael DeHaan(마이클 데한)이 개발하였습니다. 
+* provisioning server application의 Cbbler의 저자이자 리눅스 컴퓨터 시스템의 원격 관리를 위한 오픈소스 소프트웨어 Func(Fedora Unified Network Controller) 프레임워크을 제작한 Michael DeHaan(마이클 데한)이 개발하였습니다. 
 * 2012년 2월 20일 처음공개되어 2015년 10월 Red Hat에 의해 인수되었습니다. 
 
 
