@@ -4,8 +4,6 @@
 * 연구실은 Nexus를 통해서 Registry 구성이 완료되어 있으며, 관련 설정내용은 다음 링크에 자세히 설명되어 있으므로 참고하여 주시길 바랍니다. 
   * [Nexus Docker Private Registry](https://git.wisoft.io/wisoft-lab/infrastructure/blob/master/Setting/Nexus%20Registry%20Setting%20.md)
 
-
-
 ### 주의사항 
 
 * 본 문서는 Mac OS를 기준으로 작성되었습니다. 
@@ -19,7 +17,7 @@
 ```bash
 $ docker stop $(docker ps -a -q)
 $ docker rm $(docker ps -a -q)
-$ docker rm $(docker images -a -q)
+$ docker rmi $(docker images -a -q)
 ```
 
 
