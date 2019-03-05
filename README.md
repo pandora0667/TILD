@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/badge/version-2018.10.20-red.svg)](./CHANGELOG)  [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
 * TILD는 Today I Learned and Diary 이라는 뜻으로 내가 공부한 내용과 그날의 느낌을 저장하기 위해서 시작합니다. 
-* 한밭대학교 정보통신공학과 4학년에 재학 중인 학생으로 한밭대학교 모바일융합공학과 석사과정을 준비하고 있습니다. 
+* 한밭대학교 모바일융합공학과 석사과정을 진행하고 있습니다. 
 * 인프라 운영에 많은 관심을 가지고 있으며, 인프라 개발자로 성장하기 위한 다양한 기술을 습득합니다. 
 * 본 내용은 본인이 직접 작성한 내용만 올리는 것을 원칙으로 합니다. 
 
