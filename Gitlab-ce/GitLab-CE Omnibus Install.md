@@ -72,7 +72,7 @@
 
 * HTTPS를 적용하기 위해서는 인증서 발급이 필수적이나, 소규모 인원에서 사용하는 경우라면 letsencrypt 인증서를 사용하는 것이 적절하며, GitLab 설정을 통해 간단하게 인증서를 발급하고, 주기적으로 인증서 갱신을 시도할 수 있습니다. 
 
-  ![](https://cdn-images-1.medium.com/max/1600/1*Cd2NBjQD8Luwbu1Z23n5QQ.png)
+  ![](https://msgimages.blob.core.windows.net/images/78ccd985-50e6-4e20-9e2b-d6ae61814704.png)
 
   ```bash
   $ sudo vi /etc/gitlab/gitlab.rb	
