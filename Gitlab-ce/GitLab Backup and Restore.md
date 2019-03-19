@@ -1,4 +1,4 @@
-# GItlab 백업 및 복원
+# GItLab 백업 및 복원
 
 ![](https://docs.gitlab.com/ee/raketasks/backup_hrz.png)
 
