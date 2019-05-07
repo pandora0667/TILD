@@ -44,7 +44,7 @@
 
      
 
-* Docker Swarm에서 Master Node와 Slave Node를 분리한 경우는 Master Node에 설치된 Portainer를 통해 최악의 상황에서 모든 ESXi 서버가 다운되었을 때 Master Node까지 사용 불능이 되는 상황을 막기 위함이었다. 
+* Docker Swarm에서 Master Node와  Node를 분리한 경우는 Master Node에 설치된 Portainer를 통해 최악의 상황에서 모든 ESXi 서버가 다운되었을 때 Master Node까지 사용 불능이 되는 상황을 막기 위함이었다. 
 
 * 본 환경을 다시한번 정리하자면 다음과 같다.
 
