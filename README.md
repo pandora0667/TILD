@@ -78,7 +78,6 @@
   * Azure 
   * Google Cloud 
   * Naver Cloud 
-  * OpenStack
 * Monitoring 
   * ZABBIX 
   * pfSense 
