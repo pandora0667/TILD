@@ -73,11 +73,6 @@
   * Backup 
   * NAS 
   * FreeNAS
-*  Cloud 
-  * AWS 
-  * Azure 
-  * Google Cloud 
-  * Naver Cloud 
 * Monitoring 
   * ZABBIX 
   * pfSense 
