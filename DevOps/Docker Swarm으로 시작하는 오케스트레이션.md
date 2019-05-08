@@ -48,7 +48,7 @@
 
 * 본 환경을 다시한번 정리하자면 다음과 같다.
 
-  ![Docker-Swarm-diagram](./Docker-Swarm-diagram.png)
+  ![Docker-Swarm-diagram](https://github.com/pandora0667/TILD/blob/master/screenshot/Docker%20Swarm%EC%9C%BC%EB%A1%9C%20%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94%20%EC%98%A4%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98/Docker-Swarm-diagram.png?raw=true)
 
   * 세부적으로 보면 오해의 소지가 있을 수 있는데 조금 자세히 살펴보자면 총 7대의 서버가 Docker Swarm으로 오케스트레이션 환경으로 구축되어 있으며, Master Node에서만 Portainer가 설치되어 있고 Swarm Node(Worker Node)에 Portainer Agent가 설치되어 있다고 생각하면 된다. 
   * Portainer에 대한 자세한 설명은 다음 시간에서 자세히 살펴보도록 하고, 일단 이렇게 구성되어 있다는 점만 기억하고 넘어가도록 한다. 
