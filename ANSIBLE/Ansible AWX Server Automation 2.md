@@ -71,7 +71,11 @@
 
 ![](https://github.com/pandora0667/TILD/blob/master/screenshot/Ansible%20Server%20Automation-2/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202019-05-10%20%EC%98%A4%EC%A0%84%2011.01.24.png?raw=true)
 
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/Ansible%20Server%20Automation-2/ansible_project.png?raw=true)
 
+* 위의 그림과 같이 이 프로젝트에 대한 이름과 기관을 지정하고 본인의 Git주소를 지정하여 저장을 클릭한다. 
+* 이때 SCM 타입은 반드시 Git으로 지정해야 하며, Git 프로젝트는 Public으로 되어 있어야 AWX에서 접근하여 Playbook 파일을 선택할 수 있다. 
+* 기본적으로는 Playbook 파일이 변경될 때마다 Git에 Push를 진행하고 AWX에서 최신 SCM 파일을 읽어드릴 수 있도록 새로고침 버튼을 클릭해야 하나, 스케줄을 지정하면 매분 혹은 매 시간마다 새로운 버전이 있는지 확인아여 갱신하도록 설정하루 수도 있다. 
 
 
 
