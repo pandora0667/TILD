@@ -38,17 +38,38 @@
 
 * 먼저 Ansible Playbook를 작성하기 위해서 Ansible 공식 문서에서 apt module를 검색한다. 
 
-  
+  ![](https://github.com/pandora0667/TILD/blob/master/screenshot/Ansible%20Server%20Automation-2/ansible_apt_module.png?raw=true)
+  ![](https://github.com/pandora0667/TILD/blob/master/screenshot/Ansible%20Server%20Automation-2/ansible_apt_example.png?raw=true)
 
-  * 위에서 볼 수 있듯이 Ansible에서는 APT 관리를 Module의 예제를 살펴볼 수 있으며, YAML 표기법을 사용하기 때문에 크게 어렵지 않게 사용할 수 있을 것이다. 
+  * Ansible Documents를 살펴보면 Ansible을 활용하기 위한 다양한 모듈을 기본적으로 제공하고 있는데 검색한 결과와 같이 APT에 대한 모듈에 대한 설명도 나와 있는 것을 확인할 수 있다.
 
-* 지금은 시스템 업데이트/업그레이드만 진행할 것이기 때문에 다음과 같이 YAML를 작성한다. 
+* 다양한 활용에 대한 예시가 나와있으나 본 시간에서는 시스템 업데이트/업그레이드에 대한 예제만 작성할 것이기 떄문에 다음과 같이 YMAL 파일을 작성한다. 
 
   ```yaml
+  ---
+  - name: Ubuntu server update and upgrade 
+    gather_facts: no 
+    hosts: all
   
+    tasks:
+      - name: Update APT package manager repositories cache
+        apt: 
+          update_cache: yes
+  
+      - name: Upgrade installed packages 
+        apt:
+          upgrade: dist
+  
+      - name: Ubuntu update and upgrade after autoremvoe
+        apt:
+           autoremove: yes
   ```
 
-  
+  * 아주 간단하게 YAML 파일을 작성하였다. 적용할 host는 all이라고 지정하였으나 이는 AWX에서 범위를 선택할 수 있기 때문에 크게 상관하지 않아도 된다. 
+
+* 이렇게 설정한 YAML 파일은 GItLab 혹은 Github에 업로드 하여 AWX에 등록한다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/Ansible%20Server%20Automation-2/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202019-05-10%20%EC%98%A4%EC%A0%84%2011.01.24.png?raw=true)
 
 
 
