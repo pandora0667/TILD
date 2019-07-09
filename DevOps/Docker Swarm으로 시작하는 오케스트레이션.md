@@ -153,18 +153,3 @@
   ![](https://www.melvinvivas.com/content/images/2017/11/Screenshot-2017-11-16-20.48.13.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
