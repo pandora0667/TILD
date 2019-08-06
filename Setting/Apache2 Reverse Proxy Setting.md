@@ -96,7 +96,7 @@
 * 다음은 Apache에서 Reverse Proxy 설정을 위한 모듈을 활성화 합니다. 
 
   ```bash
-  $ sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite deflate headers proxy_balancer proxy_connect proxy_html
+  $ sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite deflate headers proxy_balancer proxy_connect proxy_html proxy_wstunnel
   			   
   $ sudo sudo systemctl restart apache2
   ```
