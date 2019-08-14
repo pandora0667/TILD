@@ -1,6 +1,6 @@
 # TILD 
 
-[![Version](https://img.shields.io/badge/version-2019.05.08-red.svg)](./CHANGELOG)  [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-2019.08.15-red.svg)](./CHANGELOG)  [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
 * TILD는 Today I Learned and Diary 이라는 뜻으로 내가 공부한 내용과 그날의 느낌을 저장하기 위해서 시작합니다. 
 * 인프라 운영에 많은 관심을 가지고 있으며, 인프라 개발자로 성장하기 위한 다양한 기술을 습득합니다. 
@@ -29,7 +29,7 @@
   - 원주세브란스기독병원 통신실 근무 
   - KT 산하 대전광역시 교육청 초/중/고 네트워크 전산 장비 교체 작업 
 - 2019~ 현재 한밭대학교 모바일 융합공학과 석사과정 - Wisoft Lab.
-  - 인프라 담당 
+  - 연구 분야 : Docker, Kubernetes, Cloud, Network, Virtualizaion, Dev/Ops 
 
 ### 상장 
 
@@ -48,6 +48,8 @@
 
 ---
 
+
+
 ### 관심
 
 * Virtualization 
@@ -59,32 +61,49 @@
   * VDI
   * UDS Enterprise 
   * DC/OS
+  * Unraid
 * Linux 
+  
   * Ubuntu 
+  * Clear Linux
 * Netework 
   * L1, L2, L3, L7 
   * SDN 
   * Wi-Fi Network 
-    * UniFi
-  * 네트워크 장비 
+  * UniFi, ASUS, MikroTik, CISCO, DEEL EMC
 * SERVER 
   * RAID 
   * PTL / VTL 
   * Backup 
   * NAS 
   * FreeNAS
-* Monitoring 
+  * UrBackup
+  * OpenMediaVault
+* Monitoring & Firewall
   * ZABBIX 
   * pfSense 
+  * OPNsense
   * ntop 
   * wireshark
   * SOPHOS
   * ELK
+  * Grafana 
 * Infrastructure as a Code
   * Ansible 
   * Terraform
+  
+  
 
+###  세미나 
 
+* 해주는 것들
+  * 네트워크, 운영체제, git, REST API
+
+* 하고 있는 것들 
+
+  * Docker, Kubernetes, OpenStack, DC/OS
+
+  
 
 ---
 
@@ -104,13 +123,17 @@
 |  시스템  |         시스템 성능분석과 최적화          |            브렌든 그레그            |  위키북스  |
 | 네트워크 |       후니의 쉽게쓴 시스코 네트워킹       |              진강훈 외              |   성인당   |
 
-
-
 ----
+
+
 
 ### 취미 
 
 * 테크 유튜브 시청 
 * 유병재 팬 - 유병장수 회원
   * https://www.instagram.com/seongwon0667/
+* 유병재 팬페이지 제작 및 운영 
+  * https://dbqudwo333.ml
 * 템플릿을 활용한 영상편집
+* 카메라 
+* 덕질
