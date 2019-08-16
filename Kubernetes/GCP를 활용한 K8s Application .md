@@ -206,7 +206,7 @@ redis-slave-57f9f8db74-xngk4    1/1     Running   0          57s
 
 이번 작업까지 완료되었다면. 이번에는 redis-slave 서비스를 생성할 것이다. 
 
-방명록 애플리케이션 데이터를 읽기 위해서 Redis worker와 통신해야 하기 때문에 Redis worker 검색을 가능하게 하기 위해 서비스를 설정해야 하며, 서비스 포트는 부하 분산을 위해 사용된다. 
+방명록 애플리케이션 데이터를 읽기 위해서 Redis worker와 통신해야 한다. 따라서  Redis worker 검색을 가능하게 하기 위해 서비스를 설정해야 하며, 서비스 포트는 부하 분산을 위해 사용된다. 
 
 ```yaml
 $ cat redis-slave-service.yaml
