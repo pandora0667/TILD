@@ -96,7 +96,7 @@
 * 다음은 Apache에서 Reverse Proxy 설정을 위한 모듈을 활성화 합니다. 
 
   ```bash
-  $ sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite deflate headers proxy_balancer proxy_connect proxy_html proxy_wstunnel
+  $ sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite deflate headers proxy_balancer proxy_connect proxy_html proxy_wstunnel proxy_balancer lbmethod_byrequests
   			   
   $ sudo sudo systemctl restart apache2
   ```
@@ -207,7 +207,13 @@
 
 * 다른 서브 도메인에 대해서도 위와 같은 방법으로 conf 파일을 생성하고 저장합니다. 
 
+* Certbot 인증서를 삭제하고자 할 때는 다음과 같이 입력한다. 
 
+  ```bash
+  $ sudo certbot delete --cert-name example.com
+  ```
+
+  
 
 ### troubleshooting
 
