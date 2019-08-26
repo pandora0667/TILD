@@ -245,10 +245,10 @@ redis-slave    ClusterIP   10.12.2.209   <none>        6379/TCP   5m12s
 
 #### 방명록 애플리케이션 웹 프런트엔드 설정 
 
-지금까지 방명록 애플리케이을 위한 Redis 설정을 진행하였으며, 실 사용자가 웹 페이지를 통해 접근할 수 있도록 웹페이지를 생성하고 외부 포트를 맵핑하는 작업을 진행한다. 
+지금까지 방명록 애플리케이션을 위한 Redis 설정을 진행하였으며, 실 사용자가 웹 페이지를 통해 접근할 수 있도록 웹페이지를 생성하고 외부 포트를 맵핑하는 작업을 진행한다. 
 
 ```bash
-$ kubectl create -f rontend-deployment.yaml
+$ kubectl create -f frontend-deployment.yaml
 $ sed -i -e 's/NodePort/LoadBalancer/g' frontend-service.yaml
 $ kubectl create -f frontend-service.yaml
 ```
