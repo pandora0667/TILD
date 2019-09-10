@@ -89,6 +89,8 @@ Docker를 통해 애플리케이션을 구축하는 컨테이너란 용어는 �
 
 ![img](https://image.slidesharecdn.com/docker-containerandlightweightvirtualization-140828091615-phpapp01/95/docker-container-and-lightweight-virtualization-4-1024.jpg?cb=1409217421)![img](https://image.slidesharecdn.com/docker-containerandlightweightvirtualization-140828091615-phpapp01/95/docker-container-and-lightweight-virtualization-5-1024.jpg?cb=1409217421)
 
+
+
 #### 컨테이너의 핵심 기술
 
 1. 컨트롤 그룹 (control groups)
