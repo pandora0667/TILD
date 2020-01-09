@@ -96,14 +96,10 @@
 
 ###  세미나 
 
-* 해주는 것들
-  
 * 네트워크, 운영체제, git, REST API
   
-* 하고 있는 것들 
-
-  * Docker, Kubernetes, OpenStack, DC/OS
-
+* Docker, Kubernetes, OpenStack, DC/OS
+  
   
 
 ---
