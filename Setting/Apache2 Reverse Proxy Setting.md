@@ -98,7 +98,7 @@
   ```bash
   $ sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite deflate headers proxy_balancer proxy_connect proxy_html proxy_wstunnel proxy_balancer lbmethod_byrequests
   			   
-  $ sudo sudo systemctl restart apache2
+  $ sudo systemctl restart apache2
   ```
 
 ### Let's Encrypt - Free SSL/TLS Certificates
