@@ -17,7 +17,7 @@
 
   ![](https://about.gitlab.com/images/ci/ci-cd-test-deploy-illustration_2x.png)
 
-  		![](https://t1.daumcdn.net/cfile/tistory/996A3A335A7C3A342A) 
+  ![](https://t1.daumcdn.net/cfile/tistory/996A3A335A7C3A342A) 
 
   
 
