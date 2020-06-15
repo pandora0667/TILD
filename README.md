@@ -20,16 +20,22 @@
 
 ---
 
-### 경력
+### 학력
 
 - 강원도 영월군 주천면 주천 초/중/고등학교 졸업 
 - 2013년 한밭대학교 입학 
 - 2019년 한밭대학교 정보통신공학과 졸업 (융합전공 : 스페이스 미디어 콘텐츠)
 - 대한민국 육군 병장 만기 전역 - 정보체계 운용/정비 
-  - 원주세브란스기독병원 통신실 근무 
-  - KT 산하 대전광역시 교육청 초/중/고 네트워크 전산 장비 교체 작업 
 - 2019~ 현재 한밭대학교 모바일 융합공학과 석사과정 - Wisoft Lab.
   - 연구 분야 : Docker, Kubernetes, Cloud, Network, Virtualizaion, Dev/Ops 
+
+### 경력
+
+- 원주세브란스기독병원 통신실 근무 
+- KT 산하 대전광역시 교육청 초/중/고 네트워크 전산 장비 교체 작업 
+- SENTBE Dev/Ops 매니저 - 인턴
+
+
 
 ### 상장 
 
@@ -57,6 +63,7 @@
   * XCP-ng
   * OpenStack  
   * Docker / Swarm / Kubernetes
+    * portainer / rancher
   * LXD / LXC 
   * VDI
   * UDS Enterprise 
@@ -66,6 +73,7 @@
   
   * Ubuntu 
   * Clear Linux
+  * Gluster FS
 * Netework 
   * L1, L2, L3, L7 
   * SDN 
@@ -92,7 +100,10 @@
   * Ansible 
   * Terraform
   
-  
+* Language
+  * golang
+
+
 
 ###  세미나 
 
