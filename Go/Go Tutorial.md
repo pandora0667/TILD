@@ -1166,6 +1166,7 @@ package main
 import f "fmt"
 
 func main() {
+  
 	terrestrialPlanet := map[string]map[string]float32{
 		"Mercury": map[string]float32{
 			"meanRadius":    2439.7,
@@ -1190,6 +1191,7 @@ func main() {
 	}
 
 	f.Println(terrestrialPlanet["Mars"]["mass"])
+  
 }
 
 ```
