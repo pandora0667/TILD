@@ -1127,7 +1127,7 @@ func main() {
 
 	capacityUnit := make(map[string]string)
 
-	capacityUnit["1byte"] = "1024 bit"
+	capacityUnit["1byte"] = "8 bit"
 	capacityUnit["1MB"] = "1024 Byte"
 	capacityUnit["1GB"] = "1024 MB"
 	capacityUnit["1TB"] = "1024 GB"
