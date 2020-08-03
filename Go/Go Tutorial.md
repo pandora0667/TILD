@@ -1228,7 +1228,7 @@ func world() {
 
  일부 언어의 경우 함수를 선언하기 위해서는 정의한 함수를 main 보다 위에 써주거나 함수가 존재한다는 정의를 해줘야 하지만 Go 언어는 함수를 정의할 때 위치 제약이 없습니다. 하지만 다음과 같이 코드를 작성하는 경우 에러가 발생합니다. 
 
-```
+```go
 func hello() // 컴파일 에러가 발생함, 함수 선언의 위치는 상관이 없으나 {}의 위치는 반드시 지켜야함
 {
   f.println("Hello")
@@ -1370,7 +1370,6 @@ func sliceSum(n ...int) int {
 
 ```go
 package main
-
 import f "fmt"
 
 func main() {
@@ -1410,25 +1409,28 @@ func voltage() func(i int, r int) int {
 
 ```go
 package main
-import f"fmt"
+import f "fmt"
 
 func main() {
+  
 	nextInt := intSeq()
-
 	f.Println(nextInt())
 	f.Println(nextInt())
 	f.Println(nextInt())
 
 	newInts := intSeq()
-	fmt.Println(newInts())
+	f.Println(newInts())
+  
 }
 
 func intSeq() func() int {
+  
 	i := 0
 	return func() int {
 		i += 1
 		return i
 	}
+  
 }
 
 ```
@@ -1441,20 +1443,22 @@ func intSeq() func() int {
 
 ```go
 package main
-
 import f "fmt"
 
 func main() {
 
 	f.Println("재귀 함수")
 	f.Println(fact(5))
+  
 }
 
 func fact(n int) int {
+  
 	if n == 0 {
 		return 1
 	}
 	return n * fact(n-1)
+  
 }
 
 ```
@@ -1467,7 +1471,6 @@ func fact(n int) int {
 
 ```go
 package main 
-
 import f "fmt"
 
 func hello(a int){ 
@@ -1475,20 +1478,26 @@ func hello(a int){
 } 
 
 func main(){ 
-  defer hello(4) hello(1) hello(2) hello(3) 
+  
+  defer hello(4)
+  hello(1) 
+  hello(2) 
+  hello(3) 
+  
 }
 
 ```
 
 ```go
 package main 
-
 import f "fmt"
 
 func main(){ 
-	for i:=0; i<5 ;i++{
+  
+	for i:=0; i<5; i++{
   	defer f.Printf("%d ", i) 
   } 
+  
 }
 
 ```
@@ -1497,7 +1506,6 @@ func main(){
 
 ```go 
 package main
-
 import f "fmt"
 
 func main() {
@@ -1526,7 +1534,7 @@ func name() {
 
 
 
-### 포인터 
+## 포인터 
 
  Go 언어에서도 C / C++과 같이 포인터를 지원합니다. 포인터는 프로그래밍 언어에서 다른 변수, 혹은 그 변수의 메모리 공간주소를 가리키는 변수를 말한다. 포인터가 가리키는 값을 가져오는 것을 역참조(dereference)라고 합니다. Go 언어에서 포인터를 생성하는 방법은 다음과 같습니다. 
 
