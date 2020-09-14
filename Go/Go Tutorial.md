@@ -6,7 +6,7 @@
 
 ## Go 언어란? 
 
-![](https://hackernoon.com/drafts/2c35295i.png)
+![](https://miro.medium.com/max/700/1*CdjOgfolLt_GNJYBzI-1QQ.jpeg)
 
  2019년 구글이 개발한 프로그래밍 언어로써, GC (garbage collection)와 병행성 (concurrent)을 잘 지원하는 컴파일 언어입니다. 로버트 그리즈머, 롭 파이크, 케네스 톰슨이 C++의 복잡성이 싫어서 개발되었습니다. 
 
