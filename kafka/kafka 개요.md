@@ -137,10 +137,11 @@ message queue는 한 건의 레코드 단위로 실시간 처리를 할 때 사�
 
 #### Kafka vs RabbitMQ 처리 속도
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&amp;fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FllxbS%2Fbtqu6NdRXtd%2FEd4o18lqMXSabL9xTdtqb0%2Fimg.png" />
+![](https://blog.kakaocdn.net/dn/llxbS/btqu6NdRXtd/Ed4o18lqMXSabL9xTdtqb0/img.png)
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&amp;fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FllxbS%2Fbtqu6NdRXtd%2FEd4o18lqMXSabL9xTdtqb0%2Fimg.png"  />
+![](https://blog.kakaocdn.net/dn/vQquR/btqu62PraBf/aCefpB0iNQaAnRXOYYUgmk/img.png)
 
 
 
  Kafka와 RabbitMQ는 좋은 솔루션이다. 다만 RabbitMQ의 경우 초당 20 이상의 메시지를 복잡한 방법으로 컨슈머(소비자)에게 라우트하거나, 메시지당 전달보장을 필요하지 않을 떄, 클러스터별 HA가 필요하지 않는 경우에 사용하는데 적합하다. 이에 반해 Kafka의 경우 초당 100k 이상의 메시지를 전달하는 대규모 서비스와 메시지를 다시 읽거나 HA 구성이 필요한 대규모 서비스에서 적합하다고 할 수 있다. 
+
