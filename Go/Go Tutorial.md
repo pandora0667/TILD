@@ -1863,7 +1863,11 @@ func Hello() {
 
 ### 채널 
 
- Go 언어에서 채널이란 고루틴끼리 데이터를 주고받는 통로(파이프)의 역할을 수행합니다. make(chan 자료형)을 통해 함수를 생성해야 하며, 채널 연산자 <-를 사용한다는 특징을 가지고 있습니다. 채널은 어떠한 데이터 타입도 주고 받을 수 있고 실행의 흐름을 동기화 할 수 있습니다. 
+![](https://media.geeksforgeeks.org/wp-content/uploads/20190731140438/Untitled-Diagram46.jpg)
+
+ 
+
+Go 언어에서 채널이란 고루틴끼리 데이터를 주고받는 통로(파이프)의 역할을 수행합니다. make(chan 자료형)을 통해 함수를 생성해야 하며, 채널 연산자 <-를 사용한다는 특징을 가지고 있습니다. 채널은 어떠한 데이터 타입도 주고 받을 수 있고 실행의 흐름을 동기화 할 수 있습니다. 
 
  Go 언어에서 채널을 생성하는 방법은 2가지가 존재하는데 하나는 일반 함수를 사용하는 방법이고, 다른 하나는 익명함수를 사용하는 방법입니다. 다음 예제를 통해서 간단한 채널을 만들고 실행해 보겠습니다. 
 
@@ -1918,6 +1922,8 @@ func sum(a int, b int, c chan int) {
  sum 함수가 고루틴으로 생성된 후, 매개변수로 채널을 넘겼습니다. 이때 살펴봐야 할 점은 sum 함수에서 c라는 변수의 리턴값이 존재하지 않는다는 것인데, 이는 채널이 레퍼런스 타입이기 때문입니다. 
 
  Go 언어 채널에는 Unbuffered Channel과 Buffered Channel 2가지 채널이 존재합니다. Unbuffered Channel은 위에서 살펴본 것과 같이 하나의 하나의 수신자가 송신자로 부터 데이터를 받을 때까지 블록킹하지만,  Buffered Channel은 수신자가 데이터를 받을 준비가 되어 있더라도 송신자의 지정된 버퍼만큼 데이터를 보내고 다른일을 수행할 수 있도록 합니다. 다음 예제를 통해서 살펴보록 하겠습니다. 
+
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--QsKam5l5--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://thepracticaldev.s3.amazonaws.com/i/fxntn4jz05iyikdfru6d.jpeg)
 
 ```go 
 package main
