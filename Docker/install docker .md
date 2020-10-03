@@ -28,10 +28,10 @@
 
 
 
-
-##Hello Docker 
+## Hello Docker 
 
 2013년 도커(Docker)가 세상에 공개되었다. 그리고 5년이 지난 지금 도커는 어디서나 사용되고 있는 오픈소스 프로젝트로 자리매김 하게 되었다. 인터넷에 공개된 수많은 도커에 대한 자료를 읽어보면서 도커의 중요성이 높아진다는 사실을 알고 있었으나 실제로 학습하기까지는 많은 시간이 걸렸다. <br> 
+
 <p> 필자는 현재 AWS, 오픈스택을 주로 공부하고 있으면서 도커에 도전장을 내밀게 되었고 시중에 판매중인 도커책을 구매하여 읽어보기 시작했는데 버전이 많이 달라진 탓인지 재대로 실행하지 않는 부분이 많았다. (사실 AWS든, 오픈스택이든 따라하기 책들은 시간이 지나면 재대로 실행되지 않는 부분이 많은 것 같다.) 
 
 <p> 이제 도커에 입문을 하는 학생의 입장에서 Docker Docs를 보면서 직접 실습해보고, 책을 같이 읽어보면서 도커에 대해 이해를 겸하고자 한다. 이제 시작하는 입장에서 이렇게 매뉴얼을 적어보고 실습하는 것 자체가 본인에게 도움이 될 것이라 생각하면서, 처음 입문하고자 하는 사람들에게도 도움이 됬으면 하는 작은 바람이다. 
@@ -81,7 +81,7 @@
     ca-certificates \
     curl \
     software-properties-common
-	```   	
+	```
 	
 4. Docker의 공식 GPG키는 다음과 같이 추가한다. 
 
@@ -103,7 +103,7 @@
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-	```   	
+	```
 	* 참고로 Docker 17.06 버전부터는 stable 저장소가 edge나 test 저장소로 푸시된다고 한다. 
 
 6. 이제 docker를 설치할 준비는 되었다. 설치해보자!! 
@@ -119,6 +119,8 @@
 		```bash
 		$ apt-cache madison docker-ce
 		
+		```
+
  		docker-ce | 17.12.1~ce-0~ubuntu | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages
  		docker-ce | 17.12.0~ce-0~ubuntu | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages
  		docker-ce | 17.09.1~ce-0~ubuntu | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages
@@ -139,15 +141,19 @@
 	This message shows that your installation appears to be working correctly.
 
 	To generate this message, Docker took the following steps:
+	```
  	1. The Docker client contacted the Docker daemon.
  	2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+
     (amd64)
  	3. The Docker daemon created a new container from that image which runs the
+
     executable that produces the output you are currently reading.
  	4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
 
-	To try something more ambitious, you can run an Ubuntu container with:
+    to your terminal.
+    
+    To try something more ambitious, you can run an Ubuntu container with:
  		$ docker run -it ubuntu bash
 
 	Share images, automate workflows, and more with a free Docker ID:
@@ -157,6 +163,7 @@
  		https://docs.docker.com/engine/userguide/
 	 
 	```
-	
-	
+
+
+​	
 이렇게 도커를 설치하는 환경을 정리해 보았다. 아마 순서대로 따라했다면 별 무리없이 hello-world를 볼 수 있을 것이다.

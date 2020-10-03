@@ -1,53 +1,196 @@
+# 불좀 꺼줄래? 내 Docker좀 보게 
+
+[toc]
+
+## 가상화
 
 
-개발자가 알아두면 좋은 인프라, 네트워크, 컨테이너, 서비스 운영
 
-* 개발자가 인프라를 왜 알아야 할까? 
-  * 사내 운영 시스템 
-  * 퍼블릭 클라우드 ? 프라이빗 클라우드 ? 
-* 툴에 종속하지 말자 (부록)
+## 컨테이너
 
-- 서버란?
-  - 전통적인 서버
-  - 스노우플레이크 서버
-  - 애플리케이션과 서버간의 통신 
-- 가상화 기법 
-  - 가상화 기법이 나온 이유
-  - 가상화 기법 (LXC / LXD / Docker)
-- Docker  
 
-* * 이미지 
-  * 레이어 
-  * Docker hub 
-  * Dockerfile 
-* podman (부록)
-* docker-compose 
-  * 작성방법 
-* 클러스터링
-  * docker swarm
-  * kubernetes
-* 컨테이너 전용 OS (부록)
-* 로깅
-  * 로그 수집하기 
-  * 로그 분석하기
-  * 시스템 안정성 유지하기 (애플리케이션)
-  * 실전 문제해결 (메모리 누수)
-* 네트워크 
-  * 보안 
-  * HTTP / HTTPS
-  * VPN
-  * DMZ
-* 데이터베이스 
-  * HA 구성 
-* 애플리케이션 통신과정 
-  * 소켓통신
-  * 웹 서버 
-  * 웹 소켓 
-  * QUIC
-* 실 서비스 준비하기 
-  * 서버 구축 
-  * letsencrypt 
-  * 도메인 발급 
-    * DNS / DDNS
-  * 안정적인 서비스 운영 
+
+## Docker
+
+
+
+### Docker Installation 
+
+
+
+#### Windows 10 
+
+#### Linux 
+
+#### Mac OS
+
+
+
+----
+
+
+
+### How to use Docker ? 
+
+
+
+#### docker search 
+
+#### docker pull 
+
+#### docker image
+
+#### docker run 
+
+#### docker ps 
+
+#### docker start 
+
+#### docker resrart 
+
+#### docker logs
+
+#### docker exec 
+
+#### docker stop 
+
+#### docker rm 
+
+#### docker rmi 
+
+
+
+### 부록 - 새로운 컨테이너의 등장 podmad 
+
+
+
+## 실전연습 - Docker hub 사용하기 
+
+### ubuntu 
+
+### postgres 
+
+### Nginx & httpd
+
+###   
+
+## Docker 데이터 저장하기 
+
+
+
+## Docker backup & restore
+
+
+
+### docker export 
+
+### docker import 
+
+### docker save 
+
+### docker load 
+
+
+
+## Dockerfile 작성하기 
+
+### What is Dockerfile ? 
+
+##### FROM 
+
+##### LABEL 
+
+##### ARG 
+
+##### WORKDIR 
+
+##### RUN 
+
+##### ENV 
+
+##### COPY 
+
+##### EXPOSE 
+
+##### CMD 
+
+##### ENTRYPOINT 
+
+
+
+### Dockerfile 이미지 만들기
+
+#### docker build 
+
+#### docker tag
+
+#### docker push 
+
+
+
+## 실전 연습 - Dockerfile로 이미지 만들고 push 하기 
+
+
+
+### Simple Web Application with bootstrap
+
+
+
+### Node.js Application
+
+
+
+### Java Application 
+
+
+
+### Python Application 
+
+
+
+### Advanced Application 
+
+
+
+## Overview of Docker Compose
+
+
+
+### Docker Compose install 
+
+
+
+### How to use Docker Compose ? 
+
+
+
+### Docker compose command 
+
+#### docker-compose up 
+
+#### docker-compose stop 
+
+#### docker-compose logs 
+
+
+
+## 실전연습 - Docker Compose 애플리케이션 배포하기
+
+
+
+## Container Cluster concept
+
+
+
+### docker swarm 
+
+
+
+### kubernetes 
+
+
+
+### Container management tools 
+
+
 
