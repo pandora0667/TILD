@@ -216,7 +216,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 ![](https://www.docker.com/sites/default/files/d8/2019-07/horizontal-logo-monochromatic-white.png)
 
-​	Docker는 솔로몬 하익스 (Solomon Hykes)가 설립한 프랑스 PaaS기업인 dotCloud에서 내부 프로젝트로 진행되었던 컨테이너 시스템을 오픈소스로 공개하고 회사 이름을 Docker로 변경하게 되었다. 기존 리눅스 컨테이너의 기능을 상당부분 사용했으며, 사실상 업계 표준으로 사용되어 Docker로 작성된 패키지 / 이미지가 많아서 접근성과 사용하기 좋다는 장점을 가지고 있다. 
+​	Docker는 솔로몬 하익스 (Solomon Hykes)가 설립한 프랑스 PaaS기업인 dotCloud에서 내부 프로젝트로 진행되었던 컨테이너 시스템을 오픈소스로 공개하고 회사 이름을 Docker로 변경하게 되었다. 기존 리눅스 컨테이너의 기능을 상당부분 사용했으며, 사실상 업계 표준으로 사용되면서, Docker로 작성된 패키지 / 이미지가 많기 때문에 접근성과 사용하기 좋다는 장점을 가지고 있다. 
 
 
 
@@ -226,17 +226,139 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 #### Windows 10 
 
-* **윈도우 2004 WSL2 기반으로 설치하는 방법을 기술하도록 하겠다.** 
+​	**윈도우 2004 WSL2 기반으로 설치하는 방법을 기술하도록 하겠다.** 
 
+1. 제어판 -> windows 기능 켜기 / 끄기 에서 Linux용 windows 하위 시스템을 체크하고 재부팅한다. 
 
+   ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/1.png?raw=true)
+
+2. powershell를 관리자 권한으로 실행하고 다음 명령어를 입력한다. 
+
+   ```powershell
+   dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+   ```
+
+3. WSL 2를 설치하기 위해 **Virtual Machine 플랫폼** 옵션 기능을 사용하도록 설정한다. 
+
+   ```powershell
+   dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+   ```
+
+4. Linux 커널 업데이트 패키지를 다운로드 받고 실행한다. 
+
+   * 다음 링크를 복사하여 다운로드 받습니다. 
+
+     * https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+
+     ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/2.png?raw=true)
+
+5. WSL 2를 기본버전으로 사용하도록 설정한다. 
+
+   ```powershell
+   wsl --set-default-version 2
+   ```
+
+6. 스토에서 리눅스 배포판이 정상적으로 설치가 진행되는지 확인한다. 
+
+   ![](https://docs.microsoft.com/ko-kr/windows/wsl/media/store.png)
+
+7. 선택적으로 윈도우 터미널을 설치하여 사용할 수 있다. 
+
+   ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/3.png?raw=true)
+
+8. 다음링크를 접속해서 Docker Desktop for Windows를 다운로드 받는다. Stable 버전을 다운받는것을 권장한다. 
+
+   ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/4.png?raw=true)
+
+   
 
 #### Linux 
 
-* **리눅스에서는 Ubuntu 20.04 LTS 버전을 기준으로 기술한다.** 
+​	**리눅스에서는 Ubuntu 20.04 LTS 버전을 기준으로 기술한다.** 
+
+1. 먼저 패키지를 업데이트하고 필요 프로그램을 다운로드 받는다. 
+
+   ```bash
+   $ sudo apt-get update
+   
+   $ sudo apt-get install \
+       apt-transport-https \
+       ca-certificates \
+       curl \
+       gnupg-agent \
+       software-properties-common
+   ```
+
+2. Docker 공식 GPG키를 추가한다. 
+
+   ```bash
+   $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+   
+   $ sudo apt-key fingerprint 0EBFCD88
+   
+   pub   rsa4096 2017-02-22 [SCEA]
+         9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+   uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+   sub   rsa4096 2017-02-22 [S]
+   
+   ```
+
+3. 각 아키텍처 별로 레파지토리를 추가한다. 일반적으로 우리가 사용하는 컴퓨터의 경우 x86_64 / amd64를 사용한다. 
+
+   * x86_64 / amd64
+
+     ```bash
+     $ sudo add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+     ```
+
+   * armhf
+
+     ```bash
+     $ sudo add-apt-repository \
+        "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+     ```
+
+   * arm64
+
+     ```bash
+     $ sudo add-apt-repository \
+        "deb [arch=arm64] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+     ```
+
+4. Docker 설치를 진행한다. 
+
+   ```bash
+    $ sudo apt-get update
+    $ sudo apt-get install docker-ce docker-ce-cli containerd.io
+   ```
+
+   
 
 #### Mac OS
 
-* **macOS Catalina에서 brew를 사용하여 설치하는 방법으로 기술한다.** 
+​	**macOS Catalina에서 brew를 사용하여 설치하는 방법으로 기술한다.** 
+
+1. brew를 사용해서 설치할 것이기 때문에 brew가 설치되어있지 않다면 다음 링크에서 brew를 먼저 설치하는 것을 권장한다. 
+
+   * https://brew.sh/index_ko
+
+2. 설치를 진행한다. 
+
+   ```bash
+   $ brew search docker
+   $ brew cask install docker
+   ```
+
+
+
+​	모든 설치가 완료되었다. 다음부터 본격적으로 Docker 기본 사용법에 대해서 알아보도록 하겠다. 
 
 
 
@@ -244,33 +366,446 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 
 
-### How to use Docker ? 
+### Let's learn how to use Docker
 
-![](https://www.redhat.com/cms/managed-files/traditional-linux-containers-vs-docker_0.png)
+​	이제 본격적으로 Docker 기본 명령어를 실습하고 사용할 수 있도록 한다.  참고로 리눅스 사용자의 경우 root 혹은 sudo 권한을 통해 명령어를 실행해야 한다. 해당 계정에 권한을 줘서 실행할 수 있지만 권장하지 않는다. 
+
+
 
 #### docker search 
 
+​	Docker에서 이미지를 검색하기 위해 사용한다. 
+
+```bash
+$ docker search ubuntu
+$ docker search centos
+$ docker search jenkins
+```
+
+
+
 #### docker pull 
+
+​	Docker를 사용하기 위해 이미지를 받기위한 과정으로 별도의 버전을 기술하지 않는 경우 최신 버전으로 설정되며,  ubuntu와 filebrowser 이미지를 다운로드 받는다. 
+
+```bash
+$ docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+d72e567cc804: Pull complete
+0f3630e5ff08: Pull complete
+b6a83d81d1f4: Pull complete
+Digest: sha256:bc2f7250f69267c9c6b66d7b6a81a54d3878bb85f1ebb5f951c896d13e6ba537
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+```
+
+ ```bash
+$ docker pull filebrowser/filebrowser
+Using default tag: latest
+latest: Pulling from filebrowser/filebrowser
+b1a249010500: Pull complete
+0873bd4778a9: Pull complete
+11f0f8e132ee: Pull complete
+bab147b9cce4: Pull complete
+Digest: sha256:398c3c1d39438fcd27b47b0c66705f0cbf8732cff97551f2e5d0a3f34a1feb23
+Status: Downloaded newer image for filebrowser/filebrowser:latest
+docker.io/filebrowser/filebrowser:latest
+ ```
+
+
 
 #### docker image
 
+​	Docker image는 가장 중요한 개념중 하나로서 다음과 같은 특징을 가진다. 
+
+* 이미지는 **컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것**으로 상태값을 가지지 않고 변하지 않는다. 
+
+* 컨테이너를 이미지를 실행한 상태라고 볼 수 있고, 추가되고 변하는 값은 컨테이너에 저장된다. 
+* 같은 이미지를 여러개의 컨테이너에서 생성할 수 있고 컨테이너의 상태가 변경되거나, 삭제되어도 이미지는 변하지 않고 그대로 남아있다. 
+* Ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있고 MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다. 좀 더 복잡한 예로 Gitlab 이미지는 centos를 기반으로 ruby, go, database, redis, gitlab source, nginx등을 가지고 있다. 
+* 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문에 의존성 파일을 컴파일하고 이것저것 설치할 필요성이 사라진다. 
+* 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성하면 된다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/5.png?raw=true)
+
+​	Docker image에서는 레이어 저장방식을 사용한다. Docker에서 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문에 용량이 수백MB 이상인 경우가 많다. 처음 이미지를 pull 하게 될 경우 전체 이미지를 다운받기 위해 시간이 걸리지만 기존 이미지에 수정사항이 생겼을 경우 이를 위해 이미지 전체를 받는 경우는 비효율적이기 때문에 유니온 파일 시스템을 이용하여 여러개의 레이어를 하나의 파일 시스템으로 사용할 수 있게한다. 
+
+![](https://subicura.com/assets/article_images/2017-01-19-docker-guide-for-beginners-1/image-layer.png)
+
+​	예를 들어  ubuntu 이미지가 `A` + `B` + `C`의 집합이라면, ubuntu 이미지를 베이스로 만든 nginx 이미지는 `A` + `B` + `C` + `nginx`가 된다. webapp 이미지를 nginx 이미지 기반으로 만들었다면 예상대로 `A` + `B` + `C` + `nginx` + `source` 레이어로 구성된다. webapp 소스를 수정하면 `A`, `B`, `C`, `nginx` 레이어를 제외한 새로운 `source(v2)` 레이어만 다운받으면 되기 때문에 굉장히 효율적으로 이미지를 관리할 수 있다. 이외에도 컨테이너를 생성할 때도 레이어 방식을 사용하는데 기존의 이미지 레이어 위에 읽기/쓰기read-write 레이어를 추가한다.  이미지 레이어를 그대로 사용하면서 컨테이너가 실행중에 생성하는 파일이나 변경된 내용은 읽기/쓰기 레이어에 저장되므로 여러개의 컨테이너를 생성해도 최소한의 용량만 사용한다. 
+
+​	위에서 docker pull 명령어를 실행할 때, 버전을 지정하지 않으면 가장 최신버전으로 이미지를 받는다고 이야기 했다. Docker에서는 이미지에 태그를 달아서 버전을 관리할 수 있는데 구조는 다음과 같다. 
+
+![](https://subicura.com/assets/article_images/2017-01-19-docker-guide-for-beginners-1/image-url.png)
+
+만약 특정버전의 이미지를 다운받기 원한다면 버전명을 붙어서 다운로드 받을 수 있으며, 추후 본인이 이미지를 만들고 docker hub에 업로드할 때, 태그를 통해 이미지의 버전을 관리하고 이전버전으로 되돌릴 수 있다. 다음 예제를 통해 우분투 18.04 버전 이미지를 다운받겠다. 
+
+```bash
+$ docker pull ubuntu:18.04
+18.04: Pulling from library/ubuntu
+171857c49d0f: Pull complete
+419640447d26: Pull complete
+61e52f862619: Pull complete
+Digest: sha256:646942475da61b4ce9cc5b3fadb42642ea90e5d0de46111458e100ff2c7031e6
+Status: Downloaded newer image for ubuntu:18.04
+docker.io/library/ubuntu:18.04
+```
+
+
+
 #### docker run 
+
+​	실제로 Docker 컨테이너를 실행하기 위한 명령어이다. 다음 명령을 입력해서 실행한다. 
+
+```bash
+$  docker run filebrowser/filebrowser
+2020/10/06 05:14:08 Using config file: /.filebrowser.json
+2020/10/06 05:14:08 Listening on [::]:80
+```
+
+docker pull를 통해서 다운받았던 filebrowser를 실행해보았다. 로그기록을 보았을 때, 80포트를 통해서 서비스가 되는 것을 확인할 수 있는데 실재로 브라우저를 통해서 접속을 시도하면 접속이 되지 않는다. 이는 컨테이너의 특성으로 인한 것으로, 컨테이너는 다른 프로세스들과 별도의 공간에서 격리되어 실행하기 때문에 서비스를 사용하기 위해서는 컨테이너로 접속하기 위한 정보가 필요하다. CTL + C를 눌러서 실행을 취소하고 다음 명령을 통해 접속을 위한 포트를 열어주도록 하겠다. 
+
+```bash
+$ docker run -p 8080:80 filebrowser/filebrowser
+2020/10/06 05:16:53 Using config file: /.filebrowser.json
+2020/10/06 05:16:53 Listening on [::]:80
+```
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/6.png?raw=true)
+
+​	웹브라우저로 접속했을때 정상적으로 서비스가 되는것을 확인할 수 있다. -p 옵션은 컨테이너에서 생성된 네트워크와 우리가 사용되는 네트워크를 통신하기 위해 사용되는 것으로, 컨테이너 80 포트를 8080으로 맵핑한다고 생각하면 된다. 하지만 현재 실행중인 터미널을 종료할 경우 실행중인 컨테이너도 함께 종료되기 때문에 백그라운드 즉 데몬으로 실행하기 위해서는 다음 명령을 실행해야 한다. 
+
+```bash
+$ docker run -p 8080:80 -d filebrowser/filebrowser
+a2abf5d7047dcee4a1461eb42c9c4bc0191be0cff194fa84f8d2fcc99bf3667e
+```
+
+ 	-d 옵션을 사용하면 컨테이너는 데몬으로 실행되고 터미널을 종료해도 백그라운드에서 계속 실행된다. 아래에 나온 값은 해당 컨테이너의 고유 ID로 실행중인 컨테이너를 구분하기 위해 만들어지고, ID값은 실행할 때 마다 다른 값을 가진다. 
+
+
 
 #### docker ps 
 
-#### docker start 
+​	데몬으로 실행된 컨테이너 프로세스 목록을 확인하기 위해서 사용한다. 
 
-#### docker resrart 
+```bash
+$ docker ps
+CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS              PORTS                  NAMES
+a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      2 minutes ago       Up 2 minutes        0.0.0.0:8080->80/tcp   exciting_roentgen
+```
 
-#### docker logs
+이 명령을 통해 현재 실행중인 컨테이너가 실행중인지 알 수 있고 모든 상태에 컨테이너 목록을 보고 싶다면 다음 명령을 사용한다. 
 
-#### docker exec 
+```bash
+$ docker ps -a
+CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                     PORTS                  NAMES
+a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      4 minutes ago       Up 4 minutes               0.0.0.0:8080->80/tcp   exciting_roentgen
+bcdf6bf6e6d1        filebrowser/filebrowser   "/filebrowser"      9 minutes ago       Exited (1) 8 minutes ago                          vibrant_montalcini
+8b670405284d        filebrowser/filebrowser   "/filebrowser"      12 minutes ago      Exited (1) 9 minutes ago                          heuristic_wing
+```
+
+-a 옵션을 통해서 실행중인 상태와 중지된 상태값을 확인할 수 있다. 실습당시 filebrowser를 여러번 실행하고 중지했기 때문에 같은 애플리케이션이지만 여러개의 상태값이 나오는 것을 확인할 수 있다. 여기서 주목해야 할 점은 각각의 CONTAINER ID 값이 다르고 NAMES 값을 지정해 주지 않았지만 각각의 다른 이름이 부여 되었다는 점이다. 추후 명령을 통해  CONTAINER ID 값을 사용할 수 있지만 우리가 인식하기 편하도록  NAME 값을 지정해 주도록 하겠다. 
+
+```bash
+$ docker run -p 8888:80 -d --name filebrowser filebrowser/filebrowser
+909f0b2a420d1c48247c381acb14162d924385281525922210acb0f2c76fb14b
+
+$ docker ps -a
+CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                      PORTS                  NAMES
+909f0b2a420d        filebrowser/filebrowser   "/filebrowser"      3 seconds ago       Up 3 seconds                0.0.0.0:8888->80/tcp   filebrowser
+a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      10 minutes ago      Up 10 minutes               0.0.0.0:8080->80/tcp   exciting_roentgen
+```
+
+컨테이너 이름을 --name 옵션을 통해 지정함으로서 NAMES값이 filebrowser으로 변경된 것을 확인할 수 있다. 포트를 다르게 설정한 이유는 컨테이너 내부는 격리되어 있는 공간이기 때문에 같은 포트를 사용해도 컨테이너에 사용되는 네트워크가 다르기 때문에 가능하지만 외부 포트의 경우 이미 사용중인 포트가 되기 때문에 포트 충돌로 인해 정상적으로 실행이 되지 않는다. 웹브라우저를 통해 8888 포트와 8080 포트로 접속하면 모두 같은 화면을 보여준다. 
+
+​	또한 같은 서비스가 중복으로 돌고 있으나 이름이 중복될 경우 실행이 되지 않는다. 따라서 같은 서비스를 여러개를 동작해야 하고 이름을 지정해야 한다면 반드시 다른 이름을 설정해 주어야 한다.  
+
+
 
 #### docker stop 
 
+​	Docker 컨테이너를 중지하기 위해 사용되는 명령이다. 컨테이너를 중지하기 위해서는 CONTAINER ID와 NAMES를 지정해서 중지할 수 있다. docker ps -a 를 통해 모든 컨테이너의 상태를 알았고, filebrowser 컨테이너가 2개가 동시에 실행되고 있는 것을 확인했다. 이름을 지정하지 않은 컨테이너는 ID 값을 통해 중지하고, 이름을 지정한 컨테이너는 이름을 통해 중지해 보도록 하겠다. 
+
+```bash
+$ docker stop a2abf5d7047d
+a2abf5d7047d
+
+$ docker stop filebrowser
+filebrowser
+```
+
+Docker 프로세스 목록을 확인하여 정상적으로 종료되어있는지 상태를 확인해 본다. 
+
+```bash
+$ docker ps -a 
+CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                      PORTS               NAMES
+909f0b2a420d        filebrowser/filebrowser   "/filebrowser"      11 minutes ago      Exited (1) 3 minutes ago                        filebrowser
+a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      21 minutes ago      Exited (1) 3 minutes ago                        exciting_roentgen
+```
+
+
+
+#### docker start 
+
+​	중단된 Docker 컨테이너를 다시 실행하기 위한 명령어이다. 컨테이너를 실행하기 위해서는 해당 컨테이너 ID 혹은 NAME을 알고 있어야 중단된 컨테이너를 시적할 수 있다. 방금전에 중단한 컨테이너를 위 방법을 통해 시작해보겠다. 
+
+```bash
+$ docker start a2abf5d7047d
+a2abf5d7047d
+
+$ docker start filebrowser
+filebrowser
+```
+
+​	이후 다시 웹브라우저를 통해 확인하면 컨테이너가 정상적으로 실행되고 있음을 알 수 있다. 여기서 주의해야 할 점은 docker run과 docker start를 혼동하면 안된다. docker run은 실행한 적이 없는 컨테이너 이미지를 실행하기 위한 명령어이기 때문에 만약 실행시 자신의 컴퓨터에 컨테이너 이미지가 없는 경우 docker pull 명령이 같이 실행되어 새로운 컨테이너가 실행된다. 하지만 docker start의 경우 이미 자신의 컴퓨터에 컨테이너가 존재하여 컨테이너 ID와 이름이 존재하는 경우만 사용할 수 있다. 
+
+
+
+#### docker resrart 
+
+​	어떠한 이유에서 컨테이너를 재시작하기 위해 사용되는 명령어이다. 보통 컨테이너 서비스가 오동작을 하는 경우에 많이 사용된다. 이 명령어 역시 해당 컨테이너 ID 혹은 NAME을 알고 있어야 실행이 가능하다. 위에서 실습했던 내용을 가지고 그대로 적용해보도록 하겠다. 
+
+```bash
+$ docker restart a2abf5d7047d
+a2abf5d7047d
+
+$ docker restart filebrowser
+filebrowser
+```
+
+​	정상적으로 다시 실행되었음을 확인할 수 있고, docker ps -a 명령을 통해 STATUS를 확인해보면 Up About a minute이 뜨면서 방금전에 다시 실행했다는 사실을 알 수 있다. 
+
+
+
+#### docker logs
+
+​	애플리케이션의 상태나 오류가 발생하면 가장 먼저 확인하는 것이 로그기록이다. 하지만 컨테이너는 격리되어 있는 상태이기 때문에 해당 로그를 확인하기 위해서는 위의 명령을 통해서만 가능하다. filebrowser의 logs를 확인해 보도록 하겠다. 이제부터는 위에서 컨테이너 ID와 NAMES를 통해 실행하는 방법을 계속해서 기술했기 때문에 이름을 통해서만 실행하도록 하겠다. 
+
+```bash
+$ docker logs -f filebrowser
+2020/10/06 05:32:33 Using config file: /.filebrowser.json
+2020/10/06 05:32:33 Listening on [::]:80
+2020/10/06 05:40:01 Caught signal terminated: shutting down.
+2020/10/06 05:40:01 accept tcp [::]:80: use of closed network connection
+2020/10/06 05:57:07 Using config file: /.filebrowser.json
+2020/10/06 05:57:07 Listening on [::]:80
+2020/10/06 06:02:14 Caught signal terminated: shutting down.
+2020/10/06 06:02:14 accept tcp [::]:80: use of closed network connection
+2020/10/06 06:02:14 Using config file: /.filebrowser.json
+2020/10/06 06:02:14 Listening on [::]:80
+```
+
+-f 옵션을 붙이지 않으면 지금까지  생성된 모든 기록을 보여주고 끝나지만, 지속적으로 생성되는 로그를 확인하기 위해서 사용하는 옵션이다. 로그 기록을 자세히 살펴보면 우리가 컨테이너를 종료하고 다시 실행한 로그가 그대로 나타나고 있는 것을 확인할 수 있다. 로그기록은 실행중인 컨테이너 뿐만 아니라 종료된 컨테이너의 로그를 확인할 수 있고, 이를 통해 문제점 해결에 도움을 줄 수 있다. 
+
+
+
+#### docker images
+
+​	다운로드 받은 이미지의 목록을 보여주는 명령어 이다. 실행중인 컨테이너와 다른 개념이기 때문에 혼동하면 안된다. 
+
+```bash
+$ docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+filebrowser/filebrowser   latest              d92417071f39        22 hours ago        33.4MB
+ubuntu                    latest              9140108b62dc        10 days ago         72.9MB
+ubuntu                    18.04               56def654ec22        10 days ago         63.2MB
+```
+
+​	TAG 목록을 살펴보면 일반적으로 pull 할 경우 latest 버전인 것을 확인할 수 있지만 별도로 버전을 지정한 경우 특정 버전의 TAG를 보여주고 있다. 이미지도 역시 고유의 ID를 가지고 있으며 컨테이너 ID와는 동일하지 않다. 
+
+
+
+#### docker exec 
+
+​	Docker 컨테이너가 데몬으로 실행되고 있는 과정에서 해당 컨테이너로 접속하고 싶을 때 사용하는 명령어이다. 생각보다 자주 사용하는 명령어이며, 처음 Docker를 사용할 때 가장 당황스러운 부분중 하나이다. 지금 실습할 것은 아까 이미지를 다운로드 받았던 우분투 이미지를 컨테이너로 실행하고 접속할 것이다. 
+
+​	기본적으로 우분투와 같은 이미지는 베이스 이미지로, 어떠한 애플리케이션을 Docker로 만들기 위한 최소한의 기반이 되는 이미지라고 할 수 있다. 베이스 이미지에는 다양한 종류가 있는데 특정 애플리케이션을 Docker로 만드는 경우 베이스 이미지가 달라진다. 예를 들어 node.js을 통해 애플리케이션을 만드는 경우 베이스 이미지는 nodejs가 되고, java 애플리케이션을 만드는 경우 베이스 이미지는 java가 된다. 
+
+​	이처험 애플리케이션별로 베이스 이미지가 다른 이유는 컨테이너의 용량을 최소화하고 빌드과정을 빠르게 처리하기 위함이다. 물론 본인이 기본 OS 베이스 이미지로 애플리케이션 도커 컨테이너를 만들 수 있지만 베이스 이미지는 최소한의 정보만 들어가 있기 때문에 특정 애플리케이션을 빌드하는 경우 처음부터 끝까지 모든 환경을 셋팅해줘야 하는 경우가 생긴다. 따라서 특별한 경우가 아닌 이상 특화된 베이스 이미지를 사용하기를 권장한다. 
+
+​	이번에는 아까 이미지를 다운받았던 우분투 이미지를 실행하고 컨테이너에 접속해 보도록 하겠다. 
+
+```bash
+$ docker run -it -d --name ubuntu ubuntu 
+57078b1cdc867fa39d212e693a01c2ec9b2e01b0529bfae204a7f0bd2a71ddbe
+
+$ docker exec -it ubuntu /bin/bash
+root@57078b1cdc86:/#
+```
+
+​	지금까지 배웠던 내용과 상당히 다른 옵션들이 실행된 것을 확인할 수 있는데, 그중 -it 옵션의 경우 STDIN 표준 입출력을 열고 가상 tty (pseudo-TTY) 를 통해 접속하겠다는 의미이며, /bin/bash의 경우 우분투 컨테이너의 bash로 접속하겠다는 의미이다. 그럼 만약에 -it 옵션을 주지않고 우분투를 실행하는 경우에는 어떻게 될까? 
+
+```bash
+$ docker run --name ubuntu_test ubuntu
+
+$ docker ps -a
+d8f31b2635d9    ubuntu    "/bin/bash"   19 seconds ago  Exited (0) 17 seconds ago   ubuntu_test
+```
+
+​	생각했던것과 다르게 이미지가 실행되지 않고 바로 종료가 되는 것을 확인할 수 있다. 이말은 일반적으로 우리가 아는 가상화 환경으로 우분투 환경을 제공하는 것이 아니라 단순 쉘을 통해서 명령을 실행하는 환경만 제공한다는 것을 알 수 있다. 
+
+​	Docker로 실행한 우분투에서 CLI 명령어를 입력해보자
+
+```bash
+root@57078b1cdc86:/# ls -l
+total 48
+lrwxrwxrwx   1 root root    7 Sep 25 01:20 bin -> usr/bin
+drwxr-xr-x   2 root root 4096 Apr 15 11:09 boot
+drwxr-xr-x   5 root root  360 Oct  6 06:21 dev
+drwxr-xr-x   1 root root 4096 Oct  6 06:21 etc
+drwxr-xr-x   2 root root 4096 Apr 15 11:09 home
+lrwxrwxrwx   1 root root    7 Sep 25 01:20 lib -> usr/lib
+lrwxrwxrwx   1 root root    9 Sep 25 01:20 lib32 -> usr/lib32
+lrwxrwxrwx   1 root root    9 Sep 25 01:20 lib64 -> usr/lib64
+lrwxrwxrwx   1 root root   10 Sep 25 01:20 libx32 -> usr/libx32
+drwxr-xr-x   2 root root 4096 Sep 25 01:20 media
+drwxr-xr-x   2 root root 4096 Sep 25 01:20 mnt
+drwxr-xr-x   2 root root 4096 Sep 25 01:20 opt
+dr-xr-xr-x 191 root root    0 Oct  6 06:21 proc
+drwx------   2 root root 4096 Sep 25 01:23 root
+drwxr-xr-x   1 root root 4096 Sep 25 22:34 run
+lrwxrwxrwx   1 root root    8 Sep 25 01:20 sbin -> usr/sbin
+drwxr-xr-x   2 root root 4096 Sep 25 01:20 srv
+dr-xr-xr-x  12 root root    0 Oct  6 06:21 sys
+drwxrwxrwt   2 root root 4096 Sep 25 01:23 tmp
+drwxr-xr-x   1 root root 4096 Sep 25 01:20 usr
+drwxr-xr-x   1 root root 4096 Sep 25 01:23 var
+```
+
+```bash
+root@57078b1cdc86:/# apt update
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [107 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [114 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [1169 B]
+Get:5 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [75.9 kB]
+Get:6 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [368 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-updates InRelease [111 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-backports InRelease [98.3 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [706 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [306 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [88.7 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [21.6 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [4277 B]
+Fetched 15.1 MB in 8s (1982 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+root@57078b1cdc86:/#
+```
+
+일반적으로 우리가 사용하는 우분투 환경과 비교했을 때 큰 차이를 느끼지 못할만큼 정상적으로 동작하는 것을 확인할 수 있다. 그럼 이번에는 Docker 우분투 환경에서 매개변수로 값을 넘겨서 동작하는 예제를 확인해 보겠다. 
+
+```bash
+$ docker run ubuntu env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=179f8bf934cc
+HOME=/root
+
+$ docker run ubuntu ls
+bin
+boot
+dev
+etc
+home
+lib
+lib32
+lib64
+libx32
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+```
+
+위와 다르게 이름을 지정하지 않은 이유는 동일한 이름으로 실행할 때, 이미 컨테이너가 존재하기 때문에 에러가 발생하기 때문이다. 따라서 각각 실행한 우분투는 각각의 컨테이너가 실행되었음을 의미하며, 인자값(매개변수)를 통해 우분투 쉘로 접속하여 그 결과값을 출력한다는 사실을 알 수 있다. 
+
+​	
+
 #### docker rm 
 
+​	실행 혹은 중지된 컨테이너를 더이상 사용하지 않을 때, 컨테이너를 지우는 명령으로 사용된다. 
+
+```bash
+$ docker rm ubuntu
+Error response from daemon: You cannot remove a running container 57078b1cdc867fa39d212e693a01c2ec9b2e01b0529bfae204a7f0bd2a71ddbe. Stop the container before attempting removal or force remove
+```
+
+하지만 실행중인 컨테이너를 지우고자 하면 위와같은 에러가 발생하기 때문에 stop을 먼저하거나 -f 옵션을 통해서 강제로 지울 수 있다. 
+
+```bash
+$ docker rm ubuntu  -f
+ubuntu
+```
+
+
+
 #### docker rmi 
+
+​	다운받은 이미지를 삭제하는 명령어로서, rm이 컨테이너만 삭제하는 것과 대조된다. 현재 다운받아있는 이미지 목록을 보고자 하면 다음과 같이 실행한다. 
+
+```bash
+$ docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+filebrowser/filebrowser   latest              d92417071f39        25 hours ago        33.4MB
+ubuntu                    20.04               9140108b62dc        10 days ago         72.9MB
+ubuntu                    latest              9140108b62dc        10 days ago         72.9MB
+ubuntu                    18.04               56def654ec22        10 days ago         63.2MB
+```
+
+이미지를 삭제하기 위해서는 해당 이미지가 컨테이너와 종속관계가 없어야 한다. 즉, 컨테이너가 실행중이거나 종료되었다고 해도, 일반적인 명령으로는 지워지지 않는다. 따라서 정상적인 삭제를 원한다면 컨테이너를 중단하고, 컨테이너를 삭제한 후에 이미지 삭제를 진행해야 하며, 강제로 지우길 원한다면 -f 옵션을 사용한다. 
+
+```
+$ docker rmi ubuntu
+Untagged: ubuntu:latest
+
+$ docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+filebrowser/filebrowser   latest              d92417071f39        25 hours ago        33.4MB
+ubuntu                    20.04               9140108b62dc        10 days ago         72.9MB
+ubuntu                    18.04               56def654ec22        10 days ago         63.2MB
+```
+
+latest 버전의 우분투 버전이 삭제된 것을 확인할 수 있으며, 다른 이미지를 삭제하고자 한다면 IMAGE ID를 사용해도 된다. 
+
+
+
+### Docker 컨테이너 및 이미지 한번에 삭제하기
+
+​	만약 본인 컴퓨터에 생성된 모든 컨테이너와 이미지를 삭제하고자 한다면 다음과 같은 명령을 실행한다. 
+
+```bash
+$ docker stop $(docker ps -a -q)
+$ docker rm $(docker ps -a -q)
+$ docker rmi $(docker images -a -q)
+```
+
+​	Docker 초기화를 원한다면 다음 명령을 실행하면 된다. 
+
+```bash 
+$ docker system prune
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all dangling images
+  - all dangling build cache
+
+Are you sure you want to continue? [y/N]
+```
 
 
 
