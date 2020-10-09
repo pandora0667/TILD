@@ -811,19 +811,404 @@ Are you sure you want to continue? [y/N]
 
 ### 부록 - 새로운 컨테이너의 등장 podmad 
 
+![](https://podman.io/images/podman.svg)
+
+​	Red Hat Enterprise Linux 8 / CentOS 8 이후부터는 Docker 대신 podman 리눅스 컨테이너를 제공한다. docker와 podman의 차이를 알아보자면 시스템상에서 데몬으로 존재하는 여부로 알 수 있다. podman은 데몬을 사용하지 않는 Deomon-less 구조를 채택하였다. 하나의 데몬에서 동작하는 docker의 경우 docker 데몬에 문제가 발생할 경우 자식 프로세스가 고아 프로세스가 되어 전체 컨테이너에 문제가 발생하며, 반드시 root 권한으로 실행하여 보안상에 문제가 발생할 수도 있다. 
+
+![](https://miro.medium.com/max/875/1*OPQDWqLLXCUZSfq8oiCaug.png)
+
+​	podman은 독립적인 구도로 실행 관리가 가능하기 때문에 systemd 등록을 통해서 컨테이너를 개별적으로 운영할 수 있다는 점에서 가장 큰 장점을 가진다. 
+
+![](https://miro.medium.com/max/875/1*EN7d_9nCJEfp_mP7erY_7w.png)
+
+​	podman은 docker와 컨테이너 이미지 등 기존의 사용하던 것들이 호환되고 쿠버네티스에 적용도 가능한 것은 물론, 무거운 데몬과 root 환경에서 실행하지 않아도 되는 여러 장점으로 인해서 차세대 컨테이너 기술로 인정받고 있다.  하지만 아직까지는 기술 성숙도가 docker에 비해서 낮기 때문에 실제 도입은 아직 신중하게 결정해야 하며, 아래에서 배울 docker-compose를 대신할 수 있는 podman-compose가 아직 개발 중이기 때문에 앞르로의 시간이 좀 더 걸릴 것으로 예상된다. 
+
+​	podman에 대해 좀더 자세히 이야기 해야한다면 기존 리눅스 컨테이너 방식인 CRI (Container Runtime Interface)와 CRI-O (Container Runtime Interface - Open Container Initiative)에 대한 이해가 필요하지만 본 문서는 docker를 기준으로 설명하므로 이에 대한 자세한 성명은 생략한다. 이에 대한 자세한 설명을 보고 싶다면 아래 링크를 참고 바란다. 
+
+* https://www.samsungsds.com/kr/insights/docker.html
+
 
 
 ## 실전연습 - Docker hub 사용하기 
 
-### ubuntu 
+![](https://d2uleea4buiacg.cloudfront.net/files/fa2/fa204630bed1deaf4e18a19a180f885934b613c6293584180ef1412fe8ed5283.m.png)	
 
-### postgres 
+​	Docker Hub는 많은 개발자들이 Docker 이미지를 개발하여 공개하는 사이트라고 할 수 있다. git이 코드를 관리하기 위한 공간이라면 Docker Hub는 이미지를 관리하는 공간이라고 할 수 있다. 가입을 하지 않더라도 이미지를 다운받거나 사용하는데 지장이 없지만 회원가입을 통해서 자기가 만든 이미지를 공개할 수 있다. github와 같이 Public repositories는 무제한이지만 Private repositories를 사용하기 위해서는 무료 계정의 경우 1개, 그 이상을 사용하고 싶다면 별도의 가격을 지불해야 한다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/7.png?raw=true)
+
+​	만약 기업 혹은 그룹에서 별도의 비용을 지불하지 않고 별도의 별도의 Private Docker Registry를 구축하고 싶다면 CNCF에서 인증한 HARBOR를 사용하는 것도 좋은 선택이다. 
+
+![](https://raw.githubusercontent.com/goharbor/website/master/docs/img/readme/harbor_logo.png)
+
+​	우리는 Public repositories에 있는 프로그램 중 몇개를 사용하겠지만, 사실 이미 전 시간부터 docker 이미지를 사용하기 위해 docker pull 명령을 사용할 때, Docker Hub에 등록된 이미지를 사용해왔다. 추후 이미지를 만들고 업로드 하는 과정을 실습하기 위해 다음 링크에 들어가서 계정을 생성하도록 하며, 그중 유명한 이미지 몇가지를 다운로드 받아 실행하도록 하겠다. 
+
+* https://hub.docker.com/
+
+  ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/9.png?raw=true)
+
+  ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/8.png?raw=true)
+
+  회원가입을 완료했다면 앞으로의 실습을 위해 로컬 컴퓨터에 Docker Hub계정을 로그인 하도록 하겠다. 다음과 같은 명령을 실행한다. 
+
+```bash
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: 
+Password:
+Login Succeeded
+```
+
+Docker Hub의 계정을 로그아웃 하고 싶다면 다음 명령을 입력하면 된다. 
+
+```bash
+$ docker logout
+Removing login credentials for https://index.docker.io/v1/
+```
+
+
 
 ### Nginx & httpd
+
+```bash
+$ docker run -p 8080:80 -d nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+d121f8d1c412: Pull complete
+66a200539fd6: Pull complete
+e9738820db15: Pull complete
+d74ea5811e8a: Pull complete
+ffdacbba6928: Pull complete
+Digest: sha256:fc66cdef5ca33809823182c9c5d72ea86fd2cef7713cf3363e1a0b12a5d77500
+
+$ docker run -p 8081:80 -d httpd 
+Unable to find image 'httpd:latest' locally
+latest: Pulling from library/httpd
+d121f8d1c412: Already exists
+9cd35c2006cf: Pull complete
+b6b9dec6e0f8: Pull complete
+fc3f9b55fcc2: Pull complete
+802357647f64: Pull complete
+Digest: sha256:5ce7c20e45b407607f30b8f8ba435671c2ff80440d12645527be670eb8ce1961
+Status: Downloaded newer image for httpd:latest
+045e411fd176677d3d50aea5f5c1361ad38dc55205895606b8be6d3d93b18bb5
+```
+
+
+
+### odoo 
+
+```bash
+$ docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:10
+Unable to find image 'postgres:10' locally
+10: Pulling from library/postgres
+abb454610128: Pull complete
+cb9fcd810109: Pull complete
+ec47b45aabd5: Pull complete
+1e0ca8f035cc: Pull complete
+2a84515c4921: Pull complete
+82b05e9043e1: Pull complete
+aeb401fb975d: Pull complete
+3a459c6d6103: Pull complete
+1a468736e354: Pull complete
+2308e9bc3771: Pull complete
+8dcf6283be4c: Pull complete
+a5a7039be658: Pull complete
+d4b6b67f010b: Pull complete
+dbfabe56f372: Pull complete
+Digest: sha256:c28b97689c3fc2ede878e9cced7607361764651da670ae7dfe6e1becd6603863
+Status: Downloaded newer image for postgres:10
+45b859e2e00ec6a96d3cf52e5c3142087e037dfbff8656a932ebeed1faa7101c
+
+$ docker run -p 8069:8069 --name odoo --link db:db -t odoo
+Unable to find image 'odoo:latest' locally
+latest: Pulling from library/odoo
+d121f8d1c412: Pull complete
+918cd4aaeb69: Pull complete
+f28fcced6356: Pull complete
+955db1482846: Pull complete
+017e349353bc: Pull complete
+9d71f13db1c6: Pull complete
+b6d377fe6745: Pull complete
+d16781d5c37e: Pull complete
+41b885b58a50: Pull complete
+Digest: sha256:fccc13945d62704dde11bf91d232acd360c85d2e4268f6ee26d0b4eedf20ffea
+Status: Downloaded newer image for odoo:latest
+2020-10-09 05:59:57,135 1 INFO ? odoo: Odoo version 14.0-20201002
+2020-10-09 05:59:57,135 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf
+2020-10-09 05:59:57,135 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/addons/14.0', '/mnt/extra-addons']
+2020-10-09 05:59:57,135 1 INFO ? odoo: database: odoo@172.17.0.2:5432
+2020-10-09 05:59:57,248 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf
+2020-10-09 05:59:57,328 1 INFO ? odoo.service.server: HTTP service (werkzeug) running on fc3ae8b49f24:8069
+```
+
+​	위에서는 간단한 3가지의 docker 애플리케이션을 실행해 보았는데, pull를 하지 않더라도 로컬 컴퓨터에 해당하는 이미지가 존재하지 않는다면 기본적으로 Docker Hub에서 이미지를 가져와서 실행하는 것을 확인할 수 있다. 
 
 ###   
 
 ## Docker 데이터 저장하기 
+
+​	리눅스 컨테이너 즉 docker는 프로세스 형태로 자원을 격리하여 사용하기 때문에 컨테이너가 삭제되면 기존에 저장되었던 데이터는 사라진다. 이를 예방하기 위해서 docker volume을 사용하거나 로컬 컴퓨터 파일에 마운트하여 docker 내부에 생성되는 데이터를 저장하는 과정이 필요하다. 이번에는 postgres 데이터베이스를 통해서 실습을 진행하도록 하겠다. 
+
+```bash
+$ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d postgres
+
+Unable to find image 'postgres:latest' locally
+latest: Pulling from library/postgres
+d121f8d1c412: Already exists
+9f045f1653de: Pull complete
+fa0c0f0a5534: Pull complete
+54e26c2eb3f1: Pull complete
+cede939c738e: Pull complete
+69f99b2ba105: Pull complete
+218ae2bec541: Pull complete
+70a48a74e7cf: Pull complete
+c0159b3d9418: Pull complete
+353f31fdef75: Pull complete
+03d73272c393: Pull complete
+8f89a54571bf: Pull complete
+4885714928b5: Pull complete
+3060b8f258ec: Pull complete
+Digest: sha256:0171a93d62342d2ab2461069609175674d2a1809a1ad7ce9ba141e2c09db1156
+Status: Downloaded newer image for postgres:latest
+2093fec3b2acf3ef12a69268a5652625e2344b85a3ed6b9a50c009024caac548
+```
+
+```bash
+$ docker ps -a 
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+2093fec3b2ac        postgres            "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes                0.0.0.0:5432->5432/tcp   postgres
+```
+
+​	여기서 처음보는 명령어들이 많이 보이는데, -e 옵션의 경우 docker의 환경변수를 지정하는 것이다. 각각의 환경변수는 이미지에 따라서 다르기 때문에 Docker Hub의 내용을 확인하길 바란다. 
+
+​	다음 컨테이너에 접속하여 사용자와 데이터베이스를 생성하고 테이블을 만든다. 
+
+```bash
+$ docker exec -it postgres /bin/bash
+
+root@ac61c662ee4c:/# psql -U postgres
+psql (13.0 (Debian 13.0-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# CREATE USER seongwon PASSWORD '1q2w3e4r' SUPERUSER;
+CREATE ROLE
+
+postgres=# CREATE DATABASE test OWNER seongwon;
+CREATE DATABASE
+
+postgres=# \c test seongwon
+You are now connected to database "test" as user "seongwon".
+test=# CREATE TABLE star (
+id integer NOT NULL,
+name character varying(255),
+class character varying(32),
+age integer,
+radius integer,
+lum integer,
+magnt integer,
+CONSTRAINT star_pk PRIMARY KEY (id)
+);
+CREATE TABLE
+
+test=# \dt
+        List of relations
+ Schema | Name | Type  |  Owner
+--------+------+-------+----------
+ public | star | table | seongwon
+(1 row)
+```
+
+​	가장 기본적인 데이터베이스 생성과정을 완료하였다. 첫 번째로 컨테이너를 종료하고 다시 시작했을 때, 데이터가 남아있는지 확인해 보도록 하겠다. 
+
+```bash
+$ docker exec -it postgres /bin/bash
+
+root@ac61c662ee4c:/#  psql -U postgres
+psql (13.0 (Debian 13.0-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ seongwon  | Superuser                                                  | {}
+
+postgres=# \c test seongwon
+You are now connected to database "test" as user "seongwon".
+
+test=# \dt
+        List of relations
+ Schema | Name | Type  |  Owner
+--------+------+-------+----------
+ public | star | table | seongwon
+(1 row)
+```
+
+컨테이너만 종료되고 다시 시작했을 때는 기존에 저장되어 있던 데이터가 잘 살아 있는 것을 확인할 수 있다. 이번에는 컨테이너를 삭제해 보도록 하겠다. 
+
+```bash
+$ docker stop postgres 
+postgres
+
+$ docker rm postgres
+postgres
+
+$ docker exec -it postgres /bin/bash
+Error: No such container: postgres
+```
+
+컨테이너가 삭제되었기 때문에 다시 접속할 수가 없으며, 이때는 다시 컨테이너를 생성해야 하기 때문에 docker run을 다시 실행해야 한다. 
+
+```bash
+$ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d postgres
+$ docker exec -it postgres /bin/bash
+```
+
+```bash
+root@fd7f90041ffa:/# psql -U postgres
+psql (13.0 (Debian 13.0-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# SELECT * FROM PG_USER;
+ usename  | usesysid | usecreatedb | usesuper | userepl | usebypassrls |  passwd  | valuntil | useconfig
+----------+----------+-------------+----------+---------+--------------+----------+----------+-----------
+ postgres |       10 | t           | t        | t       | t            | ******** |          |
+(1 row)
+
+postgres=# \q
+```
+
+​	지금까지 생성했던 계정 자체가 존재하지 않는다. 즉 해당 컨테이너를 생성하고 데이터를 변경했을 때, 컨테이너만 종료했을 경우 컨테이너 내부에 있는 데이터는 그대로 남아 있지만 컨테이너 자체를 삭제하는 경우 해당 베이스 이미지만 그대로 사용하기 때문에 더이상 데이터가 남아 있지 않으며, 이 경우 우리가 했던 과정을 처음부터 다시 해야한다. 따라서 데이터를 종속시키기 위해서는 컨테이너 볼륨이나 로컬 컴퓨터에 데이터를 저장할 수 있는 공간을 따로 생성하여 외부에 저장할 수 있는 상태로 만들어야 하며, 이를 통해 데이터를 보관할 수 있게할 수 있다. 다음은 볼륭과 마운트를 통해 데이터를 저장하는 방법을 보여준다. 
+
+```bash
+# 모든 컨테이너를 종료하고 삭제한다. 
+$ docker stop $(docker ps -a -q)
+$ docker rm $(docker ps -a -q)
+
+$ docker volume create pgdata # 데이터를 저장할 볼륨을 생성한다. 
+pgdata
+
+$ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v pgdata:/var/lib/postgresql/data postgres
+```
+
+생성된 볼륨을 -v 옵션을 통해 지정해주었다. 다시 컨테이너에 접속하여 계정을 생성해 보고, 컨테이너 삭제후에 계정 정보가 남아 있는지 확인해 보도록 하겠다. 
+
+```bash
+docker exec -it postgres /bin/bash
+root@608f0aa10061:/# psql -U postgres
+psql (13.0 (Debian 13.0-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# CREATE USER seongwon PASSWORD '1q2w3e4r' SUPERUSER;
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ seongwon  | Superuser                                                  | {}
+```
+
+```bash
+$ docker stop postgres
+$ docker rm postgres
+$ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v pgdata:/var/lib/postgresql/data postgres
+791984a503b91542aaadd48703c6b694e745b3004c3a7c2f00d0eedf91cf27ea
+
+$ docker exec -it postgres /bin/bash
+
+root@791984a503b9:/# psql -U postgres
+psql (13.0 (Debian 13.0-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ seongwon  | Superuser                                                  | {}
+
+postgres=# \q
+```
+
+​	컨테이너를 삭제했음에도 불구하고 계정정보가 저장 되어 있는것을 확인할 수 있다. 그렇다면 볼륨 정보는 어디에 저장되어 있을까? 
+
+```bash
+$  docker volume list
+local               pgdata
+
+$ docker volume inspect pgdata
+[
+    {
+        "CreatedAt": "2020-10-09T07:13:50Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/pgdata/_data",
+        "Name": "pgdata",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+```
+
+각 운영체제 별로 상의할 수 있으나 위의 명령을 통해서 볼륨 리스트와 해당 볼륨의 위치 및 상세 정보를 확인할 수 있다. 다음으로 해당 볼륨을 삭제하고 로컬 컴퓨터에 디렉토리를 생성하여 데이터를 저장하는 방법을 알아보도록 하겠다. 
+
+```bash
+$ docker volume remove pgdata
+Error response from daemon: remove pgdata: volume is in use - [791984a503b91542aaadd48703c6b694e745b3004c3a7c2f00d0eedf91cf27ea] 
+
+# docker 컨테이너가 실행되고 있는 상태에서 볼륨을 삭제하는 경우에는 에러가 발생하기 때문에 컨테이너를 종료하고 볼륨을 삭제한다. 
+$ docker stop postgres
+postgres
+
+$ docker rm postgres
+postgres
+
+$ docker volume remove pgdata
+pgdata
+
+# docker에서 모든 볼륨을 삭제하고 싶다면 다음 명령을 입력한다. 
+$  docker volume prune
+WARNING! This will remove all local volumes not used by at least one container.
+Are you sure you want to continue? [y/N] y 
+Total reclaimed space: 7.402GB
+```
+
+```bash
+$ mkdir pgdata
+
+$ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v ~/pgdata:/var/lib/postgresql/data postgres
+06006c5d1160b471eaeb73b429e6a08329f9087a7f32b86aab811fe7e4246a65
+```
+
+​	상대경로에 pgdata라는 디렉토리를 만들고 -v 옵션을 통해 해당 디렉토리랑 마운트한 것을 볼 수 있다. 해당 디렉터리로 이동하여 postgresql 데이터가 저장되어 있는지 확인한다. 
+
+```bash
+$ cd pgdata
+$ ls -l
+total 112
+-rw-------   1 seongwon  staff      3 10  9 16:35 PG_VERSION
+drwx------   5 seongwon  staff    160 10  9 16:35 base
+drwx------  59 seongwon  staff   1888 10  9 16:35 global
+drwx------   2 seongwon  staff     64 10  9 16:35 pg_commit_ts
+drwx------   2 seongwon  staff     64 10  9 16:35 pg_dynshmem
+-rw-------   1 seongwon  staff   4782 10  9 16:35 pg_hba.conf
+-rw-------   1 seongwon  staff   1636 10  9 16:35 pg_ident.conf
+drwx------   5 seongwon  staff    160 10  9 16:35 pg_logical
+drwx------   4 seongwon  staff    128 10  9 16:35 pg_multixac
+...
+```
+
+실제 로컬 컴퓨터에 postgresql를 사용하기 위한 데이터가 저장되어 있는 것을 확인할 수 있다. 이 상태에서 위와 동일한 방법으로 진행하면 컨테이너 내부에서 변경된 모든 데이터는 해당 디렉토리가 삭제되지 않는 이상 사라지지 않으며, 설정파일을 직접 수정하여 적용할 수도 있다. 이러한 특성을 살려서 CIFS나 NFS를 통한 외부 스토리지에 저장하여 데이터를 저장하는 방식을 채택할 수 있다. 
+
+​	리눅스의 경우 해당 디렉토리에 퍼미션 불가로 접속이 되지 않을 수도 있다. 이 경우 root 권한으로 접속해서 볼 수 있으며, 만약 디렉토리를 만들었음에도 불구하고 데이터가 저장되지 않거나 컨테이너가 재대로 실행되지 않은 경우, 소유자 권한 오류로 인해서 docker 컨테이너가 해당 디렉토리에 접근하지 못할 가능성이 크다. 따라서 이런 에러가 발생하는 경우에는 소유자 권한을 변경하면 정상적으로 사용할 수 있다. 
+
+```bash
+$ sudo chown 200:200 some_dir 
+```
+
+​	또한 컨테이너를 실행할 때, 디렉토리를 마운트 하는 경우에는 대부분 절대경로를 사용하는 것을 추천한다. 이는 해당 상황에 따라서 다르긴 하지만 절대경로로 작성하는 것이 실수를 줄일 수 있는 좋은 방법이 된다. 
 
 
 
