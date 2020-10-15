@@ -97,7 +97,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 ![](https://phoenixnap.com/kb/wp-content/uploads/2019/01/hypervisor.png)
 
-​	서버 가상화의 종류는 크게 2가지로 분류된다. 첫번째 Type 1 hypervisor (native / bare-metal / 반가상화), 두번째 Type 2 hypervisor (hosted / Full virtualization / 전가상화)가 있다. 본격적으로 우리가 서버 가상화 종류을 이해하기 전에 반드시 숙지해야 할 부분이 있다. 
+​	서버 가상화의 종류는 크게 2가지로 분류된다. 첫 번째 Type 1 hypervisor (native / bare-metal / 반가상화), 두 번째 Type 2 hypervisor (hosted / Full virtualization / 전가상화)가 있다. 본격적으로 우리가 서버 가상화 종류을 이해하기 전에 반드시 숙지해야 할 부분이 있다. 
 
 ​	우리가 일반적으로 운영체제를 설치하면 설치된 운영체제가 커널을 통해 하드웨어를 제어하게 되는데,  하이퍼바이저의 자체에서는 하드웨어를 제어할 수 없기때문에 Dom0 (Domain 0)라는 관리 머신이 함께 동작한다. Dom0는 하드웨어에 접근할 수 있는 특별한 권한을 가지고 있고 디바이스 드라이버 역시 포함되어 있다. 즉 하이퍼바이저에서는 Dom0가 없이는 동작할 수 없다. 따라서 Dom0가 얼마나 많은 역할을 담당하는지에 따라 가상화의 종류가 결정된다. 이와 별개로 DomU (Domain U)는 하드웨어에 직접 접근할 수 있는 권한이 없는 비특권 도메인으로 가상 디스크나 네트워크 접근에 대한 부분을 관리한다. 만약 DomU가 실질적으로 물리 하드웨어에 동작을 원한다면 반드시 Dom0와 통신해야 한다. 
 
@@ -167,7 +167,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 * **namespace** 
 
-  * 하이퍼바이저에서는 게스트 머신이 독립적인 공간을 제공하고 서로 충돌이 나지 않도록 관리하는 기능을 가지고 있는데, 리눅스 커널에는 namespace가 동일한 역할을 담당한다. 리눅스 커널에는 9가지의 namespace가 제공되고 있는데 살펴보면 다음과 같다. 
+  * 하이퍼바이저에서는 게스트 머신이 독립적인 공간을 제공하고 서로 충돌이 나지 않도록 관리하는 기능을 가지고 있는데, 리눅스 커널에는 namespace가 동일한 역할을 담당한다. 리눅스 커널에는 8가지의 namespace가 제공되고 있는데 살펴보면 다음과 같다. 
 
     * mnt (파일시스템 마운트): 호스트 파일시스템에 구애받지 않고 독립적으로 파일시스템을 마운트하거나 언마운트 가능
     * pid (프로세스): 독립적인 프로세스 공간을 할당
@@ -175,7 +175,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
     * ipc (SystemV IPC): 프로세스간의 독립적인 통신통로 할당
     * uts (hostname): 독립적인 hostname 할당
     * user (UID): 독립적인 사용자 할당
-    * UTS / Time Namespace : 독립적인 시스템 시간할당 및 서로 다른 호스트 및 도메일 이름 할당 
+    * Time Namespace : 독립적인 시스템 시간할당
     * Control group (cgroup) Namespace : 자신이 속한 cgroup의 그룹의 상대적인 경로 제공
 
     ![](https://camo.githubusercontent.com/4e774a08fa4f0f63694906362b26b099e848d37d/68747470733a2f2f74686570726163746963616c6465762e73332e616d617a6f6e6177732e636f6d2f692f37353862387379676a6a6976797164703074687a2e706e67)
@@ -1202,7 +1202,7 @@ drwx------   4 seongwon  staff    128 10  9 16:35 pg_multixac
 
 실제 로컬 컴퓨터에 postgresql를 사용하기 위한 데이터가 저장되어 있는 것을 확인할 수 있다. 이 상태에서 위와 동일한 방법으로 진행하면 컨테이너 내부에서 변경된 모든 데이터는 해당 디렉토리가 삭제되지 않는 이상 사라지지 않으며, 설정파일을 직접 수정하여 적용할 수도 있다. 이러한 특성을 살려서 CIFS나 NFS를 통한 외부 스토리지에 저장하여 데이터를 저장하는 방식을 채택할 수 있다. 
 
-​	리눅스의 경우 해당 디렉토리에 퍼미션 불가로 접속이 되지 않을 수도 있다. 이 경우 root 권한으로 접속해서 볼 수 있으며, 만약 디렉토리를 만들었음에도 불구하고 데이터가 저장되지 않거나 컨테이너가 재대로 실행되지 않은 경우, 소유자 권한 오류로 인해서 docker 컨테이너가 해당 디렉토리에 접근하지 못할 가능성이 크다. 따라서 이런 에러가 발생하는 경우에는 소유자 권한을 변경하면 정상적으로 사용할 수 있다. 
+​	리눅스의 경우 해당 디렉토리에 퍼미션으로 인해 접속이 되지 않을 수도 있다. 이 경우 root 권한으로 접속해서 볼 수 있으며, 만약 디렉토리를 만들었음에도 불구하고 데이터가 저장되지 않거나 컨테이너가 재대로 실행되지 않은 경우, 소유자 권한 오류로 인해서 docker 컨테이너가 해당 디렉토리에 접근하지 못할 가능성이 크다. 따라서 이런 에러가 발생하는 경우에는 소유자 권한을 변경하면 정상적으로 사용할 수 있다. 
 
 ```bash
 $ sudo chown 200:200 some_dir 
@@ -1216,49 +1216,269 @@ $ sudo chown 200:200 some_dir
 
 ### What is Dockerfile ? 
 
+​	Dockerfile은 Docker image를 만들기 위한 설정 파일로, 아래에서 설명할 여러 명령어를 통해 작성하면 image를 만들어서 Docker Hub에 업로드 할 수 있다. 따라서 이미지가 어떻게 만들어지고 어떠하나 특성을 가지고 있는지 알고 싶다면 Dockerfile을 해석할 수 있다는 뜻이 된다. 
+
+
+
 #### FROM 
+
+* Docker image를 만드는데 필요한 가장 기본인 베이스 이미지를 지정하는 부분이다. 
+
+  ```dockerfile
+  FROM ubuntu:20.04
+  ```
 
 #### LABEL 
 
+* Dockerfile를 작성한 개발자의 정보를 작성한다. 기존 명령어인 MAINTAINER와 동일한 역할을 담당한다. 
+
+  ```dockerfile
+  LABEL soengwon "seongwon@edu.hanabt.ac.kr"
+  ```
+
 #### ARG 
+
+* Dockerfile을 빌드할 때, 설정할 수 있는 옵션을 지정한다. 
+
+  ```dockerfile
+  ARG DEBIAN_FRONTEND=noninteractive
+  ```
 
 #### WORKDIR 
 
+* 작업 디렉토리를 설정한다.  설정된 디렉터리가 없으면 새로 생성하고, 해당 디렉터리를 기분으로 동작한다. 
+
+  ```dockerfile
+  WORKDIR /var/www/html
+  ```
+
 #### RUN 
+
+* 이미지를 생성할 때 실행할 명령어 혹은 코드를 지정한다. 파일권한을 변경하거나 패키지를 추가하는 경우에 많이 사용한다. 
+
+  ```dockerfile
+  RUN apt-get install -y --no-install-recommends apt-utils build-essential
+  ```
 
 #### ENV 
 
+* 이미지에서 사용할 환경변수를 지정한다. 
+
+  ```dockerfile
+  ENV TZ=Asia/Seoul
+  ```
+
 #### COPY 
+
+* 이미지를 생성할 때, 외부에서 파일을 이미지로 가져오기 위해 사용한다. 호스트에 설정된 퍼미션과 동일하게 복사한다. 
+
+  ```dockerfile
+  COPY ./pages /usr/local/apache2/htdocs/
+  ```
+
+#### ADD
+
+* COPY와 비슷하게 파일을 이미지로 가져오기 위해 사용하지만, 압축파일인 경우 압축을 해제하고 파일 퍼미션이 지정되어 있다. 
+
+  ```dockerfile
+  ADD ./pages /usr/local/apache2/htdocs/
+  ```
 
 #### EXPOSE 
 
+* 호스트와 연결할 기본 포트를 지정한다. 
+
+  ```dockerfile
+  EXPOSE 80
+  ```
+
 #### CMD 
+
+* 컨테이너를 시작할 때, 어떻게 실행되어야 하는지 정의한다. Dockerfile에서 한번만 사용이 가능하다. 
+
+  ```dockerfile
+  CMD ["echo", "hello"]
+  ```
 
 #### ENTRYPOINT 
 
+* CMD와 동일하게 컨테이너를 실핼할 때, 어떻게 실행해야 하는지에 대한 정의를 잠당한다. 단, CMD와 같이 사용할 경우 ENTRYPOINT는 실행파일, CMD는 매개변수 역할을 담당한다.
 
+  ```dockerfile
+  ENTRYPOINT ["echo"]
+  CMD ["hello"]
+  ```
+
+  
 
 ### Dockerfile 이미지 만들기
 
+​	위에서 학습한 내용을 기반으로 간단하게 Dockerfile를 만들고 실습하도록 한다. 다음과 같은 Dockerfile를 작성한다. 
+
+```dockerfile
+FROM ubuntu:latest
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+
+ENV TZ=Asia/Seoul
+
+RUN apt-get update && apt-get upgrade -y
+RUN echo "HELLO, Dockerfile!?" >> /hello-docker.txt
+
+CMD ["cat", "/hello-docker.txt"]
+```
+
 #### docker build 
+
+​	다음 명령을 통해서 이미지를 생성한다. -t 옵션을 통해 출력할 이미지 이름을 지정할 수 있으며, -f 옵션을 통해 변경된 Dockerfile의 이름을 지정할 수 있다. 
+
+```bash
+$ docker build -t hello-dockerfile .
+
+Sending build context to Docker daemon  6.153GB
+Step 1/6 : FROM ubuntu:latest
+ ---> 9140108b62dc
+Step 2/6 : LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+ ---> Using cache
+ ---> 8a9a196890da
+Step 3/6 : ENV TZ=Asia/Seoul
+ ---> Using cache
+ ---> 349e95d740ad
+Step 4/6 : RUN apt-get update && apt-get upgrade -y
+ ---> Using cache
+ ---> 4e978ede2375
+Step 5/6 : RUN echo "HELLO, Dockerfile!?" >> /hello-docker.txt
+ ---> Running in 552ba7ce92b2
+Removing intermediate container 552ba7ce92b2
+ ---> dd0d83a50fed
+Step 6/6 : CMD ["cat", "/hello-docker.txt"]
+ ---> Running in bebc9163ad0f
+Removing intermediate container bebc9163ad0f
+ ---> a51fc98ccab7
+Successfully built a51fc98ccab7
+Successfully tagged hello-dockerfile:latest
+```
+
+```bash
+$ docker run hello-dockerfile
+HELLO, Dockerfile!?
+```
 
 #### docker tag
 
+​	tag 옵션을 통해 이미지의 이름과 버전을 지정할 수 있다. Docker Hub에 이미지를 업로드 하기 위해서는 반드시 tag 옵션을 통해 ID를 작성해 주어야 하며, 사설 레파지토리를 사용하는 경우에는 레파지토리 주소 등의 정보도 추가로 작성해야 한다. 
+
+```bash
+$ docker tag hello-dockerfile jusk2/hello-dockerfile
+$ docker tag hello-dockerfile jusk2/hello-dockerfile:v1.0
+
+$ docker images
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+jusk2/hello-dockerfile   latest              a51fc98ccab7        6 minutes ago       102MB
+jusk2/hello-dockerfile   v1.0                a51fc98ccab7        6 minutes ago       102MB
+hello-dockerfile         latest              a51fc98ccab7        6 minutes ago       102MB
+```
+
+tag에 버전을 지정하지 않은 경우에는 자동으로 latest가 붙는것을 확인할 수 있으며, 이미지 이름만 다르고 참조하는 IMAGE ID는 동일한 것을 확인할 수 있다. 
+
 #### docker push 
 
+​	Docker Hub에 우리가 만든 첫번째 Docker 이미지를 업로드 한다. 이때 반드시 Docker Hub에 로그인이 되어 있어야 한다. 
 
+```bash
+$ docker push hello-dockerfile
+The push refers to repository [docker.io/library/hello-dockerfile]
+9b938c0f6241: Preparing
+0f28eeeea31b: Preparing
+782f5f011dda: Preparing
+90ac32a0d9ab: Preparing
+d42a4fdf4b2a: Preparing
+denied: requested access to the resource is denied
+```
+
+​	위와 같이 태그를 지정하지 않은 상태로 업로드 하는 경우 업로드 절차가 거부되는 것을 확인할 수 있다. 따라서 tag를 지정한 이미지로 업로드를 시도한다. 
+
+```bash
+$ docker push jusk2/hello-dockerfile
+The push refers to repository [docker.io/jusk2/hello-dockerfile]
+9b938c0f6241: Pushed
+0f28eeeea31b: Pushed
+d42a4fdf4b2a: Pushed
+latest: digest: sha256:07e2f3ad3ff1d0ff9b3e9a0bc482bcabcf68b2786cbb47f0947229f070b74d24 size: 1362
+
+$ docker push jusk2/hello-dockerfile:v1.0
+The push refers to repository [docker.io/jusk2/hello-dockerfile]
+9b938c0f6241: Layer already exists
+0f28eeeea31b: Layer already exists
+782f5f011dda: Layer already exists
+90ac32a0d9ab: Layer already exists
+d42a4fdf4b2a: Layer already exists
+v1.0: digest: sha256:07e2f3ad3ff1d0ff9b3e9a0bc482bcabcf68b2786cbb47f0947229f070b74d24 size: 1362
+```
+
+​	업로드가 완료되고 Docker Hub의 레파지토리 항목을 살펴보면 방금 우리가 업로드한 이미지 리스트를 확인할 수 있다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/10.png?raw=true)
+
+이제 다른사람도 우리가 만든 이미지를 실행할 수 있으며, 추후 레파지토리를 삭제하고 싶다면 Settings -> Delete Repository 항목을 클릭하여 삭제한다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/11.png?raw=true)
+
+ 
 
 ## Docker backup & restore
 
-
+​	Docker를 사용하다보면 해당 이미지 혹은 컨테이너를 직접 백업하고 복구하는 상황이 생길 수 있다. 이때는 다음과 같은 명령을 통해서 시도할 수 있다. 
 
 ### docker export 
 
+​	컨테이너를 출력하는 명령이다. 
+
+```bash
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
+f70cd32010d3        hello-dockerfile    "cat /hello-docker.t…"   29 minutes ago      Exited (0) 29 minutes ago                       
+
+$ docker export f70cd32010d3 > ./hello-dockerfile.tar # 컨테이너 ID 혹은 이름으로 지정
+```
+
 ### docker import 
+
+​	출력된 컨테이너를 복구하는 명령이다. 반드시 export된 컨테이너만 사용할 수 있다. 
+
+```bash
+$ docker import hello-dockerfile.tar dockerfile
+sha256:81997a2091ba3eeebf40e744c7f0eb2113219b3e0e7f0b6d35e3494125b24d76
+
+$ ocker images
+REPOSITORY               TAG                 IMAGE ID            CREATED              SIZE
+dockerfile               latest              81997a2091ba        About a minute ago   98.8MB
+```
 
 ### docker save 
 
+​	Docker 이미지를 출력하는 명령어이다. 
+
+```
+$ docker save -o hello-dockerfile.tar jusk2/hello-dockerfile
+
+$ ls -l 
+-rw-------   1 seongwon  staff  104734720 10 15 17:45 hello-dockerfile-image.tar
+```
+
 ### docker load 
+
+​	추출된 이미지를 로드하는 명령이다. 반드시 save된 이미지만 사용할 수 있다. 
+
+```bash
+$ docker load -i hello-dockerfile-image.tar
+Loaded image: jusk2/hello-dockerfile:latest
+Loaded image: jusk2/hello-dockerfile:v1.0
+```
+
+
+
+​	간단한 명령어 같이 보이지만 자세히 보면 차이가 분명히 존재하는 다른 명령어이다. export의 경우 컨테이너를 동작하기 위한 모든 파일이 압축되기 때문에 tar 파일에는 루트 시스템 전체가 담겨있다. 하지만 save의 경우 이미지 레이어 구조까지 포함된 형태로 압축되기 때문에 출력된 파일이 tar로 동일하더라도 압축되어 있는 파일 구조 및 디렉터리 형식이 다르기 때문에 export -> import, save -> load를 사용해서 이미지화 시켜야 한다. 
 
 
 
