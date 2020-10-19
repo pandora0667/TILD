@@ -1476,33 +1476,818 @@ Loaded image: jusk2/hello-dockerfile:latest
 Loaded image: jusk2/hello-dockerfile:v1.0
 ```
 
-
-
-​	간단한 명령어 같이 보이지만 자세히 보면 차이가 분명히 존재하는 다른 명령어이다. export의 경우 컨테이너를 동작하기 위한 모든 파일이 압축되기 때문에 tar 파일에는 루트 시스템 전체가 담겨있다. 하지만 save의 경우 이미지 레이어 구조까지 포함된 형태로 압축되기 때문에 출력된 파일이 tar로 동일하더라도 압축되어 있는 파일 구조 및 디렉터리 형식이 다르기 때문에 export -> import, save -> load를 사용해서 이미지화 시켜야 한다. 
+​	동일한 명령어 같이 보이지만 자세히 보면 차이가 분명히 존재하는 다른 명령어이다. export의 경우 컨테이너를 동작하기 위한 모든 파일이 압축되기 때문에 tar 파일에는 루트 시스템 전체가 담겨있다. 하지만 save의 경우 이미지 레이어 구조까지 포함된 형태로 압축되기 때문에 출력된 파일이 tar로 동일하더라도, 압축되어 있는 파일 구조 및 디렉터리 형식이 다르기 때문에 export -> import, save -> load를 사용해서 이미지화 시켜야 한다. 
 
 
 
 ## 실전 연습 - Dockerfile로 이미지 만들고 push 하기 
 
-
+​	위에서 학습한 내용을 가지고 Dockerfile을 작성하고 실습을 진행하도록 한다. 프로그래밍 언어별로 예제를 만들어 보았으니, 확인후 테스트 하길 바란다. 
 
 ### Simple Web Application with bootstrap
 
+​	간단한 방법으로 정적 웹페이지를 만들어보는 실습을 진행한다. 
 
+```bash
+$ mkdir docker-bootstrap && cd docker-bootstrap
+$ git clone https://github.com/ThemesGuide/bootstrap-themes.git 
+$ mv bootstrap-themes pages
+```
+
+```bash
+$ vi Dockerfile
+```
+
+```dockerfile
+FROM nginx
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr" 
+
+COPY ./pages /usr/share/nginx/html/
+
+EXPOSE 80
+```
+
+```bash
+$ docker build -t docker-bootstrap .
+Sending build context to Docker daemon   11.9MB
+Step 1/4 : FROM nginx
+ ---> f35646e83998
+Step 2/4 : LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+ ---> Using cache
+ ---> f6e36ac93db1
+Step 3/4 : COPY ./pages /usr/share/nginx/html/
+ ---> c32e14339e3d
+Step 4/4 : EXPOSE 80
+ ---> Running in be90cdf042bf
+Removing intermediate container be90cdf042bf
+ ---> 5fdbe8eb682b
+Successfully built 5fdbe8eb682b
+Successfully tagged docker-bootstrap:latest
+```
+
+```bash
+$ docker run -p 8080:80 docker-bootstrap
+```
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/12.png?raw=true)
 
 ### Node.js Application
+
+​	Node.js를 활용한 Dockerfle을 실습한다. 간단하게 express 모듈을 사용하며, 이번시간에는 .dockerignroe 사용법에 대해서도 알아본다. 
+
+```bash
+$ mkdir docker-node && cd docker-node
+```
+
+```bash
+$ npm init
+
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (docker-node)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to /Users/seongwon/Developments/docker-node/package.json:
+
+{
+  "name": "docker-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes)
+```
+
+```bash
+$ npm install express
+```
+
+```bash
+$ vi server.js 
+```
+
+```javascript
+'use strict';
+
+const express = require('express');
+
+// Constants
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
+// App
+const app = express();
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
+```
+
+```bash
+$ vi .dockerignore # .gitignore와 같이 docker 컨테이너 내부에 불필요한 파일을 넣지 않는 개념이다. 
+```
+
+```
+node_modules
+package-lock.json
+```
+
+```bash
+$ vi Dockerfle
+```
+
+```dockerfile
+FROM node 
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+
+WORKDIR /usr/src/app 
+COPY . . 
+
+RUN npm i
+EXPOSE 8080
+
+CMD [ "node", "server.js" ]
+```
+
+```bash
+$ docker build -t docker-node .
+
+Sending build context to Docker daemon   5.12kB
+Step 1/7 : FROM node
+latest: Pulling from library/node
+0400ac8f7460: Pull complete
+fa8559aa5ebb: Pull complete
+da32bfbbc3ba: Pull complete
+e1dc6725529d: Pull complete
+572866ab72a6: Pull complete
+63ee7d0b743d: Pull complete
+186392ceaa5e: Pull complete
+d5c847b5cd3f: Pull complete
+98b00e0a6a07: Pull complete
+Digest: sha256:4f0cb30bfe9cd1e1603d29a4058000d580f6137d412758e759d0931334c8a779
+Status: Downloaded newer image for node:latest
+ ---> 63dd52d64251
+Step 2/7 : LABEL seongwon="seongwon@edu.hanbat.ac.kr"
+ ---> Running in a951d3c52a22
+Removing intermediate container a951d3c52a22
+ ---> bce473a916da
+Step 3/7 : WORKDIR /usr/src/app
+ ---> Running in 87998c67c484
+Removing intermediate container 87998c67c484
+ ---> b6be641a03dc
+Step 4/7 : COPY . .
+ ---> ae43844e209a
+Step 5/7 : RUN npm i
+ ---> Running in a72ae14bba7f
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN docker-node@1.0.0 No description
+npm WARN docker-node@1.0.0 No repository field.
+
+added 50 packages from 37 contributors and audited 50 packages in 1.618s
+found 0 vulnerabilities
+
+Removing intermediate container a72ae14bba7f
+ ---> 865a70e95827
+Step 6/7 : EXPOSE 8080
+ ---> Running in 2d95ec83ac14
+Removing intermediate container 2d95ec83ac14
+ ---> 59a6c79aa2e7
+Step 7/7 : CMD [ "node", "server.js" ]
+ ---> Running in 4278d31568a2
+Removing intermediate container 4278d31568a2
+ ---> 465e25b11390
+Successfully built 465e25b11390
+Successfully tagged docker-node:latest
+```
+
+```bash
+$ docker run -p 8080:8080 docker-node
+Running on http://0.0.0.0:8080
+```
+
+​	curl 명령을 통해서 작성한 애플리케이션이 정상적으로 동작하는지 확인한다. 
+
+```bash
+$ curl -i localhost:8080
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 11
+ETag: W/"b-Ck1VqNd45QIvq3AZd8XYQLvEhtA"
+Date: Mon, 19 Oct 2020 07:28:50 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+Hello World
+```
 
 
 
 ### Java Application 
 
+​	Java를 활용한 애플리케이션을 활용해 본다. 다음 Github에 올라와 있는 Spring Boot app을 활용한다. 
+
+```bash
+$ mkdir docker-java && cd docker-java
+$ git clone https://github.com/spring-guides/gs-spring-boot-docker.git
+$ cd gs-spring-boot-docker/complete
+```
+
+```bash
+$ ./gradlew build && java -jar build/libs/gs-spring-boot-docker-0.1.0.jar
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/6.3/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 3s
+5 actionable tasks: 5 executed
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.0.RELEASE)
+
+2020-10-19 17:52:38.898  INFO 45271 --- [           main] hello.Application                        : Starting Application on MacBook-Pro.localdomain with PID 45271 (/Users/seongwon/Developments/docker-java/gs-spring-boot-docker/complete/build/libs/gs-spring-boot-docker-0.1.0.jar started by seongwon in /Users/seongwon/Developments/docker-java/gs-spring-boot-docker/complete)
+2020-10-19 17:52:38.900  INFO 45271 --- [           main] hello.Application                        : No active profile set, falling back to default profiles: default
+2020-10-19 17:52:39.722  INFO 45271 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-10-19 17:52:39.732  INFO 45271 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-19 17:52:39.733  INFO 45271 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-10-19 17:52:39.793  INFO 45271 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-19 17:52:39.793  INFO 45271 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 849 ms
+2020-10-19 17:52:39.925  INFO 45271 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-19 17:52:40.050  INFO 45271 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-10-19 17:52:40.058  INFO 45271 --- [           main] hello.Application                        : Started Application in 1.513 seconds (JVM running for 1.854)
+
+```
+
+```bash
+$ vi Dockfile 
+```
+
+```dockerfile
+FROM openjdk:11
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+WORKDIR /home/java
+COPY build/libs/gs-spring-boot-docker-0.1.0.jar ./
+
+ENTRYPOINT [ "java", "-jar", "gs-spring-boot-docker-0.1.0.jar" ]
+```
+
+```bash
+$ docker build -t docker-java .
+
+Sending build context to Docker daemon     17MB
+Step 1/7 : FROM openjdk:11
+11: Pulling from library/openjdk
+e4c3d3e4f7b0: Pull complete
+101c41d0463b: Pull complete
+8275efcd805f: Pull complete
+751620502a7a: Pull complete
+a59da3a7d0e7: Pull complete
+9c0f1dffe039: Pull complete
+c886bd27ecb8: Pull complete
+Digest: sha256:39ee7e36598d82b92417accd23f3a619dde7a0e3c9a936131e1dad15ff9339a0
+Status: Downloaded newer image for openjdk:11
+ ---> 5c6e71a989bc
+Step 2/7 : LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+ ---> Running in 7f63fa647c5f
+Removing intermediate container 7f63fa647c5f
+ ---> 430ead8715bd
+Step 3/7 : ENV TZ=Asia/Seoul
+ ---> Running in 9a9d995d5582
+Removing intermediate container 9a9d995d5582
+ ---> 8f0e1f6fe5b0
+Step 4/7 : RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ ---> Running in 806b8fbaea03
+Removing intermediate container 806b8fbaea03
+ ---> 06f06d7d9976
+Step 5/7 : WORKDIR /home/java
+ ---> Running in 3a78c37b05b7
+Removing intermediate container 3a78c37b05b7
+ ---> 47aa9cc2bf8d
+Step 6/7 : COPY build/libs/gs-spring-boot-docker-0.1.0.jar ./
+ ---> 7b35e12100b6
+Step 7/7 : ENTRYPOINT [ "java", "-jar", "gs-spring-boot-docker-0.1.0.jar" ]
+ ---> Running in 6199b5b303cc
+Removing intermediate container 6199b5b303cc
+ ---> 89ed1496bbd3
+Successfully built 89ed1496bbd3
+Successfully tagged docker-java:latest
+```
+
+```bash
+$ docker run -p 8080:8080 docker-java
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.0.RELEASE)
+
+2020-10-19 18:01:40.891  INFO 1 --- [           main] hello.Application                        : Starting Application on 5d9eb2b47818 with PID 1 (/home/java/gs-spring-boot-docker-0.1.0.jar started by root in /home/java)
+2020-10-19 18:01:40.894  INFO 1 --- [           main] hello.Application                        : No active profile set, falling back to default profiles: default
+2020-10-19 18:01:42.105  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-10-19 18:01:42.122  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-19 18:01:42.123  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-10-19 18:01:42.212  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-19 18:01:42.212  INFO 1 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1246 ms
+2020-10-19 18:01:42.414  INFO 1 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-19 18:01:42.623  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-10-19 18:01:42.639  INFO 1 --- [           main] hello.Application                        : Started Application in 2.504 seconds (JVM running for 3.113)
+2020-10-19 18:01:50.107  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-19 18:01:50.108  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-19 18:01:50.119  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
+```
+
+```bash
+$ curl -i localhost:8080
+HTTP/1.1 200
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 18
+Date: Mon, 19 Oct 2020 08:49:31 GMT
+
+Hello Docker World
+```
+
 
 
 ### Python Application 
 
+​	Python과 Flask 웹 프레임워크를 활용한다. 
+
+```bash
+$ mkdir docker-python && cd docker-python
+```
+
+```bash
+$ vi index.py
+```
+
+```python
+from flask import Flask
+app = Flask(__name__)
+@app.route("/")
+def hello():
+    return "Hello World!"
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int("8080"), debug=True)
+```
+
+```bash
+$ vi requirements.txt
+```
+
+```
+flask
+```
+
+```bash
+$ vi Dockerfile
+```
+
+```dockerfile
+FROM python:alpine3.7
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr" 
+
+COPY . /app
+WORKDIR /app
+
+RUN pip install -r requirements.txt
+
+EXPOSE 8080
+
+ENTRYPOINT ["python", "./index.py"]
+```
+
+```bash
+$ docker build -t docker-python .
+
+Sending build context to Docker daemon  4.096kB
+Step 1/6 : FROM python:alpine3.7
+ ---> 00be2573e9f7
+Step 2/6 : COPY . /app
+ ---> fdde84888dc3
+Step 3/6 : WORKDIR /app
+ ---> Running in c33df763ae54
+Removing intermediate container c33df763ae54
+ ---> 57050851eb29
+Step 4/6 : RUN pip install -r requirements.txt
+ ---> Running in d4ad31c654e9
+Collecting flask (from -r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/f2/28/2a03252dfb9ebf377f40fba6a7841b47083260bf8bd8e737b0c6952df83f/Flask-1.1.2-py2.py3-none-any.whl (94kB)
+Collecting itsdangerous>=0.24 (from flask->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting Werkzeug>=0.15 (from flask->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/cc/94/5f7079a0e00bd6863ef8f1da638721e9da21e5bacee597595b318f71d62e/Werkzeug-1.0.1-py2.py3-none-any.whl (298kB)
+Collecting click>=5.1 (from flask->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/d2/3d/fa76db83bf75c4f8d338c2fd15c8d33fdd7ad23a9b5e57eb6c5de26b430e/click-7.1.2-py2.py3-none-any.whl (82kB)
+Collecting Jinja2>=2.10.1 (from flask->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl (125kB)
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.10.1->flask->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz
+Building wheels for collected packages: MarkupSafe
+  Building wheel for MarkupSafe (setup.py): started
+  Building wheel for MarkupSafe (setup.py): finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/f2/aa/04/0edf07a1b8a5f5f1aed7580fffb69ce8972edc16a505916a77
+Successfully built MarkupSafe
+Installing collected packages: itsdangerous, Werkzeug, click, MarkupSafe, Jinja2, flask
+Successfully installed Jinja2-2.11.2 MarkupSafe-1.1.1 Werkzeug-1.0.1 click-7.1.2 flask-1.1.2 itsdangerous-1.1.0
+You are using pip version 19.0.1, however version 20.2.4 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Removing intermediate container d4ad31c654e9
+ ---> 2819e764d9c7
+Step 5/6 : EXPOSE 8080
+ ---> Running in 62f4791e581d
+Removing intermediate container 62f4791e581d
+ ---> 959fdc237935
+Step 6/6 : ENTRYPOINT ["python", "./index.py"]
+ ---> Running in dc2393711848
+Removing intermediate container dc2393711848
+ ---> a18af47e5523
+Successfully built a18af47e5523
+Successfully tagged docker-python:latest
+```
+
+```
+$ docker run -p 8080:8080 docker-python
+ * Serving Flask app "index" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 126-087-675
+172.17.0.1 - - [19/Oct/2020 09:26:03] "GET / HTTP/1.1" 200 -
+```
+
+```bash
+$ curl -i localhost:8080
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 12
+Server: Werkzeug/1.0.1 Python/3.7.2
+Date: Mon, 19 Oct 2020 09:40:04 GMT
+
+Hello World!
+```
+
+
+
+### Golang
+
+​	golang을 이용한 간단한 애플리케이션을 제작한다. 
+
+```bash
+$ mkdir docker-golang && cd docker-golang
+$ go mod init github.com/callicoder/go-docker
+$ vi hello-server.go
+```
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/gorilla/mux"
+	"gopkg.in/natefinch/lumberjack.v2"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	name := query.Get("name")
+	if name == "" {
+		name = "Guest"
+	}
+	log.Printf("Received request for %s\n", name)
+	w.Write([]byte(fmt.Sprintf("Hello, %s\n", name)))
+}
+
+func main() {
+	// Create Server and Route Handlers
+	r := mux.NewRouter()
+
+	r.HandleFunc("/", handler)
+
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8080",
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	// Configure Logging
+	LOG_FILE_LOCATION := os.Getenv("LOG_FILE_LOCATION")
+	if LOG_FILE_LOCATION != "" {
+		log.SetOutput(&lumberjack.Logger{
+			Filename:   LOG_FILE_LOCATION,
+			MaxSize:    500, // megabytes
+			MaxBackups: 3,
+			MaxAge:     28,   //days
+			Compress:   true, // disabled by default
+		})
+	}
+
+	// Start Server
+	go func() {
+		log.Println("Starting Server")
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	// Graceful Shutdown
+	waitForShutdown(srv)
+}
+
+func waitForShutdown(srv *http.Server) {
+	interruptChan := make(chan os.Signal, 1)
+	signal.Notify(interruptChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	// Block until we receive our signal.
+	<-interruptChan
+
+	// Create a deadline to wait for.
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	srv.Shutdown(ctx)
+
+	log.Println("Shutting down")
+	os.Exit(0)
+}
+```
+
+```bash
+$ vi Dockerfile
+```
+
+```dockerfile
+FROM golang:latest
+
+LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -o main .
+EXPOSE 8080
+
+CMD ["./main"]
+```
+
+```bash
+$ docker build -t docker-golang .
+
+Sending build context to Docker daemon  6.916MB
+Step 1/9 : FROM golang:latest
+ ---> 4a581cd6feb1
+Step 2/9 : LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+ ---> Using cache
+ ---> 7d2817c20034
+Step 3/9 : WORKDIR /app
+ ---> Running in e6f8a6564edd
+Removing intermediate container e6f8a6564edd
+ ---> 52376c8bdcb4
+Step 4/9 : COPY go.mod go.sum ./
+ ---> eb102f582199
+Step 5/9 : RUN go mod download
+ ---> Running in 54c8c8e696cf
+Removing intermediate container 54c8c8e696cf
+ ---> 39e6a02ad531
+Step 6/9 : COPY . .
+ ---> 031f3a552ea4
+Step 7/9 : RUN go build -o main .
+ ---> Running in a7b3a7177fed
+Removing intermediate container a7b3a7177fed
+ ---> eb7f92d87b8c
+Step 8/9 : EXPOSE 8080
+ ---> Running in 4304776a86c3
+Removing intermediate container 4304776a86c3
+ ---> 2b5ed649c02c
+Step 9/9 : CMD ["./main"]
+ ---> Running in 6a016be8d38b
+Removing intermediate container 6a016be8d38b
+ ---> cdeec6c7f5e7
+Successfully built cdeec6c7f5e7
+Successfully tagged docker-golang:latest
+```
+
+```bash
+$ docker run -p 8080:8080 docker-golang
+2020/10/19 09:51:34 Starting Server
+2020/10/19 09:52:04 Received request for Guest
+2020/10/19 09:52:05 Received request for lucas
+```
+
+```bash
+$ curl http://localhost:8080 
+Hello, Guest 
+
+$ curl http://localhost:8080?name=lucas
+Hello, lucas
+```
+
 
 
 ### Advanced Application 
+
+​	위에서 bootstrap을 이용한 정적 홈페이지 부터 시작하여, Node.js, Java, Python, Golang을 사용한 간단한 애플리케이션을 만들고 이를 Docker로 빌드하고 실행하는 실습을 진행하였다. 이번에는 조금더 디테일하게 기본 베이스 이미지을 가지고 실습을 진행하도록 하겠다. CMS (Contents Management System) 중에 하나인 XpressEngine을 가지고 실습하겠다.
+
+​	먼저 다음 링크를 통해 XpressEngine 홈페이지에 접속한다. 
+
+*  https://www.xpressengine.com/
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/13.png?raw=true)
+
+이후 제품 -> XpressEngine 3로 접속하여 XE3 파일을 다운로드 받는다. 
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/14.png?raw=true)
+
+홈페이지에서 직접 다운받기가 어렵거나 귀찮다면 다음 명령을 통해 다운로드 받는다. 
+
+```bash
+$ wget http://start.xpressengine.io/download/latest.zip
+
+--2020-10-19 19:14:49--  http://start.xpressengine.io/download/latest.zip
+Resolving start.xpressengine.io (start.xpressengine.io)... 222.239.166.120
+Connecting to start.xpressengine.io (start.xpressengine.io)|222.239.166.120|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 79678561 (76M) [application/zip]
+Saving to: ‘latest.zip’
+
+latest.zip                                 100%[======================================================================================>]  75.99M  11.1MB/s    in 6.9s
+
+2020-10-19 19:14:56 (11.0 MB/s) - ‘latest.zip’ saved [79678561/79678561]
+```
+
+​	디렉토리를 생성하고 다운로드한 파일을 이동한다.
+
+```bash
+$ mkdir docker-xe3 && mv latest.zip ./docker-xe3
+```
+
+```bash
+$ vi Dockerfile 
+```
+
+```dockerfile
+FROM ubuntu:18.04
+LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+
+# 컨테이너를 빌드할 때, 사용자 입력을 받을 수 없기 때문에 무시하고 진행하도록 설정한다. 
+ARG DEBIAN_FRONTEND=noninteractive 
+
+# 타임존을 한국으로 설정한다. 이를 설정하지 않으면 기본적으로 UTC 시간이 적용된다. 
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+WORKDIR /var/www/html
+
+# 필요한 필수 라이브러리를 다운받고 설치한다. 
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends apt-utils build-essential
+RUN apt-get install -y evince
+
+RUN apt-get upgrade -yq
+RUN apt-get install git wget unzip apache2 php7.2 php7.2-fpm \
+    php7.2-mysql libapache2-mod-php7.2 php7.2-curl php7.2-gd php7.2-json php7.2-xml php7.2-mbstring php7.2-zip -y
+
+# 다운로드 받은 XE3 파일을 해당 디렉토리로 이동 시키고, 압축을 풀고 중요 파일에 대한 퍼미션을 설정한다. 
+COPY ./latest.zip /var/www/html/
+RUN unzip latest.zip && chmod -R 707 storage/ bootstrap/ config/ vendor/ plugins/ index.php composer.phar
+
+# 필요하지 않은 파일을 삭제하고, apache2.conf 파일을 수정한다. 
+RUN rm -rf /var/www/html/latest.zip /var/www/html/index.html
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN service apache2 restart
+
+EXPOSE 80
+
+ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+```
+
+```bash
+$ docker build -t docker-xe3 .
+
+Sending build context to Docker daemon  79.68MB
+Step 1/18 : FROM ubuntu:18.04
+ ---> 56def654ec22
+Step 2/18 : LABEL seongwon "seongwon@edu.hanbat.ac.kr"
+ ---> Using cache
+ ---> cbbcbcea70de
+Step 3/18 : ARG DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> 0e4918918edb
+Step 4/18 : WORKDIR /var/www/html
+ ---> Using cache
+ ---> 082bd06492f6
+Step 5/18 : RUN apt-get update
+ ---> Using cache
+ ---> 745c6b211128
+Step 6/18 : RUN apt-get install -y --no-install-recommends apt-utils build-essential
+ ---> Using cache
+ ---> 6d559a213516
+Step 7/18 : RUN apt-get install -y evince
+ ---> Using cache
+ ---> a9e8b1f817d2
+Step 8/18 : ENV TZ=Asia/Seoul
+ ---> Using cache
+ ---> ce5eab33e3b5
+Step 9/18 : RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ ---> Using cache
+ ---> 72b66ee28633
+Step 10/18 : RUN apt-get upgrade -yq
+ ---> Using cache
+ ---> 84b6c62258d3
+Step 11/18 : RUN apt-get install git wget unzip apache2 php7.2 php7.2-fpm     php7.2-mysql libapache2-mod-php7.2 php7.2-curl php7.2-gd php7.2-json php7.2-xml php7.2-mbstring php7.2-zip -y
+ ---> Using cache
+ ---> 9f387ccafe72
+Step 12/18 : COPY ./latest.zip /var/www/html/
+ ---> Using cache
+ ---> 9c8e0f086478
+Step 13/18 : RUN unzip latest.zip && chmod -R 707 storage/ bootstrap/ config/ vendor/ plugins/ index.php composer.phar
+ ---> Using cache
+ ---> 113d76bbde65
+Step 14/18 : RUN rm -rf /var/www/html/latest.zip /var/www/html/index.html
+ ---> Using cache
+ ---> 001a20ec6fe8
+Step 15/18 : RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+ ---> Using cache
+ ---> 68d653ac3bcd
+Step 16/18 : RUN service apache2 restart
+ ---> Using cache
+ ---> 4ac5f2b62c46
+Step 17/18 : EXPOSE 80
+ ---> Using cache
+ ---> 35a6312732c8
+Step 18/18 : ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ ---> Using cache
+ ---> 07adddcc1b02
+Successfully built 07adddcc1b02
+Successfully tagged docker-xe3:latest
+```
+
+```bash
+$ docker run -p 8080:80 docker-xe3 
+```
+
+​	오류없이 실행이 완료되면 다음링크를 통해 접속하여 설치 화면이 뜨는지 확인한다. 
+
+* http://localhost:8080/index.php/install
+
+![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/15.png?raw=true)
+
+​	XpressEngine을 운영하기 위해서는 추가적으로 데이터베이스가 존재해야 하나, 현재는 데이터베이스를 구축하지 않았기 때문에 설치를 더이상 진행할 수 없다. 추후 Docker-Compose를 통해서 설치를 진행힌다. 지금까지 제작한 이미지를 Docker Hub에 업로드 하고 다음 실습을 준비한다. 
 
 
 
