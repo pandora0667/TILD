@@ -23,7 +23,7 @@
 
   * HTTP/HTTPS 프로토콜을 사용하여 웹 서버에 전달하는 과정을 거치게 됩니다. 
 
-  ![](https://pocasts.com/wp-content/uploads/2017/03/HTTP_definition_detail.png)
+  ![](https://www.cloudflare.com/img/learning/security/glossary/what-is-ssl/http-vs-https.svg)
 
   * HTTP 프로토콜은 서버와 클라이언트가 주고받는 메시지의 내용이자 순서를 정리하고 있습니다. 
 
