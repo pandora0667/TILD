@@ -2311,8 +2311,6 @@ $ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docke
 $ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-
-
 ### How to use Docker Compose ? 
 
 ​	실습을 정상적으로 진행하기 위해서 다음 명령을 통해 Docker Compose의 버전을 확인한다. 
@@ -2325,8 +2323,6 @@ docker-compose version 1.27.4, build 40524192
 ### Docker compose command 
 
 ​	몇 가지 Docker Compose 파일을 작성해 보고 내용을 실습하도록 하겠다. 모든 파일의 이름은 **docker-compose.yml**로 작성한다.
-
-
 
 #### version 
 
@@ -2474,150 +2470,240 @@ volumes:
   - ~/configs:/etc/configs/:ro
 ```
 
+#### docker-compose.yml 실행, 중지, 로그 확인하기
 
+​	위에서 만들어진 docker-compose.yml을 실행하고 중지하는 방법이다. 다음 명령을 실습하여 진행한다. 
 
-1.  **XpressEngine 3와 mariadb 연동하기** 
+```bash
+$ ls
+docker-compose.yml 
 
-   위에 고급 실습을 통해서  XpressEngine 3의 Dockerfile를 만들었고 정상적으로 실행하기 위한 데이터베이스 연결과정을 작성해 보도록 하겠다. 
+$ docker-compose up
+$ docker-compose up -d # 데몬으로 실행한다. 
 
-   ```yaml
-   version: '3.4' 
-   
-   services:
-     xpressengine:
-       image: jusk2/xpressengine
-       ports: 
-         - 10001:80
-       restart: always 
-     database:
-       image: mariadb
-       environment:  
-         MYSQL_ROOT_PASSWORD: 1q2w3e4r!!
-         MYSQL_DATABASE: xpress
-         MYSQL_USER: lucas
-         MYSQL_PASSWORD: 1q2w3e4r!!
-       ports:
-        - 3306:3306
-       restart: always
-       volumes:
-        - /mnt/swarm/mariadb:/var/lib/mysql
-   
-   ```
+$ docker-compose stop # docker-compose.yml로 실행된 모든 컨테이너 서비스를 중지한다. 
 
-2. **Docker Compose에서 이미지 직접 빌드하기**
-
-   이미 만들어진 이미지를 가지고 와서 실행하는 것이 아니라 프로젝트 파일 자체에 Dockerfile를 활용하여 이미지를 빌드하고 실행할 수 있는 구조로 작성할 수 있다. 
-
-   ```bash
-   $ git clone https://github.com/raccoonyy/django-sample-for-docker-compose.git
-   $ vi docker-compose.yml
-   ```
-
-   ```yaml
-   version: '3'
-   
-   volumes: 
-     postgres_data: {}
-   
-   services:
-     db:
-       image: postgres
-       volumes:
-         - postgres_data:/var/lib/postgres/data
-       environment:
-         - POSTGRES_DB=djangosample
-         - POSTGRES_USER=sampleuser
-         - POSTGRES_PASSWORD=samplesecret
-   
-     django:
-       build:	 
-         context: .
-         dockerfile: ./compose/django/Dockerfile-dev
-       volumes:
-         - ./:/app/
-       command: ["./manage.py", "runserver", "0:8000"]
-       environment:
-        - DJANGO_DB_HOST=db
-       depends_on: 
-         - db
-       restart: always
-       ports:
-         - 8000:8000
-   ```
-
-3. 오픈소스 프로그램 odoo docker-compose.yml 예제
-
-   ```yaml
-   version: '3'
-   services:
-     db:
-       container_name: postgresql-odoo13
-       image: postgres:11.6
-       environment:
-         - POSTGRES_PASSWORD=odoo
-         - POSTGRES_USER=odoo
-         - POSTGRES_DB=postgres
-       ports:
-         - "5432:5432"
-       volumes:
-           - ~/odoo/pgsql:/var/lib/postgresql/data
-       restart: always
-   
-     odoo13:
-       container_name: odoo13
-       image: odoo:latest
-       depends_on:
-         - db
-       ports:
-         - "8071:8069"
-       tty: true
-       command: -- --dev=reload
-       volumes:
-         - ~/odoo/addons:/mnt/extra-addons
-         - ~/odoo:/etc/odoo
-       restart: always
-       
-     pgadmin:
-       container_name: pgadmin-container
-       image: dpage/pgadmin4
-       environment:
-         - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
-         - PGADMIN_DEFAULT_PASSWORD=admin
-       depends_on:
-         - db
-       ports:
-         - "5550:80"
-   
-       restart: unless-stopped
-   ```
-
-   
-
-#### docker-compose up 
-
-#### docker-compose stop 
-
-#### docker-compose logs 
+$ docker-compose logs # docker-compose.yml로 정의된 컨테이너의 로그를 보여준다 
+$ docker-compose logs -f # 로그를 계속 보여준다. 
+```
 
 
 
 ## 실전연습 - Docker Compose 애플리케이션 배포하기
 
+​	위에서 docker-compose.yml 작성 방법에 대해 알아보았다. 이번 시간에는 실제 docker-compose.yml 파일을 작성하고 실행하여 서비스 동작 과정을 실습한다. 
+
+### XpressEngine 3와 mariadb 연동하기
+
+​	위에 고급 실습을 통해서  XpressEngine 3의 Dockerfile를 만들었고 정상적으로 실행하기 위한 데이터베이스 연결과정을 작성해 보도록 하겠다. 
+
+```yaml
+version: '3.4' 
+
+services:
+  xpressengine:
+    image: jusk2/xpressengine
+    ports: 
+      - 10001:80
+    restart: always 
+  database:
+    image: mariadb
+    environment:  
+      MYSQL_ROOT_PASSWORD: 1q2w3e4r!!
+      MYSQL_DATABASE: xpress
+      MYSQL_USER: lucas
+      MYSQL_PASSWORD: 1q2w3e4r!!
+    ports:
+     - 3306:3306
+    restart: always
+    volumes:
+     - /mnt/swarm/mariadb:/var/lib/mysql
+
+```
 
 
-## Container Cluster concept
+
+### Docker Compose에서 이미지 직접 빌드하기
+
+​	이미 만들어진 이미지를 가지고 와서 실행하는 것이 아니라 프로젝트 파일 자체에 Dockerfile를 활용하여 이미지를 빌드하고 실행할 수 있는 구조로 작성할 수 있다. 
+
+```bash
+$ git clone https://github.com/raccoonyy/django-sample-for-docker-compose.git
+$ vi docker-compose.yml
+```
+
+```yaml
+version: '3'
+
+volumes: 
+  postgres_data: {}
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+    environment:
+      - POSTGRES_DB=djangosample
+      - POSTGRES_USER=sampleuser
+      - POSTGRES_PASSWORD=samplesecret
+
+  django:
+    build:	 
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    volumes:
+      - ./:/app/
+    command: ["./manage.py", "runserver", "0:8000"]
+    environment:
+     - DJANGO_DB_HOST=db
+    depends_on: 
+      - db
+    restart: always
+    ports:
+      - 8000:8000
+```
 
 
 
-### docker swarm 
+### 오픈소스 프로그램 odoo docker-compose.yml 예제
+
+```yaml
+version: '3'
+services:
+  db:
+    container_name: postgresql-odoo13
+    image: postgres:11.6
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+        - ~/odoo/pgsql:/var/lib/postgresql/data
+    restart: always
+
+  odoo13:
+    container_name: odoo13
+    image: odoo:latest
+    depends_on:
+      - db
+    ports:
+      - "8071:8069"
+    tty: true
+    command: -- --dev=reload
+    volumes:
+      - ~/odoo/addons:/mnt/extra-addons
+      - ~/odoo:/etc/odoo
+    restart: always
+    
+  pgadmin:
+    container_name: pgadmin-container
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - db
+    ports:
+      - "5550:80"
+
+    restart: unless-stopped
+```
 
 
+
+## Container Orchestration concept
+
+​	먼저 오케스트레이션(server orchestration)이 무엇을 의미하는지 파악해야 한다. 오케스트레이션이란,  여러 서버와 서비스를 자동으로 관리해주는 작업이라고 생각하면 된다. 각 작업에는 스케줄링, 클러스터링, 서비스 디스커버리, 로깅, 모니터링과 같은 기능이 포함한다. 대표적인 3가지의 기능을 아래에서 서술한다. 
+
+
+
+* **스케줄링** 
+  * 컨테이너를 적당한 서버에 배포해 주는 역할을 담당합니다. 오케스트레이션 툴에 따라서 지원하는 기능이 조금씩 다르다고 할 수 있는데, 유휴상태인 서버에 배포하거나, 차례대로 배포 혹은 랜덤하게 배포할 수 있다. 
+  * 컨테이너의 수를 여러개로 나눠서 배포하고 컨테이너가 죽으면 즉시 컨테이너를 다른서버에 배포하여 서비스에 문제가 없도록 한다. 
+* **클러스터링**
+  * 여러개의 서버를 하나의 서버처럼 사용할 수 있도록 하는 기술이다. 클러스터에 새로운 서버를 추가하거나 제거할 수 있고, 네트워크를 통해 멀리 떨어져 있는 서버를 사용할 수 있으며, 적개는 몇대 부터 수천대의 서버를 클러스터로 묶어서 관리할 수 있다.
+* **서비스 디스커버리**
+  * 서비스를 찾아주는 기능으로서 클러스터 환경에서는 컨테이너가 어느 서버에 실행되는지 알 수 없고 컨테이너가 중지되면 IP나 Port 정보를 업데이트 하는 기능을 제공한다.
+
+ 
+
+​	이러한 서버 오케스트레이션은 설치와 관리가 어렵고 보통은 수백~수천개의 대규모의 서버를 관리하기 위한 목적으로 나왔기 때문에 도입시 많은 비용과 관리비가 추가적으로 들어가며,  장애가 생기면 전체 서버에 문제가 생길 수 있기 떄문에 도입에 상당히 조심 스러운 부분이 있었던 것이 사실이었다. 하지만 이러한 문제를 해결하기 위해서 여러대의 호스트 머신에서 여러개의 container를 실행하기 위해 네트워크와 호스트 리소스 등을 포함한 여러 문제를 해결해 주기 위해서 나온 것이 컨테이너 오케스트레이션이며 구축 비용이 거의 들지 않고 다양한 기능을 쉽게 그리고 가볍게 사용 할 수 있다는 장점이 있다. 
+
+​	다음 그림과 같이 수 많은 컨테이너 오케스트레이션 도구가 존재하지만 우리는 대표적으로 Docker Swarm과 Kubernetes의 대해서만 간략하게 알아보도록 한다. 
+
+
+
+![](https://subicura.com/assets/article_images/2017-02-25-container-orchestration-with-docker-swarm/orchestration-tools.png)
+
+
+
+### Docker Swarm
+
+![](https://subicura.com/assets/article_images/2017-02-25-container-orchestration-with-docker-swarm/swarmnado.gif)
+
+​	Docker Swarm은 Docker와 별도로 개발되었지만 1.12 버전 이후부터 통합되었다. Docker에 모든 것이 통합되어 있기 때문에 별도의 설치가 필요가 없고 바로 사용할 수 있기 때문에 설치 및 운영이 간단하고 대규모 확장에 유리하다. 단, 기능이 단순하기 때문에 세부적인 설정이 어렵다는 단점을 가지고 있으나 5000개의 컨테이너에서도 동작하는 안정성이 입증되어 있기 때문에 아직도 많이 사용하는 오케스트레이션이라고 할 수 있다. 
+
+​	일단 진도를 나가기 전에 용어에 대한 정리를 하고 진행하도록 한다. 
+
+|          용어          |                             내용                             |
+| :--------------------: | :----------------------------------------------------------: |
+|          Task          | 도커 컨테이너 또는 격리된 공간 안에서 실행되는 작업단위로, Swarm이 작업계획을 관리하는 최소 단위 |
+|        Service         | 사용자가 Docker Swarm에게 단위 업무를 할당하는 논리적인 단위, Swarm에 의해 Task로 분할되어 처리 |
+| Dockerized Host / Host |     Docker Engine이 탑재된 Virtual Machine이나 Baremetal     |
+|   Swarm Node / Node    |          Docker Engine이 Swarm mode로 동작하는 Host          |
+| Manager Node / Manager |     Swarm Node 중에서 Cluster 관리 역할을 수행하는 Node      |
+|  Worker Node / Worker  | Swarm Node 중에서 Container를 실행하여 실제 일을 처리하는 Node. 일부러 제외하지 않으면 모든 Node는 기본적으로 Worker가 됨 |
+
+
+
+
+
+
+
+![](https://17billion.github.io/images/docker_swarm/swarm-diagram.png)
+
+​	swarm은 도커를 실행하고 클러스터링에 join한 그룹으로, 이러한 그룹은  swarm manager 가 관리하며, swarm manager에 있는 머신은 물리 혹은 가상 머신일 수 있고, swarm에 가입하게 되면 node라고 부른다. swarm manager는 시스템 사용률이 가장 낮은 머신에게 컨테이너를 할당하는 “emptiest node"으로 동작하며, 혹은 “global”로 설정하게 되면 지정된 컨테이너의 인스턴스를 하나를 정확하게 가져오도록 할 수 있다. 
+
+​	swarm manager는 명령을 실행하고 worker가 swarm에 속하도록 관리할 수 있는 유일한 권한이 있으며  worker는  swarm manager의 통제하에 있기 때문에 어떠한 작업을 다른 worker에게 지시할 권한은 주어지지 않는다. 
 
 ### kubernetes 
 
+![img](https://i0.wp.com/softwareengineeringdaily.com/wp-content/uploads/2019/01/Kubernetes_New.png?resize=730%2C389&ssl=1)
+
+​	쿠버네티스는 컨테이너 기반의 오케스트레이션 플랫폼으로, 쿠버네티스의 뜻은  키잡이와 파일럿을 뜻하는 그리스어에서 유래되었으며, 이는 *governor*(통치자)와 cybernetic(인공두뇌학)의 어원이다. 쿠버네티스의 약자로 K8s라고 부르기도 하는데 이는 “ubernete” 8 글자를 “8”로 대체한 것이다. 이후 2017년을 기점으로 쿠버네티스는 업계 표준이라고 불릴 만큼 업계 트렌드로 자리 잡았다.
+
+![img](https://t1.daumcdn.net/cfile/tistory/990BE94D5AFEF4A20F)
+
+​	구글은 2014년에 쿠버네티스 프로젝트를 오픈소스로 공개했다. 근데 하나 의문점이 생긴다. Docker 컨테이너가 가장 인기 있으며, 컨테이너를 사용하는 이유를 앞서 계속해서 사용해 왔는데 현재의 트렌드는 Docker에서 공개한 Swarm 대신에 쿠버네티스를 사용하는 것 일까?
 
 
-### Container management tools 
+
+#### 쿠버네티스 등장 배경
+
+​	구글은 과거부터 자신의 서버 자원에 컨테이너 기술을 상용 환경에서 사용하고 있었으며, 이런 컨테이너 환경을 관리하기 위해서 2003년 수만 대의 머신으로 구성된 클러스터를 안정적으로 동작하기 위한 Google Borg 프로젝트를 시작했다. 초창기 Borg는 대규모 클러스터링 환경에서 Borg는 Workload를 관리하는 역할을 담당했다. 이는 OS가 프로세스를 관리하는 것과 유사하게 동작하였는데, OS가 여러 프로세스가 동작하는 과정에서 어떠한 시점에 프로세스를 활성화하고 리소스 부족 현상이 발생할 때 어떠한 프로레스를 멈추거나 죽이는 역할과 비슷하다.
+
+​	Borg위에 실행되는 애플리케이션이 많아지면서 구글의 직원들은 더 많은 기능을 요구하게 되었고 하나의 생태계를 구성하기까지 이르렀다. 애플리케이션의 자원 요구사항을 추적하고, 환경설정과 업데이트, service discovery, auto-scaliing과 같은 다양한 기능을 추가되었다. 하지만 이러한 다양한 기능이 추가됨에 사용자 입장에서는 몇 가지의 언어와 여러 프로세스 간의 상호작용을 이해하는 과정이 필요했기 때문에 다소 이질적이며, 임시적인 시스템이었다. 하지만 Borg는 규모나 기능이 다양하기 때문에 구글의 기본 컨테이너 관리시스템으로 남아있게 된다.
+
+​	이후 Omega라는 두 번째 컨테이너 관리 시스템이 만들어지게 되는데 Borg가 다양한 기능과 입증된 패턴들의 집합으로 구성되어 있다면 Omega는 Borg보다 일관되고 원칙적인 아키텍처를 가지기 위해서 탄생되었다. Omega가 하는 대표적인 역할은 낙관적 동시성 제어 (optimistic concurrency control)를 사용하여 스케줄링 시 때때로 발생되는 충돌을 처리하고, 트랜젝션 지향 저장소에 클러스터를 저장하는 구조를 채택하였다. 이는 모놀리식 기반의 중앙 집중식 마스터 방식으로 모든 변경사항을 처리하기보다 각 노드(피어)에게 역할을 분산시킴으로 효율적인 처리가 가능해졌다. 스케줄링 기법에서 많은 변화가 있었던 Omega는 추후 Borg 프로젝트에 흡수되었다.
+
+> 낙관적 동시성 제어 (optimistic concurrency control)
+>
+> 사용자들이 같은 데이터를 동시에 수정하지 않을 것이라고 가정하고 데이터를 읽을 때 Lock를 설정하지 않는 방식을 말한다.
+>
+> 하지만 사용자가 데이터가 잘못 갱신되도록 신경 쓰지 않는다는 의미는 아니며, 데이터를 수정할 때 앞서 읽은 데이터가 다른 사용자에 의해 변경되었는지를 반드시 검사해야 한다.
+
+​	이렇게 Borg프로젝트와 Omega프로젝트를 지나 쿠버네티스가 탄생한 계기가 되었다.
+
+
+
+
+
+## 마무리 
+
+​	지금까지 Docker를 사용하기 위한 기본 개념들에 대해서 정리하고 실습하는 시간을 했다. 앞으로 컨테이너는 더욱 활성화 될 것이며, 기본 개념은 앞으로의 큰 도움이 될 것이라 생각한다. 기타 수정사항이나 문의사항이 있으면 seongwon@edu.hanbat.ac.kr로 연락주길 바란다. 모두들 즐거운 코딩생활 되시길!! 
 
 
 
