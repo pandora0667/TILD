@@ -870,6 +870,8 @@ Removing login credentials for https://index.docker.io/v1/
 
 ### Nginx & httpd
 
+​	대중적으로 많이 사용하는 웹서버이다. 
+
 ```bash
 $ docker run -p 8080:80 -d nginx
 Unable to find image 'nginx:latest' locally
@@ -897,6 +899,8 @@ Status: Downloaded newer image for httpd:latest
 
 
 ### odoo 
+
+​	CRM, 전자 상거래, 청구, 회계, 제조, 창고, 프로젝트 관리 및 재고 관리를 포함한 비즈니스 관리 소프트웨어 도구 모음이다. 
 
 ```bash
 $ docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:10
@@ -1230,8 +1234,10 @@ $ sudo chown -R 200:200 some_dir
 
 #### LABEL 
 
-* Dockerfile를 작성한 개발자의 정보를 작성한다. 기존 명령어인 MAINTAINER와 동일한 역할을 담당한다. 
+* Dockerfile를 작성한 개발자의 정보를 작성한다. 기존 명령어인 MAINTAINER와 동일한 역할을 담당한다.
 
+  * 단, MAINTAINER는 공식적으로 deprecated 되었기 때문에 사용하지 않는다. 
+  
   ```dockerfile
   LABEL soengwon "seongwon@edu.hanabt.ac.kr"
   ```
@@ -1246,7 +1252,7 @@ $ sudo chown -R 200:200 some_dir
 
 #### WORKDIR 
 
-* 작업 디렉토리를 설정한다.  설정된 디렉터리가 없으면 새로 생성하고, 해당 디렉터리를 기분으로 동작한다. 
+* 작업 디렉토리를 설정한다.  설정된 디렉터리가 없으면 새로 생성하고, 해당 디렉터리를 기본으로 동작한다. 
 
   ```dockerfile
   WORKDIR /var/www/html
@@ -1432,7 +1438,7 @@ v1.0: digest: sha256:07e2f3ad3ff1d0ff9b3e9a0bc482bcabcf68b2786cbb47f0947229f070b
 
 ### docker export 
 
-​	컨테이너를 출력하는 명령이다. 
+​	컨테이너를 백업하는 명령이다. 
 
 ```bash
 $ docker ps -a
@@ -1457,7 +1463,7 @@ dockerfile               latest              81997a2091ba        About a minute 
 
 ### docker save 
 
-​	Docker 이미지를 출력하는 명령어이다. 
+​	Docker 이미지를 백업하는 명령어이다. 
 
 ```
 $ docker save -o hello-dockerfile.tar jusk2/hello-dockerfile
@@ -1886,8 +1892,8 @@ FROM python:alpine3.7
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr" 
 
-COPY . /app
 WORKDIR /app
+COPY . .
 
 RUN pip install -r requirements.txt
 
@@ -2293,17 +2299,299 @@ $ docker run -p 8080:80 docker-xe3
 
 ## Overview of Docker Compose
 
-
+​	Docker가 주는 독립된 애플리케이션 실행 환경 덕분에 많은 이득을 얻은 덕분에 개발환경도 빠르게 구축하기 위한 프로젝트인 fig 프로젝트가 나오게 되었다. 초창기 단순 Docker 명령을 한번에 실행하기 위한 서드파티 도구였지만 인기를 얻자 Docker가 이를 흡수하여 Docker Compose 도구를 개발하게 되었다. 이를 활용하면 컨테이너를 실행하는데 필요한 옵션과 의존성 및 실행 순서를 한번에 정의하여 작성하고 실행할 수 있다. 
 
 ### Docker Compose install 
+
+​	기본적으로 윈도우, Mac 사용자의 경우 위에서 Docker를 설치하게 되면 같이 Docker Compose도 같이 설치 되기 때문에 따로 설정이 필요가 없으나, 리눅스 사용자의 경우 다음과 같이 추가적으로 설치를 진행할 필요가 있다. 
+
+```bash
+$ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+$ sudo chmod +x /usr/local/bin/docker-compose
+```
 
 
 
 ### How to use Docker Compose ? 
 
+​	실습을 정상적으로 진행하기 위해서 다음 명령을 통해 Docker Compose의 버전을 확인한다. 
 
+```bash
+$ docker-compose --version
+docker-compose version 1.27.4, build 40524192
+```
 
 ### Docker compose command 
+
+​	몇 가지 Docker Compose 파일을 작성해 보고 내용을 실습하도록 하겠다. 모든 파일의 이름은 **docker-compose.yml**로 작성한다.
+
+
+
+#### version 
+
+​	docker-compose 파일을 작성할 때 버전을 작성하는 부분이다. Docker 버전 혹은 파일 규격에 따라 지원하는 옵션이 달라지게 되는데 버전을 3으로 지정하게 되면 3으로 시작하는 최신 버전을 사용하겠다는 의미가 된다. 현재 가장 최신 버전은 2020년 10월 기준 3.8이며 Docker 19.03.0 이상에서만 정상적으로 동작한다. 
+
+​	하지만 모든 파일과 옵션이 가장 최신의 버전만을 지원하는 것은 아니기 때문에 각 환경 혹은 옵션에 따라서 버전의 차이는 존재할 수 있다. 
+
+```yaml
+version: '3.4' 
+```
+
+#### image
+
+​	docker-compose에서 실행할 이미지를 지정할 수 있으며, 만약 이미지가 로컬에 없는 경우에는 Docker Hub에서 이미지를 다운로드 받는다. 
+
+```yaml
+services: # 앞으로 실행할 애플리케이션이 서비스임을 지칭한다. 
+  xpressengine:
+    image: jusk2/xpressengine
+```
+
+#### build 
+
+​	Docker Hub 혹은 개인 레파지토리에 이미지가 저장되어 있지 않거나, Dockerfile을 통해 이미지를 직접 생성하고자 하는 경우에 사용한다. 
+
+```yaml
+services:
+  nginx:
+    build: .
+```
+
+Dockerfile의 이름이 다르거나 다른 경로에 존재한다면 다음과 같이 수행할 수 있다. 
+
+```yaml
+services:
+  nginx:
+  build:
+    context: /home/lucas			# Dockerfile이 있는 경로 (절대경로 또는 상대경로)
+    dockerfile: Dockerfile-Dev    # 파일명이 Dockerfile이 아닐 경우 파일명 기입
+```
+
+```yaml
+  odoo13:
+    container_name: odoo13
+    image: odoo:latest
+    command: -- --dev=reload
+```
+
+#### command / entrypoint
+
+​	Dockerfile의 cmd, entrypoint와 거의 동일하다. 단, docker-compose의 entrypoint 우선순위가 높으며, Dockerfile에 이미 정의가 되어 있을지라도 docker-compose가 이를 덮어써서 명령을 수행한다. 
+
+```yaml
+services:
+	django:
+    build:	 
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+```
+
+#### links 
+
+​	각각의 컨테이너와 네트워크, 볼륨등을 연결시켜주는 명령어이지만 현재는 사용하지 않는다. 
+
+```yaml
+links:
+  - webserver  
+```
+
+#### ports
+
+​	컨테이너와 외부 호스트간의 포트를 바인딩 하기위한 명령어로서 바인딩할 포트를 여러개 지정하거나, 포트의 범위등을 지정할 수 있다. ""을 통해 문자열로 지정할 수 있다. 
+
+```yaml
+services:
+  database:
+    image: mariadb
+   	ports:
+     - 3306:3306
+```
+
+```yaml
+services:
+  controller:
+    image: ngrinder/controller
+    restart: always
+    ports: 
+      - "1000:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+```
+
+#### depends_on
+
+​	컨테이너 애플리케이션 즉 서비스가 종속적 순서대로 실행할 수 있음을 보장한다. 예를 들어 웹 애플리케이션과 데이터베이스가 존재한다면, 데이터베이스가 실행되고 그 다음 웹 애플리케이션이 실행될  수 있도록 설정할 수 있다. 
+
+```yaml
+service:
+	db:
+  	image: postgres
+
+	web:
+		image: nginx
+	depend_on: db
+```
+
+#### environment, env_file
+
+​	컨테이너를 실행할 때 필요한 환경변수를 입력한다. 환경 변수 파일을 직접 읽어서 사용할 수도 있다. 
+
+```yaml
+services:
+	database:
+    image: mariadb
+    environment:  
+      MYSQL_ROOT_PASSWORD: 1q2w3e4r!!
+      MYSQL_DATABASE: xpress
+      MYSQL_USER: lucas
+      MYSQL_PASSWORD: 1q2w3e4r!!
+```
+
+```yaml
+env_file:
+  - ./common.env
+  - ./apps/web.env
+```
+
+#### container_name
+
+​	컨테이너의 이름을 지정한다.
+
+```yaml
+services:
+  db:
+    container_name: postgresql-odoo13
+```
+
+#### volumes
+
+​	컨테이너와 호스트간의 볼륨을 마운트 하는데 사용된다. 추가적으로 :ro를 통해서 볼륨을 읽기 전용으로 실행할 수 있다. 
+
+```yaml
+volumes:
+  - /var/log/test:/var/log
+  - ~/configs:/etc/configs/:ro
+```
+
+
+
+1.  **XpressEngine 3와 mariadb 연동하기** 
+
+   위에 고급 실습을 통해서  XpressEngine 3의 Dockerfile를 만들었고 정상적으로 실행하기 위한 데이터베이스 연결과정을 작성해 보도록 하겠다. 
+
+   ```yaml
+   version: '3.4' 
+   
+   services:
+     xpressengine:
+       image: jusk2/xpressengine
+       ports: 
+         - 10001:80
+       restart: always 
+     database:
+       image: mariadb
+       environment:  
+         MYSQL_ROOT_PASSWORD: 1q2w3e4r!!
+         MYSQL_DATABASE: xpress
+         MYSQL_USER: lucas
+         MYSQL_PASSWORD: 1q2w3e4r!!
+       ports:
+        - 3306:3306
+       restart: always
+       volumes:
+        - /mnt/swarm/mariadb:/var/lib/mysql
+   
+   ```
+
+2. **Docker Compose에서 이미지 직접 빌드하기**
+
+   이미 만들어진 이미지를 가지고 와서 실행하는 것이 아니라 프로젝트 파일 자체에 Dockerfile를 활용하여 이미지를 빌드하고 실행할 수 있는 구조로 작성할 수 있다. 
+
+   ```bash
+   $ git clone https://github.com/raccoonyy/django-sample-for-docker-compose.git
+   $ vi docker-compose.yml
+   ```
+
+   ```yaml
+   version: '3'
+   
+   volumes: 
+     postgres_data: {}
+   
+   services:
+     db:
+       image: postgres
+       volumes:
+         - postgres_data:/var/lib/postgres/data
+       environment:
+         - POSTGRES_DB=djangosample
+         - POSTGRES_USER=sampleuser
+         - POSTGRES_PASSWORD=samplesecret
+   
+     django:
+       build:	 
+         context: .
+         dockerfile: ./compose/django/Dockerfile-dev
+       volumes:
+         - ./:/app/
+       command: ["./manage.py", "runserver", "0:8000"]
+       environment:
+        - DJANGO_DB_HOST=db
+       depends_on: 
+         - db
+       restart: always
+       ports:
+         - 8000:8000
+   ```
+
+3. 오픈소스 프로그램 odoo docker-compose.yml 예제
+
+   ```yaml
+   version: '3'
+   services:
+     db:
+       container_name: postgresql-odoo13
+       image: postgres:11.6
+       environment:
+         - POSTGRES_PASSWORD=odoo
+         - POSTGRES_USER=odoo
+         - POSTGRES_DB=postgres
+       ports:
+         - "5432:5432"
+       volumes:
+           - ~/odoo/pgsql:/var/lib/postgresql/data
+       restart: always
+   
+     odoo13:
+       container_name: odoo13
+       image: odoo:latest
+       depends_on:
+         - db
+       ports:
+         - "8071:8069"
+       tty: true
+       command: -- --dev=reload
+       volumes:
+         - ~/odoo/addons:/mnt/extra-addons
+         - ~/odoo:/etc/odoo
+       restart: always
+       
+     pgadmin:
+       container_name: pgadmin-container
+       image: dpage/pgadmin4
+       environment:
+         - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+         - PGADMIN_DEFAULT_PASSWORD=admin
+       depends_on:
+         - db
+       ports:
+         - "5550:80"
+   
+       restart: unless-stopped
+   ```
+
+   
 
 #### docker-compose up 
 
