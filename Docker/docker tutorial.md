@@ -163,7 +163,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 ![](https://www.geeksforgeeks.org/wp-content/uploads/linux-virtualization.png)
 
-​	리눅스 컨테이너 LXC는 리눅스에서 컨테이너 기능을 제공하기 위한 인터페이스다. 기본적으로 API를 제공하기 때문에 리눅스 사용자가 쉽게 시스템 또는 애플리케이션 컨테이너를 생성하고 관리할 수 있게 도와주는 역할을 수행한다. 리눅스 컨테이너 LXC가 운영체제 수준 가상화이기 때문에 namespce, Apparmor와 SELinux, Seccomp, chroot, CGroups과 같은 커널 기능을 사용한다. 여기서 가장 중요하게 살펴봐야 할 것이 namespace와 CGroups이다.
+​	리눅스 컨테이너 LXC는 리눅스에서 컨테이너 기능을 제공하기 위한 인터페이스다. 기본적으로 API를 제공하기 때문에 리눅스 사용자가 쉽게 시스템 또는 애플리케이션 컨테이너를 생성하고 관리할 수 있게 도와주는 역할을 수행한다. 리눅스 컨테이너 LXC가 운영체제 수준 가상화이기 때문에 namespce,, Apparmor와 SELinux, Seccomp, chroot, CGroups과 같은 커널 기능을 사용한다. 여기서 가장 중요하게 살펴봐야 할 것이 namespace와 CGroups이다.
 
 * **namespace** 
 
