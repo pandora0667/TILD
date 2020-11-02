@@ -85,11 +85,11 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 ![](https://ssh.guru/content/images/2018/08/ibmcp67.jpg)
 
-)
+
 
 ![](https://upload.wikimedia.org/wikipedia/commons/6/69/IBM360-67AtUmichWithMikeAlexander.jpg)
 
-)
+
 
 ![](https://upload.wikimedia.org/wikipedia/commons/d/dc/IBM360-67ConfigConsoleAtUmich.jpg)
 
@@ -105,7 +105,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 ![](https://wiki.xenproject.org/images/0/09/Xen_arch1.png)
 
-)
+
 
 ![](https://wiki.xenproject.org/images/c/c1/Xen_arch2.png)
 
