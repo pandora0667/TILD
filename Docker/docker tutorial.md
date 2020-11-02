@@ -175,7 +175,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
         
         ![](https://camo.githubusercontent.com/4e774a08fa4f0f63694906362b26b099e848d37d/68747470733a2f2f74686570726163746963616c6465762e73332e616d617a6f6e6177732e636f6d2f692f37353862387379676a6a6976797164703074687a2e706e67)
         
-        )
+        
         
         ![](https://camo.githubusercontent.com/5a17e1529afffcd02d251093ff5d116ee687bcff/68747470733a2f2f74686570726163746963616c6465762e73332e616d617a6f6e6177732e636f6d2f692f62706e396673326c766d67696779767961376f742e706e67)
 -   **CGroups**
@@ -184,7 +184,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
         
         ![](https://acg-wordpress-content-production.s3.us-west-2.amazonaws.com/app/uploads/2020/06/cgroups.png)
         
-        )
+        
         
         ![](https://i.stack.imgur.com/uLPjc.png)
         -   CPU
