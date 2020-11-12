@@ -805,7 +805,7 @@ Are you sure you want to continue? [y/N]
     
     ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/9.png?raw=true)
     
-    )
+    
     
     ![](https://github.com/pandora0667/TILD/blob/master/screenshot/docker/8.png?raw=true)
     
@@ -2030,12 +2030,11 @@ LABEL seongwon "seongwon@edu.hanbat.ac.kr"
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
-
 COPY . .
 
+RUN go mod download
 RUN go build -o main .
+
 EXPOSE 8080
 
 CMD ["./main"]
