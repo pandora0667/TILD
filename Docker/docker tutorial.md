@@ -1173,7 +1173,7 @@ $ sudo chown -R 200:200 some_dir
 
 ### What is Dockerfile ?
 
- Dockerfile은 Docker image를 만들기 위한 설정 파일로, 아래에서 설명할 여러 명령어를 통해 작성하면 image를 만들어서 Docker Hub에 업로드할 수 있다. 따라서 이미지가 어떻게 만들어지고 어떠하나 특성을 가지고 있는지 알고 싶다면 Dockerfile을 해석할 수 있다는 뜻이 된다.
+ Dockerfile은 Docker image를 만들기 위한 설정 파일로, 아래에서 설명할 여러 명령어를 통해 작성하면 image를 만들어서 Docker Hub에 업로드할 수 있다. 따라서 이미지가 어떻게 만들어지고 어떠한 특성을 가지고 있는지 알고 싶다면 Dockerfile을 해석할 수 있다는 뜻이 된다.
 
 #### FROM
 
@@ -1285,8 +1285,6 @@ $ sudo chown -R 200:200 some_dir
 FROM ubuntu:latest
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
-
-ENV TZ=Asia/Seoul
 
 RUN apt-get update && apt-get upgrade -y
 RUN echo "HELLO, Dockerfile!?" >> /hello-docker.txt
@@ -1414,7 +1412,7 @@ $ docker export f70cd32010d3 > ./hello-dockerfile.tar # 컨테이너 ID 혹은 �
 $ docker import hello-dockerfile.tar dockerfile
 sha256:81997a2091ba3eeebf40e744c7f0eb2113219b3e0e7f0b6d35e3494125b24d76
 
-$ ocker images
+$ docker images
 REPOSITORY               TAG                 IMAGE ID            CREATED              SIZE
 dockerfile               latest              81997a2091ba        About a minute ago   98.8MB
 ```
@@ -1579,7 +1577,7 @@ package-lock.json
 ```
 
 ```
-$ vi Dockerfle
+$ vi Dockerfile
 ```
 
 ```
@@ -1710,7 +1708,7 @@ BUILD SUCCESSFUL in 3s
 ```
 
 ```
-$ vi Dockfile 
+$ vi Dockerfile 
 ```
 
 ```
@@ -2031,7 +2029,6 @@ LABEL seongwon "seongwon@edu.hanbat.ac.kr"
 WORKDIR /app
 
 COPY . .
-
 RUN go mod download
 RUN go build -o main .
 
