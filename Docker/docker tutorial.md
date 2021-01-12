@@ -266,7 +266,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
 1.  먼저 패키지를 업데이트하고 필요 프로그램을 다운로드한다.
     
-    ```
+    ```bash
     $ sudo apt-get update
     
     $ sudo apt-get install \
@@ -279,7 +279,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
     
 2.  Docker 공식 GPG키를 추가한다.
     
-    ```
+    ```bash
     $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     
     $ sudo apt-key fingerprint 0EBFCD88
@@ -295,7 +295,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
     
     -   x86\_64 / amd64
         
-        ```
+        ```bash
         $ sudo add-apt-repository \
            "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
            $(lsb_release -cs) \
@@ -304,7 +304,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
         
     -   armhf
         
-        ```
+        ```bash
         $ sudo add-apt-repository \
            "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
            $(lsb_release -cs) \
@@ -313,7 +313,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
         
     -   arm64
         
-        ```
+        ```bash
         $ sudo add-apt-repository \
            "deb [arch=arm64] https://download.docker.com/linux/ubuntu \
            $(lsb_release -cs) \
@@ -322,7 +322,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
     
 4.  Docker 설치를 진행한다.
     
-    ```
+    ```bash
      $ sudo apt-get update
      $ sudo apt-get install docker-ce docker-ce-cli containerd.io
     ```
@@ -337,7 +337,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
     -   [https://brew.sh/index\_ko](https://brew.sh/index_ko)
 2.  설치를 진행한다.
     
-    ```
+    ```bash
     $ brew search docker
     $ brew cask install docker
     ```
@@ -355,7 +355,7 @@ CP-40은 곧 전가상화 기능을 가진 첫 컴퓨터 시스템이었던 IBM 
 
  Docker에서 이미지를 검색하기 위해 사용한다.
 
-```
+```bash
 $ docker search ubuntu
 $ docker search centos
 $ docker search jenkins
@@ -365,7 +365,7 @@ $ docker search jenkins
 
  Docker를 사용하기 위해 이미지를 받기 위한 과정으로 별도의 버전을 기술하지 않는 경우 최신 버전으로 설정되며, ubuntu와 filebrowser 이미지를 다운로드한다.
 
-```
+```bash
 $ docker pull ubuntu
 Using default tag: latest
 latest: Pulling from library/ubuntu
@@ -377,7 +377,7 @@ Status: Downloaded newer image for ubuntu:latest
 docker.io/library/ubuntu:latest
 ```
 
-```
+```bash
 $ docker pull filebrowser/filebrowser
 Using default tag: latest
 latest: Pulling from filebrowser/filebrowser
@@ -421,7 +421,7 @@ docker.io/filebrowser/filebrowser:latest
 
 만약 특정 버전의 이미지를 다운로드하기 원한다면 버전명을 붙어서 다운로드할 수 있으며, 추후 본인이 이미지를 만들고 docker hub에 업로드할 때, 태그를 통해 이미지의 버전을 관리하고 이전 버전으로 되돌릴 수 있다. 다음 예제를 통해 우분투 18.04 버전 이미지를 다운로드하겠다.
 
-```
+```bash
 $ docker pull ubuntu:18.04
 18.04: Pulling from library/ubuntu
 171857c49d0f: Pull complete
@@ -436,7 +436,7 @@ docker.io/library/ubuntu:18.04
 
  실제로 Docker 컨테이너를 실행하기 위한 명령어이다. 다음 명령을 입력해서 실행한다.
 
-```
+```bash
 $  docker run filebrowser/filebrowser
 2020/10/06 05:14:08 Using config file: /.filebrowser.json
 2020/10/06 05:14:08 Listening on [::]:80
@@ -444,7 +444,7 @@ $  docker run filebrowser/filebrowser
 
 docker pull를 통해서 다운로드하였던 filebrowser를 실행해보았다. 로그기록을 보았을 때, 80 포트를 통해서 서비스가 되는 것을 확인할 수 있는데 실제로 브라우저를 통해서 접속을 시도하면 접속이 되지 않는다. 이는 컨테이너의 특성으로 인한 것으로, 컨테이너는 다른 프로세스들과 별도의 공간에서 격리되어 실행하기 때문에 서비스를 사용하기 위해서는 컨테이너로 접속하기 위한 정보가 필요하다. CTL + C를 눌러서 실행을 취소하고 다음 명령을 통해 접속을 위한 포트를 열어주도록 하겠다.
 
-```
+```bash
 $ docker run -p 8080:80 filebrowser/filebrowser
 2020/10/06 05:16:53 Using config file: /.filebrowser.json
 2020/10/06 05:16:53 Listening on [::]:80
@@ -454,20 +454,18 @@ $ docker run -p 8080:80 filebrowser/filebrowser
 
  웹브라우저로 접속했을 때 정상적으로 서비스가 되는 것을 확인할 수 있다. -p 옵션은 컨테이너에서 생성된 네트워크와 우리가 사용되는 네트워크를 통신하기 위해 사용되는 것으로, 컨테이너 80 포트를 8080으로 맵핑한다고 생각하면 된다. 하지만 현재 실행 중인 터미널을 종료할 경우 실행 중인 컨테이너도 함께 종료되기 때문에 백그라운드 즉 데몬으로 실행하기 위해서는 다음 명령을 실행해야 한다.
 
-```
+```bash
 $ docker run -p 8080:80 -d filebrowser/filebrowser
 a2abf5d7047dcee4a1461eb42c9c4bc0191be0cff194fa84f8d2fcc99bf3667e
 ```
 
-```
  -d 옵션을 사용하면 컨테이너는 데몬으로 실행되고 터미널을 종료해도 백그라운드에서 계속 실행된다. 아래에 나온 값은 해당 컨테이너의 고유 ID로 실행중인 컨테이너를 구분하기 위해 만들어지고, ID값은 실행할 때 마다 다른 값을 가진다. 
-```
 
 #### docker ps
 
  데몬으로 실행된 컨테이너 프로세스 목록을 확인하기 위해서 사용한다.
 
-```
+```bash
 $ docker ps
 CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS              PORTS                  NAMES
 a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      2 minutes ago       Up 2 minutes        0.0.0.0:8080->80/tcp   exciting_roentgen
@@ -475,7 +473,7 @@ a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      2 minutes ago 
 
 이 명령을 통해 현재 실행 중인 컨테이너가 실행 중인지 알 수 있고 모든 상태에 컨테이너 목록을 보고 싶다면 다음 명령을 사용한다.
 
-```
+```bash
 $ docker ps -a
 CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                     PORTS                  NAMES
 a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      4 minutes ago       Up 4 minutes               0.0.0.0:8080->80/tcp   exciting_roentgen
@@ -485,7 +483,7 @@ bcdf6bf6e6d1        filebrowser/filebrowser   "/filebrowser"      9 minutes ago 
 
 \-a 옵션을 통해서 실행중인 상태와 중지된 상태 값을 확인할 수 있다. 실습 당시 filebrowser를 여러 번 실행하고 중지했기 때문에 같은 애플리케이션이지만 여러 개의 상태 값이 나오는 것을 확인할 수 있다. 여기서 주목해야 할 점은 각각의 CONTAINER ID 값이 다르고 NAMES 값을 지정해 주지 않았지만 각각의 다른 이름이 부여되었다는 점이다. 추후 명령을 통해 CONTAINER ID 값을 사용할 수 있지만 우리가 인식하기 편하도록 NAME 값을 지정해 주도록 하겠다.
 
-```
+```bash
 $ docker run -p 8888:80 -d --name filebrowser filebrowser/filebrowser
 909f0b2a420d1c48247c381acb14162d924385281525922210acb0f2c76fb14b
 
@@ -503,7 +501,7 @@ a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      10 minutes ago
 
  Docker 컨테이너를 중지하기 위해 사용되는 명령이다. 컨테이너를 중지하기 위해서는 CONTAINER ID와 NAMES를 지정해서 중지할 수 있다. docker ps -a 를 통해 모든 컨테이너의 상태를 알았고, filebrowser 컨테이너가 2개가 동시에 실행되고 있는 것을 확인했다. 이름을 지정하지 않은 컨테이너는 ID 값을 통해 중지하고, 이름을 지정한 컨테이너는 이름을 통해 중지해 보도록 하겠다.
 
-```
+```bash
 $ docker stop a2abf5d7047d
 a2abf5d7047d
 
@@ -513,7 +511,7 @@ filebrowser
 
 Docker 프로세스 목록을 확인하여 정상적으로 종료되어있는지 상태를 확인해 본다.
 
-```
+```bash
 $ docker ps -a 
 CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                      PORTS               NAMES
 909f0b2a420d        filebrowser/filebrowser   "/filebrowser"      11 minutes ago      Exited (1) 3 minutes ago                        filebrowser
@@ -524,7 +522,7 @@ a2abf5d7047d        filebrowser/filebrowser   "/filebrowser"      21 minutes ago
 
  중단된 Docker 컨테이너를 다시 실행하기 위한 명령어이다. 컨테이너를 실행하기 위해서는 해당 컨테이너 ID 혹은 NAME을 알고 있어야 중단된 컨테이너를 시작 할 수 있다. 방금 전에 중단한 컨테이너를 위 방법을 통해 시작해보겠다.
 
-```
+```bash
 $ docker start a2abf5d7047d
 a2abf5d7047d
 
@@ -538,7 +536,7 @@ filebrowser
 
  어떠한 이유에서 컨테이너를 재시작하기 위해 사용되는 명령어이다. 보통 컨테이너 서비스가 오동작을 하는 경우에 많이 사용된다. 이 명령어 역시 해당 컨테이너 ID 혹은 NAME을 알고 있어야 실행이 가능하다. 위에서 실습했던 내용을 가지고 그대로 적용해보도록 하겠다.
 
-```
+```bash
 $ docker restart a2abf5d7047d
 a2abf5d7047d
 
@@ -552,7 +550,7 @@ filebrowser
 
  애플리케이션의 상태나 오류가 발생하면 가장 먼저 확인하는 것이 로그기록이다. 하지만 컨테이너는 격리되어 있는 상태이기 때문에 해당 로그를 확인하기 위해서는 위의 명령을 통해서만 가능하다. filebrowser의 logs를 확인해 보도록 하겠다. 이제부터는 위에서 컨테이너 ID와 NAMES를 통해 실행하는 방법을 계속해서 기술했기 때문에 이름을 통해서만 실행하도록 하겠다.
 
-```
+```bash
 $ docker logs -f filebrowser
 2020/10/06 05:32:33 Using config file: /.filebrowser.json
 2020/10/06 05:32:33 Listening on [::]:80
@@ -572,7 +570,7 @@ $ docker logs -f filebrowser
 
  다운로드한 이미지의 목록을 보여주는 명령어이다. 실행 중인 컨테이너와 다른 개념이기 때문에 혼동하면 안 된다.
 
-```
+```bash
 $ docker images
 REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
 filebrowser/filebrowser   latest              d92417071f39        22 hours ago        33.4MB
@@ -592,7 +590,7 @@ ubuntu                    18.04               56def654ec22        10 days ago   
 
  이번에는 아까 이미지를 다운로드하였던 우분투 이미지를 실행하고 컨테이너에 접속해 보도록 하겠다.
 
-```
+```bash
 $ docker run -it -d --name ubuntu ubuntu 
 57078b1cdc867fa39d212e693a01c2ec9b2e01b0529bfae204a7f0bd2a71ddbe
 
@@ -602,7 +600,7 @@ root@57078b1cdc86:/#
 
  지금까지 배웠던 내용과 상당히 다른 옵션들이 실행된 것을 확인할 수 있는데, 그중 -it 옵션의 경우 STDIN 표준 입출력을 열고 가상 tty (pseudo-TTY) 를 통해 접속하겠다는 의미이며, /bin/bash의 경우 우분투 컨테이너의 bash로 접속하겠다는 의미이다. 그럼 만약에 -it 옵션을 주지 않고 우분투를 실행하는 경우에는 어떻게 될까?
 
-```
+```bash
 $ docker run --name ubuntu_test ubuntu
 
 $ docker ps -a
@@ -613,7 +611,7 @@ d8f31b2635d9    ubuntu    "/bin/bash"   19 seconds ago  Exited (0) 17 seconds ag
 
  Docker로 실행한 우분투에서 CLI 명령어를 입력해보자
 
-```
+```bash
 root@57078b1cdc86:/# ls -l
 total 48
 lrwxrwxrwx   1 root root    7 Sep 25 01:20 bin -> usr/bin
@@ -639,7 +637,7 @@ drwxr-xr-x   1 root root 4096 Sep 25 01:20 usr
 drwxr-xr-x   1 root root 4096 Sep 25 01:23 var
 ```
 
-```
+```bash
 root@57078b1cdc86:/# apt update
 Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [107 kB]
 Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
@@ -668,7 +666,7 @@ root@57078b1cdc86:/#
 
 일반적으로 우리가 사용하는 우분투 환경과 비교했을 때 큰 차이를 느끼지 못할 만큼 정상적으로 동작하는 것을 확인할 수 있다. 그럼 이번에는 Docker 우분투 환경에서 매개변수로 값을 넘겨서 동작하는 예제를 확인해 보겠다.
 
-```
+```bash
 $ docker run ubuntu env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=179f8bf934cc
@@ -706,14 +704,14 @@ var
 
  실행 혹은 중지된 컨테이너를 더 이상 사용하지 않을 때, 컨테이너를 지우는 명령으로 사용된다.
 
-```
+```bash
 $ docker rm ubuntu
 Error response from daemon: You cannot remove a running container 57078b1cdc867fa39d212e693a01c2ec9b2e01b0529bfae204a7f0bd2a71ddbe. Stop the container before attempting removal or force remove
 ```
 
 하지만 실행 중인 컨테이너를 지우고자 하면 위와 같은 에러가 발생하기 때문에 stop을 먼저 하거나 -f 옵션을 통해서 강제로 지울 수 있다.
 
-```
+```bash
 $ docker rm ubuntu  -f
 ubuntu
 ```
@@ -722,7 +720,7 @@ ubuntu
 
  다운로드한 이미지를 삭제하는 명령어로서, rm이 컨테이너만 삭제하는 것과 대조된다. 현재 다운로드하여있는 이미지 목록을 보고자 하면 다음과 같이 실행한다.
 
-```
+```bash
 $ docker images
 REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
 filebrowser/filebrowser   latest              d92417071f39        25 hours ago        33.4MB
@@ -733,7 +731,7 @@ ubuntu                    18.04               56def654ec22        10 days ago   
 
 이미지를 삭제하기 위해서는 해당 이미지가 컨테이너와 종속관계가 없어야 한다. 즉, 컨테이너가 실행 중이거나 종료되었다고 해도, 일반적인 명령으로는 지워지지 않는다. 따라서 정상적인 삭제를 원한다면 컨테이너를 중단하고, 컨테이너를 삭제한 후에 이미지 삭제를 진행해야 하며, 강제로 지우길 원한다면 -f 옵션을 사용한다.
 
-```
+```bash
 $ docker rmi ubuntu
 Untagged: ubuntu:latest
 
@@ -750,7 +748,7 @@ latest 버전의 우분투 버전이 삭제된 것을 확인할 수 있으며, �
 
  만약 본인 컴퓨터에 생성된 모든 컨테이너와 이미지를 삭제하고자 한다면 다음과 같은 명령을 실행한다.
 
-```
+```bash
 $ docker stop $(docker ps -a -q)
 $ docker rm $(docker ps -a -q)
 $ docker rmi $(docker images -a -q)
@@ -758,7 +756,7 @@ $ docker rmi $(docker images -a -q)
 
  Docker 초기화를 원한다면 다음 명령을 실행하면 된다.
 
-```
+```bash
 $ docker system prune
 WARNING! This will remove:
   - all stopped containers
@@ -812,7 +810,7 @@ Are you sure you want to continue? [y/N]
     회원가입을 완료했다면 앞으로의 실습을 위해 로컬 컴퓨터에 Docker Hub계정을 로그인하도록 하겠다. 다음과 같은 명령을 실행한다.
     
 
-```
+```bash
 $ docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: 
@@ -822,7 +820,7 @@ Login Succeeded
 
 Docker Hub의 계정을 로그아웃 하고 싶다면 다음 명령을 입력하면 된다.
 
-```
+```bash
 $ docker logout
 Removing login credentials for https://index.docker.io/v1/
 ```
@@ -831,7 +829,7 @@ Removing login credentials for https://index.docker.io/v1/
 
  대중적으로 많이 사용하는 웹서버이다.
 
-```
+```bash
 $ docker run -p 8080:80 -d nginx
 Unable to find image 'nginx:latest' locally
 latest: Pulling from library/nginx
@@ -859,7 +857,7 @@ Status: Downloaded newer image for httpd:latest
 
  CRM, 전자 상거래, 청구, 회계, 제조, 창고, 프로젝트 관리 및 재고 관리를 포함한 비즈니스 관리 소프트웨어 도구 모음이다.
 
-```
+```bash
 $ docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:10
 Unable to find image 'postgres:10' locally
 10: Pulling from library/postgres
@@ -909,7 +907,7 @@ Status: Downloaded newer image for odoo:latest
 
  리눅스 컨테이너 즉 docker는 프로세스 형태로 자원을 격리하여 사용하기 때문에 컨테이너가 삭제되면 기존에 저장되었던 데이터는 사라진다. 이를 예방하기 위해서 docker volume을 사용하거나 로컬 컴퓨터 파일에 마운트 하여 docker 내부에 생성되는 데이터를 저장하는 과정이 필요하다. 이번에는 postgres 데이터베이스를 통해서 실습을 진행하도록 하겠다.
 
-```
+```bash
 $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d postgres
 
 Unable to find image 'postgres:latest' locally
@@ -933,7 +931,7 @@ Status: Downloaded newer image for postgres:latest
 2093fec3b2acf3ef12a69268a5652625e2344b85a3ed6b9a50c009024caac548
 ```
 
-```
+```bash
 $ docker ps -a 
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                    NAMES
 2093fec3b2ac        postgres            "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes                0.0.0.0:5432->5432/tcp   postgres
@@ -943,7 +941,7 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 
  다음 컨테이너에 접속하여 사용자와 데이터베이스를 생성하고 테이블을 만든다.
 
-```
+```bash
 $ docker exec -it postgres /bin/bash
 
 root@ac61c662ee4c:/# psql -U postgres
@@ -980,7 +978,7 @@ test=# \dt
 
  가장 기본적인 데이터베이스 생성과정을 완료하였다. 첫 번째로 컨테이너를 종료하고 다시 시작했을 때, 데이터가 남아있는지 확인해 보도록 하겠다.
 
-```
+```bash
 $ docker exec -it postgres /bin/bash
 
 root@ac61c662ee4c:/#  psql -U postgres
@@ -1007,7 +1005,7 @@ test=# \dt
 
 컨테이너만 종료되고 다시 시작했을 때는 기존에 저장되어 있던 데이터가 잘 살아 있는 것을 확인할 수 있다. 이번에는 컨테이너를 삭제해 보도록 하겠다.
 
-```
+```bash
 $ docker stop postgres 
 postgres
 
@@ -1020,12 +1018,12 @@ Error: No such container: postgres
 
 컨테이너가 삭제되었기 때문에 다시 접속할 수가 없으며, 이때는 다시 컨테이너를 생성해야 하기 때문에 docker run을 다시 실행해야 한다.
 
-```
+```bash
 $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d postgres
 $ docker exec -it postgres /bin/bash
 ```
 
-```
+```bash
 root@fd7f90041ffa:/# psql -U postgres
 psql (13.0 (Debian 13.0-1.pgdg100+1))
 Type "help" for help.
@@ -1041,7 +1039,7 @@ postgres=# \q
 
  지금까지 생성했던 계정 자체가 존재하지 않는다. 즉 해당 컨테이너를 생성하고 데이터를 변경했을 때, 컨테이너만 종료했을 경우 컨테이너 내부에 있는 데이터는 그대로 남아 있지만 컨테이너 자체를 삭제하는 경우 해당 베이스 이미지만 그대로 사용하기 때문에 더 이상 데이터가 남아 있지 않으며, 이 경우 우리가 했던 과정을 처음부터 다시 해야 한다. 따라서 데이터를 종속시키기 위해서는 컨테이너 볼륨이나 로컬 컴퓨터에 데이터를 저장할 수 있는 공간을 따로 생성하여 외부에 저장할 수 있는 상태로 만들어야 하며, 이를 통해 데이터를 보관할 수 있게 할 수 있다. 다음은 볼륨과 마운트를 통해 데이터를 저장하는 방법을 보여준다.
 
-```
+```bash
 # 모든 컨테이너를 종료하고 삭제한다. 
 $ docker stop $(docker ps -a -q)
 $ docker rm $(docker ps -a -q)
@@ -1054,7 +1052,7 @@ $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v pg
 
 생성된 볼륨을 -v 옵션을 통해 지정해주었다. 다시 컨테이너에 접속하여 계정을 생성해 보고, 컨테이너 삭제 후에 계정 정보가 남아 있는지 확인해 보도록 하겠다.
 
-```
+```bash
 docker exec -it postgres /bin/bash
 root@608f0aa10061:/# psql -U postgres
 psql (13.0 (Debian 13.0-1.pgdg100+1))
@@ -1069,7 +1067,7 @@ postgres=# \du
  seongwon  | Superuser                                                  | {}
 ```
 
-```
+```bash
 $ docker stop postgres
 $ docker rm postgres
 $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v pgdata:/var/lib/postgresql/data postgres
@@ -1093,7 +1091,7 @@ postgres=# \q
 
  컨테이너를 삭제했음에도 불구하고 계정 정보가 저장되어 있는 것을 확인할 수 있다. 그렇다면 볼륨 정보는 어디에 저장되어 있을까?
 
-```
+```bash
 $  docker volume list
 local               pgdata
 
@@ -1113,7 +1111,7 @@ $ docker volume inspect pgdata
 
 각 운영체제 별로 상의할 수 있으나 위의 명령을 통해서 볼륨 리스트와 해당 볼륨의 위치 및 상세 정보를 확인할 수 있다. 다음으로 해당 볼륨을 삭제하고 로컬 컴퓨터에 디렉터리를 생성하여 데이터를 저장하는 방법을 알아보도록 하겠다.
 
-```
+```bash
 $ docker volume remove pgdata
 Error response from daemon: remove pgdata: volume is in use - [791984a503b91542aaadd48703c6b694e745b3004c3a7c2f00d0eedf91cf27ea] 
 
@@ -1134,7 +1132,7 @@ Are you sure you want to continue? [y/N] y
 Total reclaimed space: 7.402GB
 ```
 
-```
+```bash
 $ mkdir pgdata
 
 $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v ~/pgdata:/var/lib/postgresql/data postgres
@@ -1143,7 +1141,7 @@ $ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=1q2w3e4r -d -v ~/
 
  상대 경로에 pgdata라는 디렉터리를 만들고 -v 옵션을 통해 해당 디렉터리랑 마운트 한 것을 볼 수 있다. 해당 디렉터리로 이동하여 postgresql 데이터가 저장되어 있는지 확인한다.
 
-```
+```bash
 $ cd pgdata
 $ ls -l
 total 112
@@ -1163,7 +1161,7 @@ drwx------   4 seongwon  staff    128 10  9 16:35 pg_multixac
 
  리눅스의 경우 해당 디렉터리에 퍼미션으로 인해 접속이 되지 않을 수도 있다. 이 경우 root 권한으로 접속해서 볼 수 있으며, 만약 디렉터리를 만들었음에도 불구하고 데이터가 저장되지 않거나 컨테이너가 제대로 실행되지 않은 경우, 소유자 권한 오류로 인해서 docker 컨테이너가 해당 디렉터리에 접근하지 못할 가능성이 크다. 따라서 이런 에러가 발생하는 경우에는 소유자 권한을 변경하면 정상적으로 사용할 수 있다.
 
-```
+```bash
 $ sudo chown -R 200:200 some_dir 
 ```
 
@@ -1281,7 +1279,7 @@ $ sudo chown -R 200:200 some_dir
 
  위에서 학습한 내용을 기반으로 간단하게 Dockerfile를 만들고 실습하도록 한다. 다음과 같은 Dockerfile를 작성한다.
 
-```
+```dockerfile
 FROM ubuntu:latest
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
@@ -1296,7 +1294,7 @@ CMD ["cat", "/hello-docker.txt"]
 
  다음 명령을 통해서 이미지를 생성한다. -t 옵션을 통해 출력할 이미지 이름을 지정할 수 있으며, -f 옵션을 통해 변경된 Dockerfile의 이름을 지정할 수 있다.
 
-```
+```bash
 $ docker build -t hello-dockerfile .
 
 Sending build context to Docker daemon  6.153GB
@@ -1323,7 +1321,7 @@ Successfully built a51fc98ccab7
 Successfully tagged hello-dockerfile:latest
 ```
 
-```
+```bash
 $ docker run hello-dockerfile
 HELLO, Dockerfile!?
 ```
@@ -1332,7 +1330,7 @@ HELLO, Dockerfile!?
 
  tag 옵션을 통해 이미지의 이름과 버전을 지정할 수 있다. Docker Hub에 이미지를 업로드하기 위해서는 반드시 tag 옵션을 통해 ID를 작성해 주어야 하며, 사설 레파지토리를 사용하는 경우에는 레파지토리 주소 등의 정보도 추가로 작성해야 한다.
 
-```
+```bash
 $ docker tag hello-dockerfile jusk2/hello-dockerfile
 $ docker tag hello-dockerfile jusk2/hello-dockerfile:v1.0
 
@@ -1349,7 +1347,7 @@ tag에 버전을 지정하지 않은 경우에는 자동으로 latest가 붙는 
 
  Docker Hub에 우리가 만든 첫 번째 Docker 이미지를 업로드한다. 이때 반드시 Docker Hub에 로그인이 되어 있어야 한다.
 
-```
+```bash
 $ docker push hello-dockerfile
 The push refers to repository [docker.io/library/hello-dockerfile]
 9b938c0f6241: Preparing
@@ -1362,7 +1360,7 @@ denied: requested access to the resource is denied
 
  위와 같이 태그를 지정하지 않은 상태로 업로드하는 경우 업로드 절차가 거부되는 것을 확인할 수 있다. 따라서 tag를 지정한 이미지로 업로드를 시도한다.
 
-```
+```bash
 $ docker push jusk2/hello-dockerfile
 The push refers to repository [docker.io/jusk2/hello-dockerfile]
 9b938c0f6241: Pushed
@@ -1396,7 +1394,7 @@ v1.0: digest: sha256:07e2f3ad3ff1d0ff9b3e9a0bc482bcabcf68b2786cbb47f0947229f070b
 
  컨테이너를 백업하는 명령이다.
 
-```
+```bash
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
 f70cd32010d3        hello-dockerfile    "cat /hello-docker.t…"   29 minutes ago      Exited (0) 29 minutes ago                       
@@ -1408,7 +1406,7 @@ $ docker export f70cd32010d3 > ./hello-dockerfile.tar # 컨테이너 ID 혹은 �
 
  출력된 컨테이너를 복구하는 명령이다. 반드시 export된 컨테이너만 사용할 수 있다.
 
-```
+```bash
 $ docker import hello-dockerfile.tar dockerfile
 sha256:81997a2091ba3eeebf40e744c7f0eb2113219b3e0e7f0b6d35e3494125b24d76
 
@@ -1421,7 +1419,7 @@ dockerfile               latest              81997a2091ba        About a minute 
 
  Docker 이미지를 백업하는 명령어이다.
 
-```
+```bash
 $ docker save -o hello-dockerfile.tar jusk2/hello-dockerfile
 
 $ ls -l 
@@ -1432,7 +1430,7 @@ $ ls -l
 
  추출된 이미지를 로드하는 명령이다. 반드시 save된 이미지만 사용할 수 있다.
 
-```
+```bash
 $ docker load -i hello-dockerfile-image.tar
 Loaded image: jusk2/hello-dockerfile:latest
 Loaded image: jusk2/hello-dockerfile:v1.0
@@ -1448,17 +1446,17 @@ Loaded image: jusk2/hello-dockerfile:v1.0
 
  간단한 방법으로 정적 웹페이지를 만들어보는 실습을 진행한다.
 
-```
+```bash
 $ mkdir docker-bootstrap && cd docker-bootstrap
 $ git clone https://github.com/ThemesGuide/bootstrap-themes.git 
 $ mv bootstrap-themes pages
 ```
 
-```
+```bash
 $ vi Dockerfile
 ```
 
-```
+```dockerfile
 FROM nginx
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr" 
@@ -1468,7 +1466,7 @@ COPY ./pages /usr/share/nginx/html/
 EXPOSE 80
 ```
 
-```
+```bash
 $ docker build -t docker-bootstrap .
 Sending build context to Docker daemon   11.9MB
 Step 1/4 : FROM nginx
@@ -1486,7 +1484,7 @@ Successfully built 5fdbe8eb682b
 Successfully tagged docker-bootstrap:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:80 docker-bootstrap
 ```
 
@@ -1496,11 +1494,11 @@ $ docker run -p 8080:80 docker-bootstrap
 
  Node.js를 활용한 Dockerfle을 실습한다. 간단하게 express 모듈을 사용하며, 이번시간에는 .dockerignroe 사용법에 대해서도 알아본다.
 
-```
+```bash
 $ mkdir docker-node && cd docker-node
 ```
 
-```
+```bash
 $ npm init
 
 This utility will walk you through creating a package.json file.
@@ -1540,15 +1538,15 @@ About to write to /Users/seongwon/Developments/docker-node/package.json:
 Is this OK? (yes)
 ```
 
-```
+```bash
 $ npm install express
 ```
 
-```
+```bash
 $ vi server.js 
 ```
 
-```
+```javascript
 'use strict';
 
 const express = require('express');
@@ -1567,20 +1565,20 @@ app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 ```
 
-```
+```bash
 $ vi .dockerignore # .gitignore와 같이 docker 컨테이너 내부에 불필요한 파일을 넣지 않는 개념이다. 
 ```
 
-```
+```bash
 node_modules
 package-lock.json
 ```
 
-```
+```bash
 $ vi Dockerfile
 ```
 
-```
+```dockerfile
 FROM node 
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
@@ -1594,7 +1592,7 @@ EXPOSE 8080
 CMD [ "node", "server.js" ]
 ```
 
-```
+```bash
 $ docker build -t docker-node .
 
 Sending build context to Docker daemon   5.12kB
@@ -1645,14 +1643,14 @@ Successfully built 465e25b11390
 Successfully tagged docker-node:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:8080 docker-node
 Running on http://0.0.0.0:8080
 ```
 
  curl 명령을 통해서 작성한 애플리케이션이 정상적으로 동작하는지 확인한다.
 
-```
+```bash
 $ curl -i localhost:8080
 HTTP/1.1 200 OK
 X-Powered-By: Express
@@ -1670,13 +1668,13 @@ Hello World
 
  Java를 활용한 애플리케이션을 활용해 본다. 다음 Github에 올라와 있는 Spring Boot app을 활용한다.
 
-```
+```bash
 $ mkdir docker-java && cd docker-java
 $ git clone https://github.com/spring-guides/gs-spring-boot-docker.git
 $ cd gs-spring-boot-docker/complete
 ```
 
-```
+```bash
 $ ./gradlew build && java -jar build/libs/gs-spring-boot-docker-0.1.0.jar
 
 Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
@@ -1707,11 +1705,11 @@ BUILD SUCCESSFUL in 3s
 
 ```
 
-```
+```bash
 $ vi Dockerfile 
 ```
 
-```
+```dockerfile
 FROM openjdk:11
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
@@ -1725,7 +1723,7 @@ COPY build/libs/gs-spring-boot-docker-0.1.0.jar ./
 ENTRYPOINT [ "java", "-jar", "gs-spring-boot-docker-0.1.0.jar" ]
 ```
 
-```
+```bash
 $ docker build -t docker-java .
 
 Sending build context to Docker daemon     17MB
@@ -1767,7 +1765,7 @@ Successfully built 89ed1496bbd3
 Successfully tagged docker-java:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:8080 docker-java
 
   .   ____          _            __ _ _
@@ -1793,7 +1791,7 @@ $ docker run -p 8080:8080 docker-java
 2020-10-19 18:01:50.119  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
 ```
 
-```
+```bash
 $ curl -i localhost:8080
 HTTP/1.1 200
 Content-Type: text/plain;charset=UTF-8
@@ -1807,15 +1805,15 @@ Hello Docker World
 
  Python과 Flask 웹 프레임워크를 활용한다.
 
-```
+```bash
 $ mkdir docker-python && cd docker-python
 ```
 
-```
+```bash
 $ vi index.py
 ```
 
-```
+```python
 from flask import Flask
 app = Flask(__name__)
 @app.route("/")
@@ -1825,19 +1823,19 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int("8080"), debug=True)
 ```
 
-```
+```bash
 $ vi requirements.txt
 ```
 
-```
+```bash
 flask
 ```
 
-```
+```bash
 $ vi Dockerfile
 ```
 
-```
+```dockerfile
 FROM python:alpine3.7
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr" 
@@ -1852,7 +1850,7 @@ EXPOSE 8080
 ENTRYPOINT ["python", "./index.py"]
 ```
 
-```
+```bash
 $ docker build -t docker-python .
 
 Sending build context to Docker daemon  4.096kB
@@ -1901,7 +1899,7 @@ Successfully built a18af47e5523
 Successfully tagged docker-python:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:8080 docker-python
  * Serving Flask app "index" (lazy loading)
  * Environment: production
@@ -1915,7 +1913,7 @@ $ docker run -p 8080:8080 docker-python
 172.17.0.1 - - [19/Oct/2020 09:26:03] "GET / HTTP/1.1" 200 -
 ```
 
-```
+```bash
 $ curl -i localhost:8080
 HTTP/1.0 200 OK
 Content-Type: text/html; charset=utf-8
@@ -1930,13 +1928,13 @@ Hello World!
 
  golang을 이용한 간단한 애플리케이션을 제작한다.
 
-```
+```bash
 $ mkdir docker-golang && cd docker-golang
 $ go mod init github.com/callicoder/go-docker
 $ vi hello-server.go
 ```
 
-```
+```go
 package main
 
 import (
@@ -2017,11 +2015,11 @@ func waitForShutdown(srv *http.Server) {
 }
 ```
 
-```
+```bash
 $ vi Dockerfile
 ```
 
-```
+```dockerfile
 FROM golang:latest
 
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
@@ -2037,7 +2035,7 @@ EXPOSE 8080
 CMD ["./main"]
 ```
 
-```
+```bash
 $ docker build -t docker-golang .
 
 Sending build context to Docker daemon  6.916MB
@@ -2074,14 +2072,14 @@ Successfully built cdeec6c7f5e7
 Successfully tagged docker-golang:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:8080 docker-golang
 2020/10/19 09:51:34 Starting Server
 2020/10/19 09:52:04 Received request for Guest
 2020/10/19 09:52:05 Received request for lucas
 ```
 
-```
+```bash
 $ curl http://localhost:8080 
 Hello, Guest 
 
@@ -2105,7 +2103,7 @@ Hello, lucas
 
 홈페이지에서 직접 다운로드하기가 어렵거나 귀찮다면 다음 명령을 통해 다운로드한다.
 
-```
+```bash
 $ wget http://start.xpressengine.io/download/latest.zip
 
 --2020-10-19 19:14:49--  http://start.xpressengine.io/download/latest.zip
@@ -2122,15 +2120,15 @@ latest.zip                                 100%[================================
 
  디렉터리를 생성하고 다운로드한 파일을 이동한다.
 
-```
+```bash
 $ mkdir docker-xe3 && mv latest.zip ./docker-xe3
 ```
 
-```
+```bash
 $ vi Dockerfile 
 ```
 
-```
+```dockerfile
 FROM ubuntu:18.04
 LABEL seongwon "seongwon@edu.hanbat.ac.kr"
 
@@ -2166,7 +2164,7 @@ EXPOSE 80
 ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 ```
 
-```
+```bash
 $ docker build -t docker-xe3 .
 
 Sending build context to Docker daemon  79.68MB
@@ -2227,7 +2225,7 @@ Successfully built 07adddcc1b02
 Successfully tagged docker-xe3:latest
 ```
 
-```
+```bash
 $ docker run -p 8080:80 docker-xe3 
 ```
 
@@ -2247,7 +2245,7 @@ $ docker run -p 8080:80 docker-xe3
 
  기본적으로 윈도우, Mac 사용자의 경우 위에서 Docker를 설치하게 되면 같이 Docker Compose도 같이 설치되기 때문에 따로 설정이 필요가 없으나, 리눅스 사용자의 경우 다음과 같이 추가적으로 설치를 진행할 필요가 있다.
 
-```
+```bash
 $ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 $ sudo chmod +x /usr/local/bin/docker-compose
@@ -2257,7 +2255,7 @@ $ sudo chmod +x /usr/local/bin/docker-compose
 
  실습을 정상적으로 진행하기 위해서 다음 명령을 통해 Docker Compose의 버전을 확인한다.
 
-```
+```bash
 $ docker-compose --version
 docker-compose version 1.27.4, build 40524192
 ```
@@ -2301,9 +2299,9 @@ Dockerfile의 이름이 다르거나 다른 경로에 존재한다면 다음과 
 ```
 services:
   nginx:
-  build:
-    context: /home/lucas            # Dockerfile이 있는 경로 (절대경로 또는 상대경로)
-    dockerfile: Dockerfile-Dev    # 파일명이 Dockerfile이 아닐 경우 파일명 기입
+    build:
+      context: /home/lucas            # Dockerfile이 있는 경로 (절대경로 또는 상대경로)
+      dockerfile: Dockerfile-Dev    # 파일명이 Dockerfile이 아닐 경우 파일명 기입
 ```
 
 ```
@@ -2320,9 +2318,9 @@ services:
 ```
 services:
     django:
-    build:     
-      context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      build:     
+        context: .
+        dockerfile: ./compose/django/Dockerfile-dev
 ```
 
 #### links
@@ -2343,10 +2341,10 @@ services:
   database:
     image: mariadb
        ports:
-     - 3306:3306
+         - 3306:3306
 ```
 
-```
+```yaml
 services:
   controller:
     image: ngrinder/controller
@@ -2361,24 +2359,24 @@ services:
 
  컨테이너 애플리케이션 즉 서비스가 종속적 순서대로 실행할 수 있음을 보장한다. 예를 들어 웹 애플리케이션과 데이터베이스가 존재한다면, 데이터베이스가 실행되고 그다음 웹 애플리케이션이 실행될 수 있도록 설정할 수 있다.
 
-```
+```yaml
 service:
     db:
       image: postgres
 
     web:
-        image: nginx
-    depend_on: db
+      image: nginx
+      depend_on: db
 ```
 
 #### environment, env\_file
 
  컨테이너를 실행할 때 필요한 환경변수를 입력한다. 환경 변수 파일을 직접 읽어서 사용할 수도 있다.
 
-```
+```yaml
 services:
     database:
-    image: mariadb
+      image: mariadb
     environment:  
       MYSQL_ROOT_PASSWORD: 1q2w3e4r!!
       MYSQL_DATABASE: xpress
@@ -2386,7 +2384,7 @@ services:
       MYSQL_PASSWORD: 1q2w3e4r!!
 ```
 
-```
+```yaml
 env_file:
   - ./common.env
   - ./apps/web.env
@@ -2396,7 +2394,7 @@ env_file:
 
  컨테이너의 이름을 지정한다.
 
-```
+```yml
 services:
   db:
     container_name: postgresql-odoo13
@@ -2406,7 +2404,7 @@ services:
 
  컨테이너와 호스트 간의 볼륨을 마운트 하는 데 사용된다. 추가적으로 :ro를 통해서 볼륨을 읽기 전용으로 실행할 수 있다.
 
-```
+```yaml
 volumes:
   - /var/log/test:/var/log
   - ~/configs:/etc/configs/:ro
@@ -2416,18 +2414,20 @@ volumes:
 
  위에서 만들어진 docker-compose.yml을 실행하고 중지하는 방법이다. 다음 명령을 실습하여 진행한다.
 
-```
+```bash
 $ ls
 docker-compose.yml 
 
 $ docker-compose up
-$ docker-compose up -d # 데몬으로 실행한다. 
+$ docker-compose up -d # 디먼으로 실행한다. 
 
 $ docker-compose stop # docker-compose.yml로 실행된 모든 컨테이너 서비스를 중지한다. 
 
 $ docker-compose logs # docker-compose.yml로 정의된 컨테이너의 로그를 보여준다 
 $ docker-compose logs -f # 로그를 계속 보여준다. 
 ```
+
+
 
 ## 실전 연습 - Docker Compose 애플리케이션 배포하기
 
@@ -2437,7 +2437,7 @@ $ docker-compose logs -f # 로그를 계속 보여준다.
 
  위에 고급 실습을 통해서 XpressEngine 3의 Dockerfile를 만들었고 정상적으로 실행하기 위한 데이터베이스 연결과정을 작성해 보도록 하겠다.
 
-```
+```yaml
 version: '3.4' 
 
 services:
@@ -2465,12 +2465,12 @@ services:
 
  이미 만들어진 이미지를 가지고 와서 실행하는 것이 아니라 프로젝트 파일 자체에 Dockerfile를 활용하여 이미지를 빌드하고 실행할 수 있는 구조로 작성할 수 있다.
 
-```
+```bash
 $ git clone https://github.com/raccoonyy/django-sample-for-docker-compose.git
 $ vi docker-compose.yml
 ```
 
-```
+```yaml
 version: '3'
 
 volumes: 
@@ -2504,7 +2504,7 @@ services:
 
 ### 오픈소스 프로그램 odoo docker-compose.yml 예제
 
-```
+```yaml
 version: '3'
 services:
   db:
