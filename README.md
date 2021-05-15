@@ -153,7 +153,7 @@
 * 유병재 팬 - 유병장수 회원
   * https://www.instagram.com/seongwon0667/
 * 유병재 팬페이지 제작 및 운영 
-  * https://dbqudwo333.ml
+  * https://dbqudwo333.space
 * 템플릿을 활용한 영상편집
 * 카메라 
 * 덕질
