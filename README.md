@@ -40,7 +40,13 @@
 - KT 산하 대전광역시 교육청 초/중/고 네트워크 전산 장비 교체 작업 
 - SENTBE Dev/Ops 매니저 - 인턴
 - waiker 클라우드 엔지니어 21.06.28 ~ 22.08.12 
-- 메가존클라우드 CTC (Cloud Technology Center) 매니저 - 22.11.07 ~ 
+- 메가존클라우드 CTC (Cloud Technology Center) AWS SA  - 22.11.07 ~ 
+
+
+
+### 자격증 
+
+* AWS Certified Cloud Practitioner (CLF) 
 
 
 
@@ -114,9 +120,7 @@
 
 ###  세미나 
 
-* 네트워크, 운영체제, git, REST API
-  
-* Docker, Kubernetes, OpenStack, DC/OS
+* 네트워크, 운영체제, AWS
   
   
 
