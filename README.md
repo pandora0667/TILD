@@ -111,7 +111,8 @@
   * wireshark
   * SOPHOS
   * ELK
-  * Grafana 
+  * Grafana
+  * WAZUH
 * Infrastructure as a Code
   * Ansible 
   * Terraform
