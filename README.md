@@ -46,7 +46,11 @@
 
 ### 자격증 
 
-* AWS Certified Cloud Practitioner (CLF) 
+* AWS Certified Cloud Practitioner 
+* AWS Certified Solutions Architect - Associate
+* AWS Certified Solutions Architect - Professional
+* AWS Certified Advanced Networking - Specialty
+* AWS Certified: SAP on AWS - Specialty
 
 
 
@@ -83,7 +87,6 @@
   * DC/OS
   * Unraid
 * Linux 
-  
   * Ubuntu 
   * Clear Linux
   * Gluster FS
@@ -115,6 +118,8 @@
   
 * Language
   * golang
+  * JavaScript
+  * Ptrhon
 
 
 
@@ -158,8 +163,6 @@
 * 테크 유튜브 시청 
 * 유병재 팬 - 유병장수 회원
   * https://www.instagram.com/seongwon0667/
-* 유병재 팬페이지 제작 및 운영 
-  * https://dbqudwo333.space
-* 템플릿을 활용한 영상편집
-* 카메라 
-* 덕질
+* 카메라
+  * https://www.instagram.com/photo.lee94/
+
