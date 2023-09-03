@@ -32,7 +32,7 @@
 - 2019년 한밭대학교 정보통신공학과 졸업 (융합전공 : 스페이스 미디어 콘텐츠)
 - 대한민국 육군 병장 만기 전역 - 정보체계 운용/정비 
 - 2019~ 2021 한밭대학교 모바일 융합공학과 석사과정 - Wisoft Lab.
-  - 연구 분야 : Docker, Kubernetes, Cloud, Network, Virtualizaion, Dev/Ops 
+  - 연구 분야 : Container, Cloud, Network, Virtualizaion, Dev/Ops 
 
 ### 경력
 
